@@ -1,10 +1,32 @@
 package sample;
 
-public class Controller {
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 
-    public String s = "Hej";
-    public String d = "Svej";
-    public String XXX = "If you know what I mean...";
-    public String johan = "Jalla re";
-    public String lirdion = "Va";
+import java.io.File;
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class Controller implements Initializable {
+
+
+    @FXML
+    private ImageView imageView;
+
+    @FXML
+    private AnchorPane pane;
+
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+        pane.setStyle("-fx-background-color: WHITE");
+        File file = new File("resources/icon.png");
+        Image image = new Image(file.toURI().toString());
+        imageView.setImage(image);
+
+    }
 }
