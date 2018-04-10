@@ -8,6 +8,9 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -16,14 +19,21 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
-    @FXML private ImageView imageView;
-    @FXML private AnchorPane pane;
-    @FXML private Button queueButton;
-    @FXML private Button registerButton;
-    @FXML private Button forgotButton;
+
+    @FXML
+    private ImageView imageView;
+    @FXML
+    private AnchorPane pane;
+    @FXML
+    private TextField usernameField;
+    @FXML
+    private PasswordField passwordField;
+
+    ArrayList<User> userList = new ArrayList<>();
 
 
     @Override
@@ -34,27 +44,68 @@ public class Controller implements Initializable {
         Image image = new Image(file.toURI().toString());
         imageView.setImage(image);
 
+
     }
 
-    public void registerAccount (ActionEvent event)throws IOException{
-        Node node = (Node)event.getSource();
-        Stage stage = (Stage)node.getScene().getWindow();
+    @FXML
+    public void registerAccount(ActionEvent event) throws IOException {
+
+        Node node = (Node) event.getSource();
+        Stage stage = (Stage) node.getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("sampleTwo.fxml"));
         Parent root = loader.load();
-        Scene scene = new Scene(root);
+
+        ControllerTwo cTwo = loader.getController();
+        for (int i = 0; i < userList.size(); i++) {
+
+            cTwo.setData(userList.get(i));
+
+        }
+
+        Scene scene = new Scene(root, 1200, 700);
         stage.setScene(scene);
     }
 
-    public void login (ActionEvent event)throws IOException{
+    @FXML
+    public void login(ActionEvent event) throws IOException {
 
-        //loop som kollar om användarnamn och lösenord matchar i med en user från databasen.
+        for (int i = 0; i < userList.size(); i++) {
 
-        Node node = (Node)event.getSource();
-        Stage stage = (Stage)node.getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("sampleThree.fxml"));
-        Parent root = loader.load();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
+
+            if (usernameField.getText().equals(userList.get(i).getUsername()) &&
+                    passwordField.getText().equals(userList.get(i).getPassword())) {
+
+                Node node = (Node) event.getSource();
+                Stage stage = (Stage) node.getScene().getWindow();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("sampleThree.fxml"));
+                Parent root = loader.load();
+
+                ControllerThree controllerThree = loader.getController();
+                for (int x = 0; x < userList.size(); x++) {
+
+                    controllerThree.setData(userList.get(x));
+
+                }
+
+                controllerThree.setCurrentUser(usernameField.getText());
+                controllerThree.setChannelUser(usernameField.getText());
+
+
+                Scene scene = new Scene(root, 1200, 700);
+                stage.setScene(scene);
+
+            } else {
+
+                System.out.println("error");
+            }
+        }
+
+    }
+
+
+    public void setData (User u){
+
+        userList.add(u);
     }
 
 }
