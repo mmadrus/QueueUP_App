@@ -28,6 +28,7 @@ public class ControllerThree implements Initializable {
 
     String johan;
     String JG;
+    int p;
 
     @FXML private AnchorPane pane;
 
