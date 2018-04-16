@@ -95,6 +95,8 @@ public class ControllerThree implements Initializable {
 
     public String setCurrentUser(String user) {
 
+        currentUser = user;
+
         return  user;
     }
 }
