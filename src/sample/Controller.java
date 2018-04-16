@@ -24,7 +24,6 @@ import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
 
-    String hej = "svejs";
 
     @FXML
     private ImageView imageView;
