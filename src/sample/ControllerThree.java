@@ -26,7 +26,8 @@ import java.util.ResourceBundle;
 
 public class ControllerThree implements Initializable {
 
-    String s;
+    String johan;
+    String JG;
 
     @FXML private AnchorPane pane;
 
