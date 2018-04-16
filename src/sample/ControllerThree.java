@@ -26,6 +26,8 @@ import java.util.ResourceBundle;
 
 public class ControllerThree implements Initializable {
 
+    String s;
+
     @FXML private AnchorPane pane;
 
     @FXML private TabPane tabPane;
