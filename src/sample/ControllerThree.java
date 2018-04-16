@@ -70,9 +70,10 @@ public class ControllerThree implements Initializable {
     public void sendMessage (ActionEvent event) {
 
         try {
-
-            messageArea.appendText("[" + currentUser + "] " + messageField.getText() + "\n");
-            messageField.clear();
+            if (!messageField.getText().isEmpty()) {
+                messageArea.appendText("[" + currentUser + "] " + messageField.getText() + "\n");
+                messageField.clear();
+            }
 
 
         } catch (Exception e) {
