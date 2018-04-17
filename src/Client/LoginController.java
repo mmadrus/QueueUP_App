@@ -77,7 +77,7 @@ public class LoginController implements Initializable {
 
                 Node node = (Node) event.getSource();
                 Stage stage = (Stage) node.getScene().getWindow();
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("charSample.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("chatSample.fxml"));
                 Parent root = loader.load();
 
                 ChatController controllerThree = loader.getController();
