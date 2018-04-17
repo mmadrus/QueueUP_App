@@ -135,7 +135,7 @@ public class ControllerThree implements Initializable {
 
         try {
 
-            InetAddress ip = InetAddress.getByName("localhost");
+            InetAddress ip = InetAddress.getByName("194.47.41.195");
 
             s = new Socket(ip, 8000);
 
