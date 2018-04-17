@@ -14,7 +14,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.Socket;
 import java.net.URL;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
@@ -35,6 +39,10 @@ public class ControllerThree implements Initializable {
     @FXML private TextArea messageArea, channelUser;
 
     private String currentUser;
+
+    private Socket s;
+    private DataOutputStream dos;
+    private DataInputStream dis;
 
     ArrayList<User> userList = new ArrayList<>();
 
@@ -70,8 +78,17 @@ public class ControllerThree implements Initializable {
     public void sendMessage (ActionEvent event) {
 
         try {
+
+            dis = new DataInputStream(s.getInputStream());
+            dos = new DataOutputStream(s.getOutputStream());
+
             if (!messageField.getText().isEmpty()){
-                messageArea.appendText("[" + currentUser + "] " + messageField.getText() + "\n");
+
+                dos.writeUTF(messageField.getText());
+
+                String recieved = dis.readUTF();
+
+                messageArea.appendText("[" + currentUser + "] " + recieved + "\n");
 
                 messageField.clear();
             }
@@ -91,7 +108,20 @@ public class ControllerThree implements Initializable {
 
     public void setChannelUser(String name) {
 
-        channelUser.appendText(name);
+        try {
+
+            dis = new DataInputStream(s.getInputStream());
+            dos = new DataOutputStream(s.getOutputStream());
+
+            dos.writeUTF(name);
+
+            String recievedName = dis.readUTF();
+
+            channelUser.appendText(recievedName);
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
     }
 
     public String setCurrentUser(String user) {
@@ -101,6 +131,18 @@ public class ControllerThree implements Initializable {
         return  user;
     }
 
+    public void connectToServer () {
 
-    //Test commit
+        try {
+
+            InetAddress ip = InetAddress.getByName("localhost");
+
+            s = new Socket(ip, 8000);
+
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+    }
 }

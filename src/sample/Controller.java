@@ -89,6 +89,8 @@ public class Controller implements Initializable {
 
                 }
 
+                controllerThree.connectToServer();
+
                 controllerThree.setCurrentUser(usernameField.getText());
                 controllerThree.setChannelUser(usernameField.getText());
 
