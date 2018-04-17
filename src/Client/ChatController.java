@@ -1,4 +1,4 @@
-package sample;
+package Client;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -7,7 +7,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -20,15 +19,10 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.URL;
-import java.sql.Time;
-import java.text.SimpleDateFormat;
-import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.ResourceBundle;
 
-public class ControllerThree implements Initializable {
+public class ChatController implements Initializable {
 
     @FXML private AnchorPane pane;
 
@@ -59,10 +53,10 @@ public class ControllerThree implements Initializable {
 
         Node node = (Node)event.getSource();
         Stage stage = (Stage)node.getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("sample.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("loginSample.fxml"));
         Parent root = loader.load();
 
-        Controller cOne = loader.getController();
+        LoginController cOne = loader.getController();
         for (int i = 0; i < userList.size(); i++) {
 
             cOne.setData(userList.get(i));

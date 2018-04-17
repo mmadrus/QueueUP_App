@@ -1,4 +1,4 @@
-package sample;
+package Client;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -7,9 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -22,7 +20,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class Controller implements Initializable {
+public class LoginController implements Initializable {
 
     String e;
 
@@ -54,10 +52,10 @@ public class Controller implements Initializable {
 
         Node node = (Node) event.getSource();
         Stage stage = (Stage) node.getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("sampleTwo.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("regSample.fxml"));
         Parent root = loader.load();
 
-        ControllerTwo cTwo = loader.getController();
+        RegController cTwo = loader.getController();
         for (int i = 0; i < userList.size(); i++) {
 
             cTwo.setData(userList.get(i));
@@ -79,10 +77,10 @@ public class Controller implements Initializable {
 
                 Node node = (Node) event.getSource();
                 Stage stage = (Stage) node.getScene().getWindow();
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("sampleThree.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("chatSample.fxml"));
                 Parent root = loader.load();
 
-                ControllerThree controllerThree = loader.getController();
+                ChatController controllerThree = loader.getController();
                 for (int x = 0; x < userList.size(); x++) {
 
                     controllerThree.setData(userList.get(x));

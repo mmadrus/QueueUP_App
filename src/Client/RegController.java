@@ -1,4 +1,4 @@
-package sample;
+package Client;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,14 +15,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class ControllerTwo implements Initializable {
+public class RegController implements Initializable {
 
     @FXML
     AnchorPane pane;
@@ -48,10 +44,10 @@ public class ControllerTwo implements Initializable {
 
         Node node = (Node) event.getSource();
         Stage stage = (Stage) node.getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("sample.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("loginSample.fxml"));
         Parent root = loader.load();
 
-        Controller cOne = loader.getController();
+        LoginController cOne = loader.getController();
         for (int i = 0; i < userList.size(); i++) {
 
             cOne.setData(userList.get(i));
@@ -77,10 +73,10 @@ public class ControllerTwo implements Initializable {
 
             Node node = (Node) event.getSource();
             Stage stage = (Stage) node.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("sample.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("loginSample.fxml"));
             Parent root = loader.load();
 
-            Controller cOne = loader.getController();
+            LoginController cOne = loader.getController();
             for (int i = 0; i < userList.size(); i++) {
 
                 cOne.setData(userList.get(i));
