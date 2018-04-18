@@ -89,8 +89,8 @@ public class LoginController implements Initializable {
 
                 controllerThree.connectToServer();
 
+
                 controllerThree.setCurrentUser(usernameField.getText());
-                controllerThree.setChannelUser(usernameField.getText());
 
 
                 Scene scene = new Scene(root, 1200, 700);

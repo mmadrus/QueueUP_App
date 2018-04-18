@@ -24,21 +24,22 @@ import java.util.ResourceBundle;
 
 public class ChatController implements Initializable {
 
-    @FXML private AnchorPane pane;
-
-    @FXML private TabPane tabPane;
-
-    @FXML private TextField messageField;
-
-    @FXML private TextArea messageArea, channelUser;
-
+    ArrayList<User> userList = new ArrayList<>();
+    @FXML
+    private AnchorPane pane;
+    @FXML
+    private TabPane tabPane;
+    @FXML
+    private TextField messageField;
+    @FXML
+    private TextArea messageArea, channelUser;
     private String currentUser;
-
     private Socket s;
     private DataOutputStream dos;
     private DataInputStream dis;
 
-    ArrayList<User> userList = new ArrayList<>();
+
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -46,13 +47,15 @@ public class ChatController implements Initializable {
         pane.setStyle("-fx-background-color: WHITE");
         tabPane.setStyle("-fx-background-color: WHITE");
 
+        updateMessages();
+
     }
 
     @FXML
-    public void logout (ActionEvent event) throws IOException {
+    public void logout(ActionEvent event) throws IOException {
 
-        Node node = (Node)event.getSource();
-        Stage stage = (Stage)node.getScene().getWindow();
+        Node node = (Node) event.getSource();
+        Stage stage = (Stage) node.getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("loginSample.fxml"));
         Parent root = loader.load();
 
@@ -60,7 +63,7 @@ public class ChatController implements Initializable {
         for (int i = 0; i < userList.size(); i++) {
 
             cOne.setData(userList.get(i));
-            System.out.println(userList.get(i).getUsername());
+            s.close();
 
         }
 
@@ -69,33 +72,14 @@ public class ChatController implements Initializable {
     }
 
     @FXML
-    public void sendMessage (ActionEvent event) {
+    public void sendMessage(ActionEvent event) {
 
-        try {
+        new MessageThread().send();
 
-            dis = new DataInputStream(s.getInputStream());
-            dos = new DataOutputStream(s.getOutputStream());
-
-            if (!messageField.getText().isEmpty()){
-
-                dos.writeUTF(messageField.getText());
-
-                String recieved = dis.readUTF();
-
-                messageArea.appendText("[" + currentUser + "] " + recieved + "\n");
-
-                messageField.clear();
-            }
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-
-        }
 
     }
 
-    public void setData (User u){
+    public void setData(User u) {
 
         userList.add(u);
     }
@@ -112,6 +96,7 @@ public class ChatController implements Initializable {
             String recievedName = dis.readUTF();
 
             channelUser.appendText(recievedName);
+
         } catch (Exception e) {
 
             e.printStackTrace();
@@ -122,21 +107,86 @@ public class ChatController implements Initializable {
 
         currentUser = user;
 
-        return  user;
+        return user;
     }
 
-    public void connectToServer () {
+
+    public void connectToServer() {
 
         try {
 
-            InetAddress ip = InetAddress.getByName("194.47.41.195");
+            s = new Socket("192.168.0.110", 8000);
 
-            s = new Socket(ip, 8000);
+            dis = new DataInputStream(s.getInputStream());
+            dos = new DataOutputStream(s.getOutputStream());
 
 
         } catch (Exception e) {
 
             e.printStackTrace();
         }
+    }
+
+    public void updateMessages() {
+
+        Thread thread = new Thread(() -> {
+
+            while (true) {
+
+                new MessageThread().recieve();
+
+                if (false) {
+
+                    new Thread().stop();
+                }
+            }
+
+        });
+
+        thread.start();
+
+    }
+
+
+    class MessageThread extends Thread {
+
+        public void send() {
+
+            try {
+
+                if (!messageField.getText().isEmpty()) {
+
+                    dos.writeUTF("[" + currentUser + "] " + messageField.getText());
+
+                    messageField.clear();
+
+                }
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+
+            }
+
+        }
+
+        public void recieve() {
+
+            try {
+
+                String recieved = dis.readUTF();
+
+                messageArea.appendText(recieved + "\n");
+
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+
+            }
+
+        }
+
+
     }
 }
