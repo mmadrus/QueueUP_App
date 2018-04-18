@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -71,34 +72,48 @@ public class LoginController implements Initializable {
 
         for (int i = 0; i < userList.size(); i++) {
 
+            if (usernameField.getText().isEmpty() || passwordField.getText().isEmpty()){
 
-            if (usernameField.getText().equals(userList.get(i).getUsername()) &&
-                    passwordField.getText().equals(userList.get(i).getPassword())) {
-
-                Node node = (Node) event.getSource();
-                Stage stage = (Stage) node.getScene().getWindow();
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("chatSample.fxml"));
-                Parent root = loader.load();
-
-                ChatController controllerThree = loader.getController();
-                for (int x = 0; x < userList.size(); x++) {
-
-                    controllerThree.setData(userList.get(x));
-
-                }
-
-                controllerThree.connectToServer();
-
-
-                controllerThree.setCurrentUser(usernameField.getText());
-
-
-                Scene scene = new Scene(root, 1200, 700);
-                stage.setScene(scene);
+                Alert accountError = new Alert(Alert.AlertType.INFORMATION);
+                accountError.setTitle("Can not sign in");
+                accountError.setHeaderText("No information to read");
+                accountError.setContentText("Please enter your information in all of the textfields");
+                accountError.show();
 
             } else {
+                if (usernameField.getText().equals(userList.get(i).getUsername()) &&
+                        passwordField.getText().equals(userList.get(i).getPassword())) {
 
-                System.out.println("error");
+                    Node node = (Node) event.getSource();
+                    Stage stage = (Stage) node.getScene().getWindow();
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("chatSample.fxml"));
+                    Parent root = loader.load();
+
+                    ChatController controllerThree = loader.getController();
+                    for (int x = 0; x < userList.size(); x++) {
+
+                        controllerThree.setData(userList.get(x));
+
+                    }
+
+                    controllerThree.connectToServer();
+
+
+                    controllerThree.setCurrentUser(usernameField.getText());
+
+
+                    Scene scene = new Scene(root, 1200, 700);
+                    stage.setScene(scene);
+
+                } else {
+
+                    Alert accountError = new Alert(Alert.AlertType.INFORMATION);
+                    accountError.setTitle("Wrong username or password");
+                    accountError.setHeaderText("The username or password does not exist");
+                    accountError.setContentText("Please enter your username and password");
+                    accountError.show();
+
+                }
             }
         }
 

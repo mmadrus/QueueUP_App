@@ -67,25 +67,44 @@ public class RegController implements Initializable {
         if (passwordField.getText().equals(confirmPasswordField.getText()) && emailField.getText().equals(
                 confirmEmailField.getText())) {
 
+            if  (passwordField.getText().isEmpty() || confirmPasswordField.getText().isEmpty() || emailField.getText().isEmpty()
+                    || confirmEmailField.getText().isEmpty() || usernameField.getText().isEmpty()){
 
-            User user = new User(usernameField.getText(), passwordField.getText(), emailField.getText());
-            userList.add(user);
+                Alert accountError = new Alert(Alert.AlertType.INFORMATION);
+                accountError.setTitle("Registration not complete!");
+                accountError.setHeaderText("Enter information");
+                accountError.setContentText("Please enter your information in all of the textfields");
+                accountError.show();
+            }
+            else {
+                if (usernamelength(usernameField.getText())) {
+                    User user = new User(usernameField.getText(), passwordField.getText(), emailField.getText());
+                    userList.add(user);
 
-            Node node = (Node) event.getSource();
-            Stage stage = (Stage) node.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("loginSample.fxml"));
-            Parent root = loader.load();
+                    Node node = (Node) event.getSource();
+                    Stage stage = (Stage) node.getScene().getWindow();
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("loginSample.fxml"));
+                    Parent root = loader.load();
 
-            LoginController cOne = loader.getController();
-            for (int i = 0; i < userList.size(); i++) {
+                    LoginController cOne = loader.getController();
+                    for (int i = 0; i < userList.size(); i++) {
 
-                cOne.setData(userList.get(i));
-                System.out.println(userList.get(i).getUsername());
+                        cOne.setData(userList.get(i));
+                        System.out.println(userList.get(i).getUsername());
 
+                    }
+
+                    Scene scene = new Scene(root, 1200, 700);
+                    stage.setScene(scene);
+                } else {
+                    Alert accountError = new Alert(Alert.AlertType.INFORMATION);
+                    accountError.setTitle("Username to short/long");
+                    accountError.setHeaderText("Username has to be between 3-16 characters");
+                    accountError.setContentText("Please enter username again");
+                    accountError.show();
+                }
             }
 
-            Scene scene = new Scene(root, 1200, 700);
-            stage.setScene(scene);
 
         } else {
 
@@ -103,6 +122,10 @@ public class RegController implements Initializable {
     public void setData (User u){
 
         userList.add(u);
+    }
+
+    public boolean usernamelength (String name){
+        return name.matches("[a-zA-Z0-9]{3,16}");
     }
 
 }

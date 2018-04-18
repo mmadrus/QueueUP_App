@@ -120,7 +120,6 @@ public class ChatController implements Initializable {
             dis = new DataInputStream(s.getInputStream());
             dos = new DataOutputStream(s.getOutputStream());
 
-
         } catch (Exception e) {
 
             e.printStackTrace();
