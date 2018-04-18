@@ -3,6 +3,7 @@ package Server;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -30,12 +31,15 @@ public class Server {
 
     public void startThread() throws IOException {
 
-        ServerSocket ss = new ServerSocket(8000);
+        InetAddress ip = InetAddress.getByName("192.168.0.110");
+
+        ServerSocket ss = new ServerSocket(8000, 1000, ip);
 
         while (true) {
 
 
             try {
+
 
                 Socket s = ss.accept();
                 System.out.println("Connected to: " + ss);
