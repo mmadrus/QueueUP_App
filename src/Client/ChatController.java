@@ -40,22 +40,14 @@ public class ChatController implements Initializable {
 
 
 
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
         pane.setStyle("-fx-background-color: WHITE");
         tabPane.setStyle("-fx-background-color: WHITE");
 
-        Thread thread = new Thread(() -> {
-
-            while (true) {
-
-                new MessageThread().recieve();
-            }
-
-        });
-
-        thread.start();
+        updateMessages();
 
     }
 
@@ -123,9 +115,7 @@ public class ChatController implements Initializable {
 
         try {
 
-            InetAddress ip = InetAddress.getByName("192.168.0.110");
-
-            s = new Socket(ip, 8000);
+            s = new Socket("192.168.0.110", 8000);
 
             dis = new DataInputStream(s.getInputStream());
             dos = new DataOutputStream(s.getOutputStream());
@@ -135,6 +125,26 @@ public class ChatController implements Initializable {
 
             e.printStackTrace();
         }
+    }
+
+    public void updateMessages() {
+
+        Thread thread = new Thread(() -> {
+
+            while (true) {
+
+                new MessageThread().recieve();
+
+                if (false) {
+
+                    new Thread().stop();
+                }
+            }
+
+        });
+
+        thread.start();
+
     }
 
 
