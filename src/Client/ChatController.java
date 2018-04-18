@@ -115,7 +115,7 @@ public class ChatController implements Initializable {
 
         try {
 
-            s = new Socket("192.168.0.110", 8000);
+            s = new Socket("ua-83-226-35-166.cust.bredbandsbolaget.se", 8080);
 
             dis = new DataInputStream(s.getInputStream());
             dos = new DataOutputStream(s.getOutputStream());
@@ -180,7 +180,7 @@ public class ChatController implements Initializable {
 
             } catch (Exception e) {
 
-                e.printStackTrace();
+                e.getSuppressed();
 
             }
 

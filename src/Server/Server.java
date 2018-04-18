@@ -31,11 +31,14 @@ public class Server {
 
     public void startThread() throws IOException {
 
-        InetAddress ip = InetAddress.getByName("192.168.0.110");
+        /*byte[] ipAddress = new byte[]{(byte) 192, (byte) 168, (byte) 0, (byte) 110};
 
-        ServerSocket ss = new ServerSocket(8000, 1000, ip);
+        InetAddress ip = InetAddress.getByAddress(ipAddress);*/
+
+        ServerSocket ss = new ServerSocket(8080);
 
         while (true) {
+
 
 
             try {
