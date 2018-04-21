@@ -24,7 +24,7 @@ import java.util.ResourceBundle;
 public class LoginController implements Initializable {
 
     String e;
-
+    ArrayList<User> userList = new ArrayList<>();
     @FXML
     private ImageView imageView;
     @FXML
@@ -33,9 +33,6 @@ public class LoginController implements Initializable {
     private TextField usernameField;
     @FXML
     private PasswordField passwordField;
-
-    ArrayList<User> userList = new ArrayList<>();
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -72,7 +69,7 @@ public class LoginController implements Initializable {
 
         for (int i = 0; i < userList.size(); i++) {
 
-            if (usernameField.getText().isEmpty() || passwordField.getText().isEmpty()){
+            if (usernameField.getText().isEmpty() || passwordField.getText().isEmpty()) {
 
                 Alert accountError = new Alert(Alert.AlertType.INFORMATION);
                 accountError.setTitle("Can not sign in");
@@ -96,9 +93,6 @@ public class LoginController implements Initializable {
 
                     }
 
-                    controllerThree.connectToServer();
-
-
                     controllerThree.setCurrentUser(usernameField.getText());
 
 
@@ -120,7 +114,7 @@ public class LoginController implements Initializable {
     }
 
 
-    public void setData (User u){
+    public void setData(User u) {
 
         userList.add(u);
     }

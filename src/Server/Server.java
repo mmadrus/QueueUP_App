@@ -3,14 +3,13 @@ package Server;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 
 
 public class Server {
-
 
     private ArrayList<ClientHandler> clientHandlers = new ArrayList<>();
 
@@ -26,19 +25,14 @@ public class Server {
         }
 
 
-
     }
 
     public void startThread() throws IOException {
 
-        /*byte[] ipAddress = new byte[]{(byte) 192, (byte) 168, (byte) 0, (byte) 110};
-
-        InetAddress ip = InetAddress.getByAddress(ipAddress);*/
 
         ServerSocket ss = new ServerSocket(8080);
 
         while (true) {
-
 
 
             try {
@@ -48,8 +42,7 @@ public class Server {
                 System.out.println("Connected to: " + ss);
                 System.out.println("Assigning new thread");
 
-                ClientHandler c = new ClientHandler(s);
-                clientHandlers.add(c);
+                clientHandlers.add(new ClientHandler(s));
 
 
             } catch (Exception e) {
@@ -57,16 +50,6 @@ public class Server {
                 e.printStackTrace();
 
             }
-        }
-
-    }
-
-    public void sendAll(String message) {
-
-        for (ClientHandler c : clientHandlers) {
-
-            c.sendMessages(c, message);
-
         }
 
     }
@@ -93,7 +76,14 @@ public class Server {
 
 
                 this.s = client.s;
-                dos.writeUTF(msg);
+
+                    dos.writeUTF(msg);
+
+
+
+            } catch (SocketException sE) {
+
+                sE.getCause();
 
             } catch (Exception e) {
 
@@ -112,13 +102,23 @@ public class Server {
 
                     recieved = dis.readUTF();
 
-                    sendAll(recieved);
+                    sendToClient(recieved);
 
                 }
             } catch (Exception e) {
 
                 e.printStackTrace();
             }
+
+        }
+
+    }
+
+    private void sendToClient(String message) {
+
+        for (ClientHandler c : clientHandlers) {
+
+            c.sendMessages(c, message);
 
         }
 
