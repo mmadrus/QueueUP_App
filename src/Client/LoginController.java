@@ -23,7 +23,6 @@ import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
 
-    String e;
     ArrayList<User> userList = new ArrayList<>();
     @FXML
     private ImageView imageView;
