@@ -21,15 +21,15 @@ import java.util.ResourceBundle;
 public class RegController implements Initializable {
 
     @FXML
-    AnchorPane pane;
+    private AnchorPane pane;
 
     @FXML
-    TextField usernameField, emailField, confirmEmailField;
+    private TextField usernameField, emailField, confirmEmailField;
 
     @FXML
-    PasswordField passwordField, confirmPasswordField;
+    private PasswordField passwordField, confirmPasswordField;
 
-    ArrayList<User> userList = new ArrayList<>();
+    private ArrayList<User> userList = new ArrayList<>();
 
 
     @Override
