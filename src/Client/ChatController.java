@@ -16,7 +16,6 @@ import javafx.stage.Stage;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.Socket;
 import java.net.URL;
 import java.util.ArrayList;
@@ -32,14 +31,10 @@ public class ChatController implements Initializable {
     @FXML
     private TextField messageField;
     @FXML
-    private TextArea messageArea, channelUser;
+    private TextArea messageArea;
     private String currentUser;
-    private Socket s;
-    private DataOutputStream dos;
-    private DataInputStream dis;
 
-
-
+    DataStream dataStream = new DataStream();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -47,7 +42,11 @@ public class ChatController implements Initializable {
         pane.setStyle("-fx-background-color: WHITE");
         tabPane.setStyle("-fx-background-color: WHITE");
 
-        updateMessages();
+        dataStream.connectToServer();
+
+
+        updateChat();
+
 
     }
 
@@ -63,7 +62,6 @@ public class ChatController implements Initializable {
         for (int i = 0; i < userList.size(); i++) {
 
             cOne.setData(userList.get(i));
-            s.close();
 
         }
 
@@ -74,7 +72,14 @@ public class ChatController implements Initializable {
     @FXML
     public void sendMessage(ActionEvent event) {
 
-        new MessageThread().send();
+        if (!messageField.getText().isEmpty()) {
+
+
+            dataStream.sendMessage(currentUser, messageField.getText());
+
+            messageField.clear();
+
+        }
 
 
     }
@@ -84,25 +89,6 @@ public class ChatController implements Initializable {
         userList.add(u);
     }
 
-    public void setChannelUser(String name) {
-
-        try {
-
-            dis = new DataInputStream(s.getInputStream());
-            dos = new DataOutputStream(s.getOutputStream());
-
-            dos.writeUTF(name);
-
-            String recievedName = dis.readUTF();
-
-            channelUser.appendText(recievedName);
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-        }
-    }
-
     public String setCurrentUser(String user) {
 
         currentUser = user;
@@ -110,29 +96,22 @@ public class ChatController implements Initializable {
         return user;
     }
 
-
-    public void connectToServer() {
-
-        try {
-
-            s = new Socket("ua-83-226-35-166.cust.bredbandsbolaget.se", 8080);
-
-            dis = new DataInputStream(s.getInputStream());
-            dos = new DataOutputStream(s.getOutputStream());
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-        }
-    }
-
-    public void updateMessages() {
+    public void updateChat() {
 
         Thread thread = new Thread(() -> {
 
             while (true) {
 
-                new MessageThread().recieve();
+                        try {
+
+                            messageArea.appendText(dataStream.recieveMessage() + "\n");
+
+
+
+                        } catch (Exception e) {
+
+                            e.printStackTrace();
+                        }
 
                 if (false) {
 
@@ -146,46 +125,4 @@ public class ChatController implements Initializable {
 
     }
 
-
-    class MessageThread extends Thread {
-
-        public void send() {
-
-            try {
-
-                if (!messageField.getText().isEmpty()) {
-
-                    dos.writeUTF("[" + currentUser + "] " + messageField.getText());
-
-                    messageField.clear();
-
-                }
-
-            } catch (Exception e) {
-
-                e.printStackTrace();
-
-            }
-
-        }
-
-        public void recieve() {
-
-            try {
-
-                String recieved = dis.readUTF();
-
-                messageArea.appendText(recieved + "\n");
-
-
-            } catch (Exception e) {
-
-                e.getSuppressed();
-
-            }
-
-        }
-
-
-    }
 }
