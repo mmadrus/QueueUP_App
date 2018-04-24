@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class Databas {
+public class Database {
 
     private String url = "jdbc:mysql://den1.mysql5.gear.host/qup?user=qup&password=Sv3t8?CUfd!S";
 
@@ -25,14 +25,9 @@ public class Databas {
     private String addUserUrl =  "insert into qup.user(user_id, user_name, user_password, user_mail, isAdmin, isBlocked)" +
             " VALUES ( ?,?,?,?,?,?)";
 
-    private int userId;
-    private String userName;
-    private String userPassword;
-    private String userMail;
-    private boolean isAdmin;
-    private boolean isBlocked;
+    private String searchForUserEmailUrl = "select user_mail from qup.user where user_mail = ?";
 
-    public Databas() throws SQLException {
+    public Database() throws SQLException {
 
         try {
             c =(Connection) DriverManager.getConnection(url);
@@ -43,16 +38,16 @@ public class Databas {
 
     }
 
-    public void addUser(){
+    public void addUser(int id, String username, String password, String email){
 
         try (PreparedStatement statement = c.prepareStatement(addUserUrl)){
 
-            statement.setInt(1,userId);
-            statement.setString(2,userName);
-            statement.setString(3,userPassword);
-            statement.setString(4,userMail);
-            statement.setBoolean(5,isAdmin);
-            statement.setBoolean(6,isBlocked);
+            statement.setInt(1,id);
+            statement.setString(2,username);
+            statement.setString(3,password);
+            statement.setString(4,email);
+            statement.setBoolean(5,false);
+            statement.setBoolean(6,false);
 
             statement.execute();
 
@@ -61,6 +56,36 @@ public class Databas {
         }catch (Exception e){
             System.out.println("FAIL");
         }
+    }
+
+    public boolean searchForUserEmail (String email) {
+
+        boolean exist = false;
+
+        try (PreparedStatement statement = c.prepareStatement(searchForUserEmailUrl)) {
+
+            statement.setString(1, email);
+            statement.execute();
+
+            if (email != null){
+
+                exist = true;
+                System.out.println("User exists");
+
+            } else {
+
+                exist = false;
+                System.out.println("No user found");
+            }
+
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+
+        return exist;
+
     }
 
 }

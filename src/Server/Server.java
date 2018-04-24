@@ -8,10 +8,13 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
 
+import static javafx.scene.input.KeyCode.T;
+
 
 public class Server {
 
     private ArrayList<ClientHandler> clientHandlers = new ArrayList<>();
+    private ServerProtocol serverProtocol = new ServerProtocol();
 
     public static void main(String[] args) {
 
@@ -54,11 +57,23 @@ public class Server {
 
     }
 
+    private void sendToClient(String message) {
+
+        for (ClientHandler c : clientHandlers) {
+
+            c.sendDataStream(c, message);
+
+        }
+
+    }
+
     class ClientHandler extends Thread {
 
         private DataInputStream dis;
         private DataOutputStream dos;
         private Socket s;
+
+        private volatile boolean running = true;
 
         ClientHandler(Socket s) throws IOException {
 
@@ -70,7 +85,7 @@ public class Server {
             start();
         }
 
-        public void sendMessages(ClientHandler client, String msg) {
+        public void sendDataStream(ClientHandler client, String msg) {
 
             try {
 
@@ -92,33 +107,35 @@ public class Server {
         }
 
         @Override
-        public void run() {
-
-            String recieved;
+        public void run()  {
 
             try {
 
-                while (true) {
+                while (running) {
 
-                    recieved = dis.readUTF();
+                    String recieved = dis.readUTF();
+                    String command = recieved.substring(0,2);
+                    String data = recieved.substring(2, recieved.length());
 
-                    sendToClient(recieved);
+                    if (command.equals("/1") || command.equals("/2")){
+
+                        if (String.valueOf(serverProtocol.databaseProtocol(command, data)).equals("false")) {
+
+                            dos.writeUTF("false");
+                        }
+
+                        running = false;
+
+                    } else if (command.equals("/m")) {
+
+
+                    }
 
                 }
             } catch (Exception e) {
 
                 e.printStackTrace();
             }
-
-        }
-
-    }
-
-    private void sendToClient(String message) {
-
-        for (ClientHandler c : clientHandlers) {
-
-            c.sendMessages(c, message);
 
         }
 

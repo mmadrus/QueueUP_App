@@ -11,12 +11,11 @@ public class DataStream extends Thread {
     private DataOutputStream dos;
     private DataInputStream dis;
 
-    public void sendMessage(String user, String msg) {
+    public void sendDataStream(String data) {
 
         try {
-            dos.writeUTF("[" + user + "] " + msg);
 
-
+            dos.writeUTF(data);
 
         } catch (Exception e) {
 
@@ -26,7 +25,7 @@ public class DataStream extends Thread {
 
     }
 
-    public String recieveMessage () throws IOException {
+    public String recieveDataStream () throws IOException {
 
         return dis.readUTF();
     }
@@ -36,7 +35,7 @@ public class DataStream extends Thread {
 
         try {
 
-            s = new Socket("ua-83-226-35-166.cust.bredbandsbolaget.se", 8080);
+            s = new Socket("hkrwlan-41-39.clients.hkr.se", 8080);
 
             dis = new DataInputStream(s.getInputStream());
             dos = new DataOutputStream(s.getOutputStream());
@@ -44,6 +43,19 @@ public class DataStream extends Thread {
         } catch (Exception e) {
 
             e.printStackTrace();
+        }
+    }
+
+    public void disconnectFromServer () {
+
+        try {
+
+            s.close();
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
+
         }
     }
 }

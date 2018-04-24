@@ -28,7 +28,7 @@
           </Tab>
         </tabs>
       </TabPane>
-      <Button layoutX="200.0" layoutY="627.0" mnemonicParsing="false" onAction="#sendMessage" prefHeight="60.0" prefWidth="800.0" text="Send">
+      <Button layoutX="200.0" layoutY="627.0" mnemonicParsing="false" onAction="#send" prefHeight="60.0" prefWidth="800.0" text="Send">
          <graphic>
             <TextField fx:id="messageField" layoutX="150.0" layoutY="150.0" prefHeight="50.0" prefWidth="744.0" />
          </graphic>

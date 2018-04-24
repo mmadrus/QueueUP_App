@@ -31,6 +31,8 @@ public class RegController implements Initializable {
 
     private ArrayList<User> userList = new ArrayList<>();
 
+    DataStream dataStream = new DataStream();
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -77,22 +79,21 @@ public class RegController implements Initializable {
                 accountError.show();
             }
             else {
+
                 if (usernamelength(usernameField.getText())) {
-                    User user = new User(usernameField.getText(), passwordField.getText(), emailField.getText());
-                    userList.add(user);
+
+                    String username = String.format("%-16s", usernameField.getText()).replace(' ', '*');
+                    String password = String.format("%-20s", passwordField.getText()).replace(' ', '*');
+
+                    String user = "/1" + username + password + emailField.getText();
+
+                    sendToServer(user);
 
                     Node node = (Node) event.getSource();
                     Stage stage = (Stage) node.getScene().getWindow();
+
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("loginSample.fxml"));
                     Parent root = loader.load();
-
-                    LoginController cOne = loader.getController();
-                    for (int i = 0; i < userList.size(); i++) {
-
-                        cOne.setData(userList.get(i));
-                        System.out.println(userList.get(i).getUsername());
-
-                    }
 
                     Scene scene = new Scene(root, 1200, 700);
                     stage.setScene(scene);
@@ -126,6 +127,32 @@ public class RegController implements Initializable {
 
     public boolean usernamelength (String name){
         return name.matches("[a-zA-Z0-9]{3,16}");
+    }
+
+    public void sendToServer (String user) {
+
+        dataStream.connectToServer();
+        dataStream.sendDataStream(user);
+
+        try {
+
+            if (dataStream.recieveDataStream().equals("false")) {
+
+                Alert accountError = new Alert(Alert.AlertType.INFORMATION);
+                accountError.setTitle("Registration not complete!");
+                accountError.setHeaderText("Username or E-Mail already exists.");
+                accountError.show();
+
+            }
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+
+        dataStream.disconnectFromServer();
+
+
     }
 
 }

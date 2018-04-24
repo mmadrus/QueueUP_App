@@ -70,12 +70,12 @@ public class ChatController implements Initializable {
     }
 
     @FXML
-    public void sendMessage(ActionEvent event) {
+    public void send(ActionEvent event) {
 
         if (!messageField.getText().isEmpty()) {
 
 
-            dataStream.sendMessage(currentUser, messageField.getText());
+            dataStream.sendDataStream(messageField.getText());
 
             messageField.clear();
 
@@ -98,31 +98,31 @@ public class ChatController implements Initializable {
 
     public void updateChat() {
 
-        Thread thread = new Thread(() -> {
+        try {
+            Thread thread = new Thread(() -> {
 
-            while (true) {
+                while (true) {
 
-                        try {
+                    try {
 
-                            messageArea.appendText(dataStream.recieveMessage() + "\n");
+                        messageArea.appendText(dataStream.recieveDataStream() + "\n");
 
 
+                    } catch (Exception e) {
 
-                        } catch (Exception e) {
-
-                            e.printStackTrace();
-                        }
-
-                if (false) {
-
-                    new Thread().stop();
+                        e.printStackTrace();
+                    }
                 }
-            }
 
-        });
+            });
 
-        thread.start();
+            thread.start();
 
+        } catch (NullPointerException nPE) {
+
+            nPE.getSuppressed();
+
+        }
     }
 
 }

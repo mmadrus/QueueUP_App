@@ -77,28 +77,20 @@ public class LoginController implements Initializable {
                 accountError.show();
 
             } else {
-                if (usernameField.getText().equals(userList.get(i).getUsername()) &&
-                        passwordField.getText().equals(userList.get(i).getPassword())) {
+
+                /*if (usernameField.getText().equals(userList.get(i).getUsername()) &&
+                        passwordField.getText().equals(userList.get(i).getPassword())) {*/
 
                     Node node = (Node) event.getSource();
                     Stage stage = (Stage) node.getScene().getWindow();
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("chatSample.fxml"));
                     Parent root = loader.load();
 
-                    ChatController controllerThree = loader.getController();
-                    for (int x = 0; x < userList.size(); x++) {
-
-                        controllerThree.setData(userList.get(x));
-
-                    }
-
-                    controllerThree.setCurrentUser(usernameField.getText());
-
 
                     Scene scene = new Scene(root, 1200, 700);
                     stage.setScene(scene);
 
-                } else {
+                /*} else {
 
                     Alert accountError = new Alert(Alert.AlertType.INFORMATION);
                     accountError.setTitle("Wrong username or password");
@@ -106,7 +98,7 @@ public class LoginController implements Initializable {
                     accountError.setContentText("Please enter your username and password");
                     accountError.show();
 
-                }
+                }*/
             }
         }
 
