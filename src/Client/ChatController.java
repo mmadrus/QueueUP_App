@@ -32,6 +32,7 @@ public class ChatController implements Initializable {
     private TextField messageField;
     @FXML
     private TextArea messageArea;
+    private TextArea helpMessageArea;
     private String currentUser;
 
     DataStream dataStream = new DataStream();
