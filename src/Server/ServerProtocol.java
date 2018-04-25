@@ -16,19 +16,17 @@ public class ServerProtocol {
 
                 Database db = new Database();
 
-                boolean exist = db.searchForUserEmail(data.substring(36));
+                boolean found = db.searchForUserEmail(data.substring(36));
 
-                if (exist == false) {
+                if (found == false) {
 
-                    //db.addUser(id, data.substring(0, 16), data.substring(16, 36), data.substring(36));
+                    db.addUser(id, data.substring(0, 16), data.substring(16, 36), data.substring(36));
 
-                    System.out.println("Exist: " + exist);
 
                      succesfull = true;
 
-                } else if (exist == true) {
+                } else {
 
-                    System.out.println("Exist 2: " + exist);
 
                     succesfull = false;
 
@@ -40,6 +38,8 @@ public class ServerProtocol {
             }
 
         }
+
+        System.out.println("success: " + succesfull);
 
         return succesfull;
 

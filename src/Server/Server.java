@@ -117,16 +117,24 @@ public class Server {
                     String command = recieved.substring(0,2);
                     String data = recieved.substring(2, recieved.length());
 
-                    if (command.equals("/1") || command.equals("/2")){
+                    if (command.equals("/1") || command.equals("/2") || command.equals("/3") || command.equals("/j")
+                            || command.equals("/k") || command.equals("/b") || command.equals("/a")
+                            || command.equals("/d") || command.equals("/p") || command.equals("/w")
+                            || command.equals("/4") || command.equals("/5")){
 
                         if (String.valueOf(serverProtocol.databaseProtocol(command, data)).equals("false")) {
 
                             dos.writeUTF("false");
+
+                        } else if (String.valueOf(serverProtocol.databaseProtocol(command, data)).equals("true")) {
+
+                            dos.writeUTF("true");
                         }
 
                         running = false;
 
-                    } else if (command.equals("/m")) {
+                    } else {
+
 
 
                     }

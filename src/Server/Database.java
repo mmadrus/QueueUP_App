@@ -1,9 +1,6 @@
 package Server;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class Database {
 
@@ -65,24 +62,30 @@ public class Database {
         try (PreparedStatement statement = c.prepareStatement(searchForUserEmailUrl)) {
 
             statement.setString(1, email);
-            statement.execute();
+            ResultSet resultSet = statement.executeQuery();
 
-            if (email != null){
+            System.out.println("Test: " + resultSet.next());
 
-                exist = true;
-                System.out.println("User exists");
 
-            } else {
+                String mail = resultSet.getString("user_mail");
 
-                exist = false;
-                System.out.println("No user found");
-            }
+                if (mail.equals(email)) {
+
+                    System.out.println(mail);
+                    exist = true;
+
+                } else {
+
+                    exist = false;
+                }
 
 
         } catch (Exception e) {
 
             e.printStackTrace();
         }
+
+
 
         return exist;
 

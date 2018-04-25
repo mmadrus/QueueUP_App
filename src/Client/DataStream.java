@@ -35,7 +35,7 @@ public class DataStream extends Thread {
 
         try {
 
-            s = new Socket("hkrwlan-41-39.clients.hkr.se", 8080);
+            s = new Socket("194.47.44.21", 8080);
 
             dis = new DataInputStream(s.getInputStream());
             dos = new DataOutputStream(s.getOutputStream());
