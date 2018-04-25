@@ -33,6 +33,8 @@ public class LoginController implements Initializable {
     @FXML
     private PasswordField passwordField;
 
+    private DataStream dataStream = new DataStream();
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -66,7 +68,6 @@ public class LoginController implements Initializable {
     @FXML
     public void login(ActionEvent event) throws IOException {
 
-        for (int i = 0; i < userList.size(); i++) {
 
             if (usernameField.getText().isEmpty() || passwordField.getText().isEmpty()) {
 
@@ -78,19 +79,28 @@ public class LoginController implements Initializable {
 
             } else {
 
-                /*if (usernameField.getText().equals(userList.get(i).getUsername()) &&
-                        passwordField.getText().equals(userList.get(i).getPassword())) {*/
+                String username = String.format("%-16s", usernameField.getText()).replace(' ', '*');
+                String password = String.format("%-20s", passwordField.getText()).replace(' ', '*');
+
+                String user = "/6" + username + password;
+
+                dataStream.connectToServer();
+                dataStream.sendDataStream(user);
+
+                if (dataStream.recieveDataStream().equals("true")) {
 
                 Node node = (Node) event.getSource();
                 Stage stage = (Stage) node.getScene().getWindow();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("chatSample.fxml"));
                 Parent root = loader.load();
 
+                ChatController chatController = loader.getController();
+                chatController.setCurrentUser(username);
 
                 Scene scene = new Scene(root, 1200, 700);
                 stage.setScene(scene);
 
-                /*} else {
+                } else {
 
                     Alert accountError = new Alert(Alert.AlertType.INFORMATION);
                     accountError.setTitle("Wrong username or password");
@@ -98,9 +108,10 @@ public class LoginController implements Initializable {
                     accountError.setContentText("Please enter your username and password");
                     accountError.show();
 
-                }*/
-            }
+                }
         }
+
+        dataStream.disconnectFromServer();
 
     }
 

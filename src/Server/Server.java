@@ -117,7 +117,7 @@ public class Server {
                     if (command.equals("/1") || command.equals("/2") || command.equals("/3") || command.equals("/j")
                             || command.equals("/k") || command.equals("/b") || command.equals("/a")
                             || command.equals("/d") || command.equals("/p") || command.equals("/w")
-                            || command.equals("/4") || command.equals("/5")) {
+                            || command.equals("/4") || command.equals("/5") || command.equals("/6")) {
 
                         System.out.println("Kill me: " + data);
 

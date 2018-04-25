@@ -93,17 +93,31 @@ public class Database {
 
         boolean exist = false;
 
-        try (PreparedStatement statement = c.prepareStatement(searchForUserURL)){
+        try (PreparedStatement statement = c.prepareStatement(userLoginUrl)){
 
+            statement.setString(1, name);
+            statement.setString(2, password);
 
+            ResultSet resultSet = statement.executeQuery();
 
+            String username = resultSet.getString(1);
+            String pw = resultSet.getString(2);
+
+            if (username.equals(name) && pw.equals(password)) {
+
+                exist = true;
+
+            } else {
+
+                exist = false;
+            }
 
         } catch (Exception e) {
 
             e.printStackTrace();
         }
 
-        return true;
+        return exist;
     }
 
 }

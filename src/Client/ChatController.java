@@ -50,18 +50,13 @@ public class ChatController implements Initializable {
     @FXML
     public void logout(ActionEvent event) throws IOException {
 
+        dataStream.disconnectFromServer();
+        setCurrentUser(null);
+
         Node node = (Node) event.getSource();
         Stage stage = (Stage) node.getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("loginSample.fxml"));
         Parent root = loader.load();
-
-        LoginController cOne = loader.getController();
-        for (int i = 0; i < userList.size(); i++) {
-
-            cOne.setData(userList.get(i));
-
-        }
-
         Scene scene = new Scene(root, 1200, 700);
         stage.setScene(scene);
     }

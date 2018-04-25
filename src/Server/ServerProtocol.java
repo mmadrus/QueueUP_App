@@ -1,5 +1,7 @@
 package Server;
 
+import Client.DataStream;
+
 import java.util.Random;
 
 public class ServerProtocol {
@@ -9,6 +11,7 @@ public class ServerProtocol {
         boolean succesfull = true;
 
         if (command.equals("/1")) {
+
             try {
 
                 int id = createUserId();
@@ -35,6 +38,31 @@ public class ServerProtocol {
 
                 e.printStackTrace();
             }
+
+        } else if (command.equals("/6")) {
+
+                try {
+
+                    Database db = new Database();
+
+                    boolean foundUser = db.userLogin(data.substring(0,16), data.substring(16, 36));
+
+                    if (foundUser == false) {
+
+                        succesfull = false;
+
+                    } else {
+
+                        succesfull = true;
+
+                    }
+
+                } catch (Exception e) {
+
+                    e.printStackTrace();
+
+                }
+
 
         }
 

@@ -3,9 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Client/ChatController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Client/ChatController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Client/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Client/LoginController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Client/RegController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Client/RegController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Server/Database.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Server/Database.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Server/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Server/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Server/ServerProtocol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Server/ServerProtocol.java" afterDir="false" />
     </list>
     <ignored path="JavaFxApplication.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -67,8 +70,8 @@
       <file leaf-file-name="Server.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Server/Server.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
-              <caret line="130" column="25" lean-forward="true" selection-start-line="130" selection-start-column="25" selection-end-line="130" selection-end-column="25" />
+            <state relative-caret-position="255">
+              <caret line="122" lean-forward="true" selection-start-line="122" selection-end-line="122" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -76,14 +79,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Database.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Database.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Server/Database.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="645">
-              <caret line="94" column="20" selection-start-line="94" selection-start-column="20" selection-end-line="94" selection-end-column="20" />
+            <state relative-caret-position="522">
+              <caret line="111" column="30" selection-start-line="111" selection-start-column="30" selection-end-line="111" selection-end-column="30" />
               <folding>
                 <element signature="method#addUser#0;class#Database#0" />
-                <element signature="method#searchForUserEmail#0;class#Database#0" />
               </folding>
             </state>
           </provider>
@@ -92,10 +94,9 @@
       <file leaf-file-name="RegController.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Client/RegController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="645">
-              <caret line="138" column="5" selection-start-line="138" selection-start-column="5" selection-end-line="138" selection-end-column="5" />
+            <state relative-caret-position="403">
+              <caret line="70" column="20" selection-start-line="70" selection-start-column="20" selection-end-line="76" selection-end-column="52" />
               <folding>
-                <element signature="method#registerComplete#0;class#RegController#0" />
                 <element signature="method#setData#0;class#RegController#0" />
                 <element signature="e#4683#4684#0" expanded="true" />
                 <element signature="e#4739#4740#0" expanded="true" />
@@ -107,8 +108,11 @@
       <file leaf-file-name="LoginController.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Client/LoginController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="224">
-              <caret line="81" column="90" selection-start-line="81" selection-start-column="90" selection-end-line="81" selection-end-column="90" />
+            <state relative-caret-position="525">
+              <caret line="113" column="42" selection-start-line="113" selection-start-column="42" selection-end-line="113" selection-end-column="42" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -116,8 +120,8 @@
       <file leaf-file-name="ServerProtocol.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Server/ServerProtocol.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="558">
-              <caret line="41" selection-start-line="41" selection-end-line="41" />
+            <state relative-caret-position="555">
+              <caret line="72" column="5" lean-forward="true" selection-start-line="72" selection-start-column="5" selection-end-line="72" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#createUserId#0;class#ServerProtocol#0" />
@@ -126,15 +130,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ChatController.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="ChatController.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Client/ChatController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="633">
-              <caret line="73" selection-start-line="73" selection-end-line="73" />
+            <state relative-caret-position="248">
+              <caret line="83" column="46" lean-forward="true" selection-start-line="83" selection-start-column="46" selection-end-line="83" selection-end-column="46" />
               <folding>
                 <element signature="method#setData#0;class#ChatController#0" />
-                <element signature="method#setCurrentUser#0;class#ChatController#0" />
-                <element signature="method#updateChat#0;class#ChatController#0" />
               </folding>
             </state>
           </provider>
@@ -193,17 +195,17 @@
         <option value="$PROJECT_DIR$/src/Server/ClientHanlder.java" />
         <option value="$PROJECT_DIR$/src/Server/Protocol.java" />
         <option value="$PROJECT_DIR$/src/Client/chatSample.fxml" />
-        <option value="$PROJECT_DIR$/src/Client/ChatController.java" />
         <option value="$PROJECT_DIR$/src/Client/ChatProtocol.java" />
         <option value="$PROJECT_DIR$/src/Server/DatabaseProtocol.java" />
         <option value="$PROJECT_DIR$/src/Server/User.java" />
         <option value="$PROJECT_DIR$/src/Client/User.java" />
-        <option value="$PROJECT_DIR$/src/Client/LoginController.java" />
         <option value="$PROJECT_DIR$/src/Client/DataStream.java" />
-        <option value="$PROJECT_DIR$/src/Server/ServerProtocol.java" />
+        <option value="$PROJECT_DIR$/src/Server/Database.java" />
         <option value="$PROJECT_DIR$/src/Server/Server.java" />
         <option value="$PROJECT_DIR$/src/Client/RegController.java" />
-        <option value="$PROJECT_DIR$/src/Server/Database.java" />
+        <option value="$PROJECT_DIR$/src/Client/ChatController.java" />
+        <option value="$PROJECT_DIR$/src/Server/ServerProtocol.java" />
+        <option value="$PROJECT_DIR$/src/Client/LoginController.java" />
       </list>
     </option>
   </component>
@@ -483,7 +485,21 @@
       <option name="project" value="LOCAL" />
       <updated>1524644905981</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="QUP 1.0.7.3 Database test Matteo + Johan">
+      <created>1524647279196</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1524647279196</updated>
+    </task>
+    <task id="LOCAL-00014" summary="QUP 1.0.7.3 Database test Matteo + Johan">
+      <created>1524647428536</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1524647428536</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -562,7 +578,8 @@
     <MESSAGE value="QUP 1.0.6.1 Separated one nested class" />
     <MESSAGE value="QUP 1.0.6.2 Removed unused lines" />
     <MESSAGE value="QUP 1.0.7.2 Database test" />
-    <option name="LAST_COMMIT_MESSAGE" value="QUP 1.0.7.2 Database test" />
+    <MESSAGE value="QUP 1.0.7.3 Database test Matteo + Johan" />
+    <option name="LAST_COMMIT_MESSAGE" value="QUP 1.0.7.3 Database test Matteo + Johan" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -748,24 +765,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Server/ServerProtocol.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="558">
-          <caret line="41" selection-start-line="41" selection-end-line="41" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#createUserId#0;class#ServerProtocol#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Client/LoginController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="224">
-          <caret line="81" column="90" selection-start-line="81" selection-start-column="90" selection-end-line="81" selection-end-column="90" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Client/DataStream.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="390">
@@ -773,22 +772,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Server/Server.java">
+    <entry file="file://$PROJECT_DIR$/src/Server/Database.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="130" column="25" lean-forward="true" selection-start-line="130" selection-start-column="25" selection-end-line="130" selection-end-column="25" />
+        <state relative-caret-position="522">
+          <caret line="111" column="30" selection-start-line="111" selection-start-column="30" selection-end-line="111" selection-end-column="30" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="method#addUser#0;class#Database#0" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Client/RegController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="645">
-          <caret line="138" column="5" selection-start-line="138" selection-start-column="5" selection-end-line="138" selection-end-column="5" />
+        <state relative-caret-position="403">
+          <caret line="70" column="20" selection-start-line="70" selection-start-column="20" selection-end-line="76" selection-end-column="52" />
           <folding>
-            <element signature="method#registerComplete#0;class#RegController#0" />
             <element signature="method#setData#0;class#RegController#0" />
             <element signature="e#4683#4684#0" expanded="true" />
             <element signature="e#4739#4740#0" expanded="true" />
@@ -796,25 +794,43 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Client/ChatController.java">
+    <entry file="file://$PROJECT_DIR$/src/Server/ServerProtocol.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="633">
-          <caret line="73" selection-start-line="73" selection-end-line="73" />
+        <state relative-caret-position="555">
+          <caret line="72" column="5" lean-forward="true" selection-start-line="72" selection-start-column="5" selection-end-line="72" selection-end-column="5" />
           <folding>
-            <element signature="method#setData#0;class#ChatController#0" />
-            <element signature="method#setCurrentUser#0;class#ChatController#0" />
-            <element signature="method#updateChat#0;class#ChatController#0" />
+            <element signature="imports" expanded="true" />
+            <element signature="method#createUserId#0;class#ServerProtocol#0" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Server/Database.java">
+    <entry file="file://$PROJECT_DIR$/src/Server/Server.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="645">
-          <caret line="94" column="20" selection-start-line="94" selection-start-column="20" selection-end-line="94" selection-end-column="20" />
+        <state relative-caret-position="255">
+          <caret line="122" lean-forward="true" selection-start-line="122" selection-end-line="122" />
           <folding>
-            <element signature="method#addUser#0;class#Database#0" />
-            <element signature="method#searchForUserEmail#0;class#Database#0" />
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Client/LoginController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="525">
+          <caret line="113" column="42" selection-start-line="113" selection-start-column="42" selection-end-line="113" selection-end-column="42" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Client/ChatController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="248">
+          <caret line="83" column="46" lean-forward="true" selection-start-line="83" selection-start-column="46" selection-end-line="83" selection-end-column="46" />
+          <folding>
+            <element signature="method#setData#0;class#ChatController#0" />
           </folding>
         </state>
       </provider>

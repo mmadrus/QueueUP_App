@@ -43,15 +43,6 @@ public class RegController implements Initializable {
         Stage stage = (Stage) node.getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("loginSample.fxml"));
         Parent root = loader.load();
-
-        LoginController cOne = loader.getController();
-        for (int i = 0; i < userList.size(); i++) {
-
-            cOne.setData(userList.get(i));
-            System.out.println(userList.get(i).getUsername());
-
-        }
-
         Scene scene = new Scene(root, 1200, 700);
         stage.setScene(scene);
 
