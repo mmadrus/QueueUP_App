@@ -25,7 +25,7 @@ public class DataStream extends Thread {
 
     }
 
-    public String recieveDataStream () throws IOException {
+    public String recieveDataStream() throws IOException {
 
         return dis.readUTF();
     }
@@ -46,7 +46,7 @@ public class DataStream extends Thread {
         }
     }
 
-    public void disconnectFromServer () {
+    public void disconnectFromServer() {
 
         try {
 

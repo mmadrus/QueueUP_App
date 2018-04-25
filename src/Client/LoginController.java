@@ -81,14 +81,14 @@ public class LoginController implements Initializable {
                 /*if (usernameField.getText().equals(userList.get(i).getUsername()) &&
                         passwordField.getText().equals(userList.get(i).getPassword())) {*/
 
-                    Node node = (Node) event.getSource();
-                    Stage stage = (Stage) node.getScene().getWindow();
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("chatSample.fxml"));
-                    Parent root = loader.load();
+                Node node = (Node) event.getSource();
+                Stage stage = (Stage) node.getScene().getWindow();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("chatSample.fxml"));
+                Parent root = loader.load();
 
 
-                    Scene scene = new Scene(root, 1200, 700);
-                    stage.setScene(scene);
+                Scene scene = new Scene(root, 1200, 700);
+                stage.setScene(scene);
 
                 /*} else {
 

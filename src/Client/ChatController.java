@@ -13,10 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.Socket;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -24,6 +21,7 @@ import java.util.ResourceBundle;
 public class ChatController implements Initializable {
 
     ArrayList<User> userList = new ArrayList<>();
+    DataStream dataStream = new DataStream();
     @FXML
     private AnchorPane pane;
     @FXML
@@ -34,8 +32,6 @@ public class ChatController implements Initializable {
     private TextArea messageArea;
     private TextArea helpMessageArea;
     private String currentUser;
-
-    DataStream dataStream = new DataStream();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

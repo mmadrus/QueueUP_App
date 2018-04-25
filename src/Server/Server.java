@@ -8,8 +8,6 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
 
-import static javafx.scene.input.KeyCode.T;
-
 
 public class Server {
 
@@ -92,8 +90,7 @@ public class Server {
 
                 this.s = client.s;
 
-                    dos.writeUTF(msg);
-
+                dos.writeUTF(msg);
 
 
             } catch (SocketException sE) {
@@ -107,20 +104,20 @@ public class Server {
         }
 
         @Override
-        public void run()  {
+        public void run() {
 
             try {
 
                 while (running) {
 
                     String recieved = dis.readUTF();
-                    String command = recieved.substring(0,2);
+                    String command = recieved.substring(0, 2);
                     String data = recieved.substring(2, recieved.length());
 
                     if (command.equals("/1") || command.equals("/2") || command.equals("/3") || command.equals("/j")
                             || command.equals("/k") || command.equals("/b") || command.equals("/a")
                             || command.equals("/d") || command.equals("/p") || command.equals("/w")
-                            || command.equals("/4") || command.equals("/5")){
+                            || command.equals("/4") || command.equals("/5")) {
 
                         if (String.valueOf(serverProtocol.databaseProtocol(command, data)).equals("false")) {
 
@@ -134,7 +131,6 @@ public class Server {
                         running = false;
 
                     } else {
-
 
 
                     }

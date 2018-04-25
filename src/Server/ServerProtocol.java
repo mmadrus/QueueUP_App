@@ -1,11 +1,10 @@
 package Server;
 
-import java.sql.SQLException;
 import java.util.Random;
 
 public class ServerProtocol {
 
-    public boolean databaseProtocol (String command, String data) {
+    public boolean databaseProtocol(String command, String data) {
 
         boolean succesfull = true;
 
@@ -23,7 +22,7 @@ public class ServerProtocol {
                     db.addUser(id, data.substring(0, 16), data.substring(16, 36), data.substring(36));
 
 
-                     succesfull = true;
+                    succesfull = true;
 
                 } else {
 
@@ -32,7 +31,7 @@ public class ServerProtocol {
 
                 }
 
-                } catch (Exception e) {
+            } catch (Exception e) {
 
                 e.printStackTrace();
             }
@@ -45,11 +44,11 @@ public class ServerProtocol {
 
     }
 
-    public void chatProtocol (String command, Object data) {
+    public void chatProtocol(String command, Object data) {
 
     }
 
-    public int createUserId () {
+    public int createUserId() {
 
 
         Random random = new Random();

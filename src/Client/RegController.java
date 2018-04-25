@@ -20,19 +20,14 @@ import java.util.ResourceBundle;
 
 public class RegController implements Initializable {
 
+    DataStream dataStream = new DataStream();
     @FXML
     private AnchorPane pane;
-
     @FXML
     private TextField usernameField, emailField, confirmEmailField;
-
     @FXML
     private PasswordField passwordField, confirmPasswordField;
-
     private ArrayList<User> userList = new ArrayList<>();
-
-    DataStream dataStream = new DataStream();
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -42,7 +37,7 @@ public class RegController implements Initializable {
     }
 
     @FXML
-    public void cancel (ActionEvent event) throws IOException {
+    public void cancel(ActionEvent event) throws IOException {
 
         Node node = (Node) event.getSource();
         Stage stage = (Stage) node.getScene().getWindow();
@@ -63,22 +58,21 @@ public class RegController implements Initializable {
     }
 
     @FXML
-    public void registerComplete (ActionEvent event) throws IOException {
+    public void registerComplete(ActionEvent event) throws IOException {
 
 
         if (passwordField.getText().equals(confirmPasswordField.getText()) && emailField.getText().equals(
                 confirmEmailField.getText())) {
 
-            if  (passwordField.getText().isEmpty() || confirmPasswordField.getText().isEmpty() || emailField.getText().isEmpty()
-                    || confirmEmailField.getText().isEmpty() || usernameField.getText().isEmpty()){
+            if (passwordField.getText().isEmpty() || confirmPasswordField.getText().isEmpty() || emailField.getText().isEmpty()
+                    || confirmEmailField.getText().isEmpty() || usernameField.getText().isEmpty()) {
 
                 Alert accountError = new Alert(Alert.AlertType.INFORMATION);
                 accountError.setTitle("Registration not complete!");
                 accountError.setHeaderText("Enter information");
                 accountError.setContentText("Please enter your information in all of the textfields");
                 accountError.show();
-            }
-            else {
+            } else {
 
                 if (usernamelength(usernameField.getText())) {
 
@@ -117,19 +111,18 @@ public class RegController implements Initializable {
         }
 
 
-
     }
 
-    public void setData (User u){
+    public void setData(User u) {
 
         userList.add(u);
     }
 
-    public boolean usernamelength (String name){
+    public boolean usernamelength(String name) {
         return name.matches("[a-zA-Z0-9]{3,16}");
     }
 
-    public void sendToServer (String user) {
+    public void sendToServer(String user) {
 
         dataStream.connectToServer();
         dataStream.sendDataStream(user);

@@ -4,13 +4,10 @@ import java.sql.*;
 
 public class Database {
 
-    private String url = "jdbc:mysql://den1.mysql5.gear.host/qup?user=qup&password=Sv3t8?CUfd!S";
-
-
     PreparedStatement statement = null;
     Connection c = null;
-
-    private String addRoom = "insert into qup.room(room_id, room_name, room_password, isPrivate)"+
+    private String url = "jdbc:mysql://den1.mysql5.gear.host/qup?user=qup&password=Sv3t8?CUfd!S";
+    private String addRoom = "insert into qup.room(room_id, room_name, room_password, isPrivate)" +
             " VAlUES(?,?,?,?)";
 
     private int roomId;
@@ -19,7 +16,7 @@ public class Database {
     private boolean isPrivate;
 
 
-    private String addUserUrl =  "insert into qup.user(user_id, user_name, user_password, user_mail, isAdmin, isBlocked)" +
+    private String addUserUrl = "insert into qup.user(user_id, user_name, user_password, user_mail, isAdmin, isBlocked)" +
             " VALUES ( ?,?,?,?,?,?)";
 
     private String searchForUserEmailUrl = "select user_mail from qup.user where user_mail = ?";
@@ -27,7 +24,7 @@ public class Database {
     public Database() throws SQLException {
 
         try {
-            c =(Connection) DriverManager.getConnection(url);
+            c = (Connection) DriverManager.getConnection(url);
             System.out.println("Connected to database");
         } catch (SQLException ex) {
             System.out.println("Fail to connect to database");
@@ -35,27 +32,27 @@ public class Database {
 
     }
 
-    public void addUser(int id, String username, String password, String email){
+    public void addUser(int id, String username, String password, String email) {
 
-        try (PreparedStatement statement = c.prepareStatement(addUserUrl)){
+        try (PreparedStatement statement = c.prepareStatement(addUserUrl)) {
 
-            statement.setInt(1,id);
-            statement.setString(2,username);
-            statement.setString(3,password);
-            statement.setString(4,email);
-            statement.setBoolean(5,false);
-            statement.setBoolean(6,false);
+            statement.setInt(1, id);
+            statement.setString(2, username);
+            statement.setString(3, password);
+            statement.setString(4, email);
+            statement.setBoolean(5, false);
+            statement.setBoolean(6, false);
 
             statement.execute();
 
             System.out.println("User added");
 
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("FAIL");
         }
     }
 
-    public boolean searchForUserEmail (String email) {
+    public boolean searchForUserEmail(String email) {
 
         boolean exist = false;
 
@@ -67,24 +64,23 @@ public class Database {
             System.out.println("Test: " + resultSet.next());
 
 
-                String mail = resultSet.getString("user_mail");
+            String mail = resultSet.getString("user_mail");
 
-                if (mail.equals(email)) {
+            if (mail.equals(email)) {
 
-                    System.out.println(mail);
-                    exist = true;
+                System.out.println(mail);
+                exist = true;
 
-                } else {
+            } else {
 
-                    exist = false;
-                }
+                exist = false;
+            }
 
 
         } catch (Exception e) {
 
             e.printStackTrace();
         }
-
 
 
         return exist;
