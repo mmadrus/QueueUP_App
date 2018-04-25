@@ -21,7 +21,7 @@ public class Database {
 
     private String searchForUserEmailUrl = "select user_mail from qup.user where user_mail = ?";
 
-    private String searchForUserURL = "select user_name, user_password from qup.user where user_name = ? AND user_password = ?";
+    private String userLoginUrl = "select user_name, user_password from qup.user where user_name = ? AND user_password = ?";
 
     public Database() throws SQLException {
 
@@ -89,8 +89,19 @@ public class Database {
 
     }
 
-    public boolean searchForUserEmail (String name, String password) {
+    public boolean userLogin (String name, String password) {
 
+        boolean exist = false;
+
+        try (PreparedStatement statement = c.prepareStatement(searchForUserURL)){
+
+
+
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
 
         return true;
     }
