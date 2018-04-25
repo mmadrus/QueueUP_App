@@ -119,11 +119,13 @@ public class Server {
                             || command.equals("/d") || command.equals("/p") || command.equals("/w")
                             || command.equals("/4") || command.equals("/5")) {
 
+                        System.out.println("Kill me: " + data);
+
                         if (String.valueOf(serverProtocol.databaseProtocol(command, data)).equals("false")) {
 
                             dos.writeUTF("false");
 
-                        } else if (String.valueOf(serverProtocol.databaseProtocol(command, data)).equals("true")) {
+                        } else {
 
                             dos.writeUTF("true");
                         }

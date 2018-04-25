@@ -21,6 +21,8 @@ public class Database {
 
     private String searchForUserEmailUrl = "select user_mail from qup.user where user_mail = ?";
 
+    private String searchForUserURL = "select user_name, user_password from qup.user where user_name = ? AND user_password = ?";
+
     public Database() throws SQLException {
 
         try {
@@ -79,12 +81,18 @@ public class Database {
 
         } catch (Exception e) {
 
-            e.printStackTrace();
+            e.getSuppressed();
         }
 
 
         return exist;
 
+    }
+
+    public boolean searchForUserEmail (String name, String password) {
+
+
+        return true;
     }
 
 }
