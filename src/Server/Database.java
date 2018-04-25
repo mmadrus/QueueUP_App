@@ -63,7 +63,7 @@ public class Database {
             statement.setString(1, email);
             ResultSet resultSet = statement.executeQuery();
 
-            System.out.println("Test: " + resultSet.next());
+            resultSet.next();
 
 
             String mail = resultSet.getString("user_mail");
@@ -100,8 +100,10 @@ public class Database {
 
             ResultSet resultSet = statement.executeQuery();
 
-            String username = resultSet.getString(1);
-            String pw = resultSet.getString(2);
+            resultSet.next();
+
+            String username = resultSet.getString("user_name");
+            String pw = resultSet.getString("user_password");
 
             if (username.equals(name) && pw.equals(password)) {
 

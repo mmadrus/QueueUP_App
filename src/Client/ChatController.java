@@ -67,7 +67,7 @@ public class ChatController implements Initializable {
         if (!messageField.getText().isEmpty()) {
 
 
-            dataStream.sendDataStream(messageField.getText());
+            dataStream.sendDataStream("/m" + "[" + currentUser + "] " + messageField.getText());
 
             messageField.clear();
 
@@ -97,7 +97,25 @@ public class ChatController implements Initializable {
 
                     try {
 
-                        messageArea.appendText(dataStream.recieveDataStream() + "\n");
+                        String msg = dataStream.recieveDataStream();
+
+                        if (msg.substring(0,2).equals("/m")) {
+
+                            String user = msg.substring(3,19);
+                            StringBuilder finalUser = new StringBuilder();
+
+                            for (int p = 0; p < user.length(); p++) {
+
+                                if (!String.valueOf(user.charAt(p)).equals("*")) {
+
+                                    finalUser.append(String.valueOf(user.charAt(p)));
+                                }
+
+                            }
+
+                            messageArea.appendText("[" + finalUser + "] " + msg.substring(20) + "\n");
+
+                        }
 
 
                     } catch (Exception e) {

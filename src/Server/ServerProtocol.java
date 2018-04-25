@@ -47,6 +47,8 @@ public class ServerProtocol {
 
                     boolean foundUser = db.userLogin(data.substring(0,16), data.substring(16, 36));
 
+                    System.out.println(data.substring(0,16) + "\n" + data.substring(16,36));
+
                     if (foundUser == false) {
 
                         succesfull = false;

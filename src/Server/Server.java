@@ -132,7 +132,9 @@ public class Server {
 
                         running = false;
 
-                    } else {
+                    } else if (command.equals("/m")) {
+
+                        sendToClient(recieved);
 
 
                     }

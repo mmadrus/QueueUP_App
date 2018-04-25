@@ -84,6 +84,8 @@ public class LoginController implements Initializable {
 
                 String user = "/6" + username + password;
 
+                System.out.println(user);
+
                 dataStream.connectToServer();
                 dataStream.sendDataStream(user);
 
