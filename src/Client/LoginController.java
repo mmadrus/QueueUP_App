@@ -23,7 +23,6 @@ import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
 
-    ArrayList<User> userList = new ArrayList<>();
     @FXML
     private ImageView imageView;
     @FXML
@@ -32,6 +31,8 @@ public class LoginController implements Initializable {
     private TextField usernameField;
     @FXML
     private PasswordField passwordField;
+
+    private DataStream dataStream = new DataStream();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -44,6 +45,7 @@ public class LoginController implements Initializable {
 
     }
 
+    // Changes scene to register scene
     @FXML
     public void registerAccount(ActionEvent event) throws IOException {
 
@@ -52,22 +54,15 @@ public class LoginController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("regSample.fxml"));
         Parent root = loader.load();
 
-        RegController cTwo = loader.getController();
-        for (int i = 0; i < userList.size(); i++) {
-
-            cTwo.setData(userList.get(i));
-
-        }
-
         Scene scene = new Scene(root, 1200, 700);
         stage.setScene(scene);
     }
 
+    // Changes to login screen
     @FXML
     public void login(ActionEvent event) throws IOException {
 
-        for (int i = 0; i < userList.size(); i++) {
-
+            //Check for textfields to be filled in
             if (usernameField.getText().isEmpty() || passwordField.getText().isEmpty()) {
 
                 Alert accountError = new Alert(Alert.AlertType.INFORMATION);
@@ -76,29 +71,37 @@ public class LoginController implements Initializable {
                 accountError.setContentText("Please enter your information in all of the textfields");
                 accountError.show();
 
-            } else {
-                if (usernameField.getText().equals(userList.get(i).getUsername()) &&
-                        passwordField.getText().equals(userList.get(i).getPassword())) {
+            } else { //If they aren't empty, send the username and password to the server
 
-                    Node node = (Node) event.getSource();
-                    Stage stage = (Stage) node.getScene().getWindow();
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("chatSample.fxml"));
-                    Parent root = loader.load();
+                // Pads the user name and password so that it can see if it matches anything in the db
+                String username = String.format("%-16s", usernameField.getText()).replace(' ', '*');
+                String password = String.format("%-20s", passwordField.getText()).replace(' ', '*');
 
-                    ChatController controllerThree = loader.getController();
-                    for (int x = 0; x < userList.size(); x++) {
+                String user = "/6" + username + password;
 
-                        controllerThree.setData(userList.get(x));
+                // Connects to the server and starts a thread
+                dataStream.connectToServer();
 
-                    }
+                // Sends the username and password as a string with the command /6 to the server
+                dataStream.sendDataStream(user);
 
-                    controllerThree.setCurrentUser(usernameField.getText());
+                // Checks for the return statement from the server, if it returns true then the user will log into the chat
+                if (dataStream.recieveDataStream().equals("true")) {
 
+                Node node = (Node) event.getSource();
+                Stage stage = (Stage) node.getScene().getWindow();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("chatSample.fxml"));
+                Parent root = loader.load();
 
-                    Scene scene = new Scene(root, 1200, 700);
-                    stage.setScene(scene);
+                // Calls for the chat controller
+                ChatController chatController = loader.getController();
+                // Sets the current user in the chat controller to the one filled in into the username textfield
+                chatController.setCurrentUser(username);
 
-                } else {
+                Scene scene = new Scene(root, 1200, 700);
+                stage.setScene(scene);
+
+                } else { //If the return statement from the the server is false then the username and password does not match something in the db
 
                     Alert accountError = new Alert(Alert.AlertType.INFORMATION);
                     accountError.setTitle("Wrong username or password");
@@ -107,15 +110,11 @@ public class LoginController implements Initializable {
                     accountError.show();
 
                 }
-            }
         }
 
-    }
+        //The thread closes
+        dataStream.disconnectFromServer();
 
-
-    public void setData(User u) {
-
-        userList.add(u);
     }
 
 }

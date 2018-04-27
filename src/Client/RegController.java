@@ -20,17 +20,13 @@ import java.util.ResourceBundle;
 
 public class RegController implements Initializable {
 
+    DataStream dataStream = new DataStream();
     @FXML
-    AnchorPane pane;
-
+    private AnchorPane pane;
     @FXML
-    TextField usernameField, emailField, confirmEmailField;
-
+    private TextField usernameField, emailField, confirmEmailField;
     @FXML
-    PasswordField passwordField, confirmPasswordField;
-
-    ArrayList<User> userList = new ArrayList<>();
-
+    private PasswordField passwordField, confirmPasswordField;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -39,64 +35,80 @@ public class RegController implements Initializable {
 
     }
 
+    // If the user wants to cancel his/her registration and then changes scene back to login screen
     @FXML
-    public void cancel (ActionEvent event) throws IOException {
+    public void cancel(ActionEvent event) throws IOException {
 
         Node node = (Node) event.getSource();
         Stage stage = (Stage) node.getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("loginSample.fxml"));
         Parent root = loader.load();
-
-        LoginController cOne = loader.getController();
-        for (int i = 0; i < userList.size(); i++) {
-
-            cOne.setData(userList.get(i));
-            System.out.println(userList.get(i).getUsername());
-
-        }
-
         Scene scene = new Scene(root, 1200, 700);
         stage.setScene(scene);
 
     }
 
+    // If user wants to finish his/her registration
     @FXML
-    public void registerComplete (ActionEvent event) throws IOException {
+    public void registerComplete(ActionEvent event) throws IOException {
 
-
+        // Checks if password fields match each other and that the email fields match
         if (passwordField.getText().equals(confirmPasswordField.getText()) && emailField.getText().equals(
                 confirmEmailField.getText())) {
 
-            if  (passwordField.getText().isEmpty() || confirmPasswordField.getText().isEmpty() || emailField.getText().isEmpty()
-                    || confirmEmailField.getText().isEmpty() || usernameField.getText().isEmpty()){
+            // Checks if the fields isnt empty, if they are; incomplete registration
+            if (passwordField.getText().isEmpty() || confirmPasswordField.getText().isEmpty() || emailField.getText().isEmpty()
+                    || confirmEmailField.getText().isEmpty() || usernameField.getText().isEmpty()) {
 
                 Alert accountError = new Alert(Alert.AlertType.INFORMATION);
                 accountError.setTitle("Registration not complete!");
                 accountError.setHeaderText("Enter information");
                 accountError.setContentText("Please enter your information in all of the textfields");
                 accountError.show();
-            }
-            else {
+
+            } else {
+
+                // else, it checks so that the username is only using letters and numbers
                 if (usernamelength(usernameField.getText())) {
-                    User user = new User(usernameField.getText(), passwordField.getText(), emailField.getText());
-                    userList.add(user);
 
-                    Node node = (Node) event.getSource();
-                    Stage stage = (Stage) node.getScene().getWindow();
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("loginSample.fxml"));
-                    Parent root = loader.load();
+                    //Pads the username and password to make it fit into the string thats being sent
+                    String username = String.format("%-16s", usernameField.getText()).replace(' ', '*');
+                    String password = String.format("%-20s", passwordField.getText()).replace(' ', '*');
 
-                    LoginController cOne = loader.getController();
-                    for (int i = 0; i < userList.size(); i++) {
+                    //Create a string with command, the padded username and password with the email
+                    String user = "/1" + username + password + emailField.getText();
 
-                        cOne.setData(userList.get(i));
-                        System.out.println(userList.get(i).getUsername());
+                    //Connects to server
+                    dataStream.connectToServer();
 
+                    //Sends the user string to the server
+                    dataStream.sendDataStream(user);
+
+                    //If the return statement is true from the server then it changes scene to the login scene
+                    if (dataStream.recieveDataStream().equals("true")) {
+
+                        Node node = (Node) event.getSource();
+                        Stage stage = (Stage) node.getScene().getWindow();
+
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("loginSample.fxml"));
+                        Parent root = loader.load();
+
+                        Scene scene = new Scene(root, 1200, 700);
+                        stage.setScene(scene);
+
+
+                    } else { //If the return statement is false then the registration is not complete
+
+                        Alert accountError = new Alert(Alert.AlertType.INFORMATION);
+                        accountError.setTitle("Registration not complete!");
+                        accountError.setHeaderText("Username or E-Mail already exists.");
+                        accountError.show();
                     }
 
-                    Scene scene = new Scene(root, 1200, 700);
-                    stage.setScene(scene);
-                } else {
+                    dataStream.disconnectFromServer();
+
+
+                } else { //If the username is to long or there arent only letters and number
                     Alert accountError = new Alert(Alert.AlertType.INFORMATION);
                     accountError.setTitle("Username to short/long");
                     accountError.setHeaderText("Username has to be between 3-16 characters");
@@ -106,7 +118,7 @@ public class RegController implements Initializable {
             }
 
 
-        } else {
+        } else { // If the password or email does not match each other
 
             Alert accountError = new Alert(Alert.AlertType.INFORMATION);
             accountError.setTitle("Registration not complete!");
@@ -116,15 +128,10 @@ public class RegController implements Initializable {
         }
 
 
-
     }
 
-    public void setData (User u){
-
-        userList.add(u);
-    }
-
-    public boolean usernamelength (String name){
+    // Method to check username is only letters and numbers
+    private boolean usernamelength(String name) {
         return name.matches("[a-zA-Z0-9]{3,16}");
     }
 
