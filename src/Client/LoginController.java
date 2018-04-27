@@ -23,7 +23,6 @@ import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
 
-    ArrayList<User> userList = new ArrayList<>();
     @FXML
     private ImageView imageView;
     @FXML
@@ -46,6 +45,7 @@ public class LoginController implements Initializable {
 
     }
 
+    // Changes scene to register scene
     @FXML
     public void registerAccount(ActionEvent event) throws IOException {
 
@@ -54,21 +54,15 @@ public class LoginController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("regSample.fxml"));
         Parent root = loader.load();
 
-        RegController cTwo = loader.getController();
-        for (int i = 0; i < userList.size(); i++) {
-
-            cTwo.setData(userList.get(i));
-
-        }
-
         Scene scene = new Scene(root, 1200, 700);
         stage.setScene(scene);
     }
 
+    // Changes to login screen
     @FXML
     public void login(ActionEvent event) throws IOException {
 
-
+            //Check for textfields to be filled in
             if (usernameField.getText().isEmpty() || passwordField.getText().isEmpty()) {
 
                 Alert accountError = new Alert(Alert.AlertType.INFORMATION);
@@ -77,18 +71,21 @@ public class LoginController implements Initializable {
                 accountError.setContentText("Please enter your information in all of the textfields");
                 accountError.show();
 
-            } else {
+            } else { //If they aren't empty, send the username and password to the server
 
+                // Pads the user name and password so that it can see if it matches anything in the db
                 String username = String.format("%-16s", usernameField.getText()).replace(' ', '*');
                 String password = String.format("%-20s", passwordField.getText()).replace(' ', '*');
 
                 String user = "/6" + username + password;
 
-                System.out.println(user);
-
+                // Connects to the server and starts a thread
                 dataStream.connectToServer();
+
+                // Sends the username and password as a string with the command /6 to the server
                 dataStream.sendDataStream(user);
 
+                // Checks for the return statement from the server, if it returns true then the user will log into the chat
                 if (dataStream.recieveDataStream().equals("true")) {
 
                 Node node = (Node) event.getSource();
@@ -96,13 +93,15 @@ public class LoginController implements Initializable {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("chatSample.fxml"));
                 Parent root = loader.load();
 
+                // Calls for the chat controller
                 ChatController chatController = loader.getController();
+                // Sets the current user in the chat controller to the one filled in into the username textfield
                 chatController.setCurrentUser(username);
 
                 Scene scene = new Scene(root, 1200, 700);
                 stage.setScene(scene);
 
-                } else {
+                } else { //If the return statement from the the server is false then the username and password does not match something in the db
 
                     Alert accountError = new Alert(Alert.AlertType.INFORMATION);
                     accountError.setTitle("Wrong username or password");
@@ -113,14 +112,9 @@ public class LoginController implements Initializable {
                 }
         }
 
+        //The thread closes
         dataStream.disconnectFromServer();
 
-    }
-
-
-    public void setData(User u) {
-
-        userList.add(u);
     }
 
 }

@@ -6,7 +6,11 @@ public class Database {
 
     PreparedStatement statement = null;
     Connection c = null;
+
+    // Connection url for database
     private String url = "jdbc:mysql://den1.mysql5.gear.host/qup?user=qup&password=Sv3t8?CUfd!S";
+
+    // Prepared statement to add room to the db
     private String addRoom = "insert into qup.room(room_id, room_name, room_password, isPrivate)" +
             " VAlUES(?,?,?,?)";
 
@@ -15,14 +19,17 @@ public class Database {
     private String roomPassword;
     private boolean isPrivate;
 
-
+    // Prepared statement to add user into the db
     private String addUserUrl = "insert into qup.user(user_id, user_name, user_password, user_mail, isAdmin, isBlocked)" +
             " VALUES ( ?,?,?,?,?,?)";
 
+    // Prepared statement to check for emails in the db
     private String searchForUserEmailUrl = "select user_mail from qup.user where user_mail = ?";
 
+    // Prepared statement to check for users in the db
     private String userLoginUrl = "select user_name, user_password from qup.user where user_name = ? AND user_password = ?";
 
+    // database constructor
     public Database() throws SQLException {
 
         try {
@@ -34,6 +41,7 @@ public class Database {
 
     }
 
+    // Method to add user to the db
     public void addUser(int id, String username, String password, String email) {
 
         try (PreparedStatement statement = c.prepareStatement(addUserUrl)) {
@@ -54,6 +62,7 @@ public class Database {
         }
     }
 
+    // Method to check for emails in the db
     public boolean searchForUserEmail(String email) {
 
         boolean exist = false;
@@ -89,6 +98,7 @@ public class Database {
 
     }
 
+    // Method to check for usernames with their corresponding passwords
     public boolean userLogin (String name, String password) {
 
         boolean exist = false;

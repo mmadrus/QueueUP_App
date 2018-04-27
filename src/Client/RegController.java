@@ -27,7 +27,6 @@ public class RegController implements Initializable {
     private TextField usernameField, emailField, confirmEmailField;
     @FXML
     private PasswordField passwordField, confirmPasswordField;
-    private ArrayList<User> userList = new ArrayList<>();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -36,6 +35,7 @@ public class RegController implements Initializable {
 
     }
 
+    // If the user wants to cancel his/her registration and then changes scene back to login screen
     @FXML
     public void cancel(ActionEvent event) throws IOException {
 
@@ -48,13 +48,15 @@ public class RegController implements Initializable {
 
     }
 
+    // If user wants to finish his/her registration
     @FXML
     public void registerComplete(ActionEvent event) throws IOException {
 
-
+        // Checks if password fields match each other and that the email fields match
         if (passwordField.getText().equals(confirmPasswordField.getText()) && emailField.getText().equals(
                 confirmEmailField.getText())) {
 
+            // Checks if the fields isnt empty, if they are; incomplete registration
             if (passwordField.getText().isEmpty() || confirmPasswordField.getText().isEmpty() || emailField.getText().isEmpty()
                     || confirmEmailField.getText().isEmpty() || usernameField.getText().isEmpty()) {
 
@@ -66,16 +68,23 @@ public class RegController implements Initializable {
 
             } else {
 
+                // else, it checks so that the username is only using letters and numbers
                 if (usernamelength(usernameField.getText())) {
 
+                    //Pads the username and password to make it fit into the string thats being sent
                     String username = String.format("%-16s", usernameField.getText()).replace(' ', '*');
                     String password = String.format("%-20s", passwordField.getText()).replace(' ', '*');
 
+                    //Create a string with command, the padded username and password with the email
                     String user = "/1" + username + password + emailField.getText();
 
+                    //Connects to server
                     dataStream.connectToServer();
+
+                    //Sends the user string to the server
                     dataStream.sendDataStream(user);
 
+                    //If the return statement is true from the server then it changes scene to the login scene
                     if (dataStream.recieveDataStream().equals("true")) {
 
                         Node node = (Node) event.getSource();
@@ -88,7 +97,7 @@ public class RegController implements Initializable {
                         stage.setScene(scene);
 
 
-                    } else {
+                    } else { //If the return statement is false then the registration is not complete
 
                         Alert accountError = new Alert(Alert.AlertType.INFORMATION);
                         accountError.setTitle("Registration not complete!");
@@ -98,7 +107,8 @@ public class RegController implements Initializable {
 
                     dataStream.disconnectFromServer();
 
-                } else {
+
+                } else { //If the username is to long or there arent only letters and number
                     Alert accountError = new Alert(Alert.AlertType.INFORMATION);
                     accountError.setTitle("Username to short/long");
                     accountError.setHeaderText("Username has to be between 3-16 characters");
@@ -108,7 +118,7 @@ public class RegController implements Initializable {
             }
 
 
-        } else {
+        } else { // If the password or email does not match each other
 
             Alert accountError = new Alert(Alert.AlertType.INFORMATION);
             accountError.setTitle("Registration not complete!");
@@ -120,11 +130,7 @@ public class RegController implements Initializable {
 
     }
 
-    public void setData(User u) {
-
-        userList.add(u);
-    }
-
+    // Method to check username is only letters and numbers
     private boolean usernamelength(String name) {
         return name.matches("[a-zA-Z0-9]{3,16}");
     }

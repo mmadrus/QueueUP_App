@@ -7,10 +7,13 @@ import java.net.Socket;
 
 public class DataStream extends Thread {
 
+    // Variables for the socket and input/output data streams
+
     private Socket s;
     private DataOutputStream dos;
     private DataInputStream dis;
 
+    // Sends string to the server
     public void sendDataStream(String data) {
 
         try {
@@ -25,17 +28,19 @@ public class DataStream extends Thread {
 
     }
 
-
+    // Receives strings from the server
     public String recieveDataStream() throws IOException {
 
         return dis.readUTF();
     }
 
 
+    // Creates a connection to the server
     public void connectToServer() {
 
         try {
 
+            // Conncects to the server host and the port for the server
             s = new Socket("194.47.44.21", 8080);
 
             dis = new DataInputStream(s.getInputStream());
@@ -47,6 +52,7 @@ public class DataStream extends Thread {
         }
     }
 
+    // Method to close connection to server
     public void disconnectFromServer() {
 
         try {

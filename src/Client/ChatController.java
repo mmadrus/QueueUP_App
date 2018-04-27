@@ -20,7 +20,6 @@ import java.util.ResourceBundle;
 
 public class ChatController implements Initializable {
 
-    ArrayList<User> userList = new ArrayList<>();
     DataStream dataStream = new DataStream();
     @FXML
     private AnchorPane pane;
@@ -39,18 +38,22 @@ public class ChatController implements Initializable {
         pane.setStyle("-fx-background-color: WHITE");
         tabPane.setStyle("-fx-background-color: WHITE");
 
+        // Connects to the server when the scene is initialized
         dataStream.connectToServer();
 
-
+        // Creates a thread that constantly updates the chat
         updateChat();
 
 
     }
 
+    // If the user wants to log out
     @FXML
     public void logout(ActionEvent event) throws IOException {
 
+        // Disconnects from the server
         dataStream.disconnectFromServer();
+        //Sets current user to null
         setCurrentUser(null);
 
         Node node = (Node) event.getSource();
@@ -61,12 +64,14 @@ public class ChatController implements Initializable {
         stage.setScene(scene);
     }
 
+    // If the user sends a message
     @FXML
     public void send(ActionEvent event) {
 
+        // Checks that the textfield for the message isnt empty
         if (!messageField.getText().isEmpty()) {
 
-
+            // Creates a string with the message command, current user and the message, then sends it to the server
             dataStream.sendDataStream("/m" + "[" + currentUser + "] " + messageField.getText());
 
             messageField.clear();
@@ -76,11 +81,7 @@ public class ChatController implements Initializable {
 
     }
 
-    public void setData(User u) {
-
-        userList.add(u);
-    }
-
+    // Method to set current user
     public String setCurrentUser(String user) {
 
         currentUser = user;
@@ -88,6 +89,7 @@ public class ChatController implements Initializable {
         return user;
     }
 
+    // Method to update chat
     public void updateChat() {
 
         try {
@@ -97,15 +99,25 @@ public class ChatController implements Initializable {
 
                     try {
 
+                        // Saves the data stream from the server into a string
                         String msg = dataStream.recieveDataStream();
 
+                        // Checks for the command at the first two indexes
+
+                        // If the command is /m then it is a message
                         if (msg.substring(0,2).equals("/m")) {
 
+                            //Saves the user name from the string into a variable
                             String user = msg.substring(3,19);
+
+                            // Create a new string builder to later save the user name in
                             StringBuilder finalUser = new StringBuilder();
 
+                            // For loop to convert the padded username returned from the server into a username without pads
                             for (int p = 0; p < user.length(); p++) {
 
+                                // Removes the * form the returned username, keeps the letters and numbers and then
+                                // saves them into the StringBuilder finaluser
                                 if (!String.valueOf(user.charAt(p)).equals("*")) {
 
                                     finalUser.append(String.valueOf(user.charAt(p)));
@@ -113,6 +125,7 @@ public class ChatController implements Initializable {
 
                             }
 
+                            // Appends the text the finaluser and message into the message area for the chat
                             messageArea.appendText("[" + finalUser + "] " + msg.substring(20) + "\n");
 
                         }

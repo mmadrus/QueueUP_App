@@ -1,6 +1,6 @@
 package Server;
 
-public class User {
+public class User { //unused class atm
 
     private String username;
     private String password;
