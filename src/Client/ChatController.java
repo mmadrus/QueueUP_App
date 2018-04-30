@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -30,6 +31,8 @@ public class ChatController implements Initializable {
     private TextArea messageArea, helpMessageArea;
     @FXML
     private Button sendButton;
+    @FXML
+    private ImageView chatBackground, chatBackground1;
 
     private String currentUser;
 
@@ -131,6 +134,7 @@ public class ChatController implements Initializable {
                             // Appends the text the finaluser and message into the message area for the chat
                             messageArea.appendText("[" + finalUser + "] " + msg.substring(20) + "\n");
 
+
                         }
 
 
@@ -155,6 +159,9 @@ public class ChatController implements Initializable {
 
         pane.setStyle("-fx-background-color: WHITE");
         tabPane.setStyle("-fx-background-color: WHITE");
+
+        chatBackground.setImage(GUI.setBackgroundImage());
+        chatBackground1.setImage(GUI.setBackgroundImage());
 
         messageField.setStyle("-fx-background-color: WHITE; -fx-background-radius: 16px;");
 

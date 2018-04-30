@@ -6,6 +6,8 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane fx:id="pane" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.ChatController">
@@ -16,7 +18,12 @@
                     <content>
                         <AnchorPane layoutX="50.0" layoutY="50.0" minHeight="0.0" minWidth="0.0" prefHeight="600.0" prefWidth="800.0">
                             <children>
-                                <TextArea fx:id="messageArea" editable="false" focusTraversable="false" layoutY="1.0" prefHeight="563.0" prefWidth="800.0" />
+                        <ImageView fx:id="chatBackground" fitHeight="563.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../resources/icon.png" />
+                           </image>
+                        </ImageView>
+                                <TextArea fx:id="messageArea" editable="false" focusTraversable="false" layoutY="1.0" opacity="0.75" prefHeight="563.0" prefWidth="800.0" wrapText="true" />
                             </children>
                         </AnchorPane>
                     </content>
@@ -25,7 +32,12 @@
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                             <children>
-                                <TextArea fx:id="helpMessageArea" editable="false" focusTraversable="false" prefHeight="563.0" prefWidth="800.0" />
+                        <ImageView fx:id="chatBackground1" fitHeight="563.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../resources/icon.png" />
+                           </image>
+                        </ImageView>
+                                <TextArea fx:id="helpMessageArea" editable="false" focusTraversable="false" opacity="0.75" prefHeight="563.0" prefWidth="800.0" />
                             </children>
                         </AnchorPane>
                     </content>
