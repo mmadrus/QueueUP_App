@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
@@ -15,23 +16,26 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class RegController implements Initializable {
 
-    DataStream dataStream = new DataStream();
     @FXML
     private AnchorPane pane;
     @FXML
     private TextField usernameField, emailField, confirmEmailField;
     @FXML
     private PasswordField passwordField, confirmPasswordField;
+    @FXML
+    private Button cancelButton, registerButton;
+
+    private DataStream dataStream = new DataStream();
+    private GUI GUI = new GUI();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        pane.setStyle("-fx-background-color: WHITE");
+        setGuiDesign();
 
     }
 
@@ -133,6 +137,21 @@ public class RegController implements Initializable {
     // Method to check username is only letters and numbers
     private boolean usernamelength(String name) {
         return name.matches("[a-zA-Z0-9]{3,16}");
+    }
+
+    private void setGuiDesign () {
+
+        pane.setStyle("-fx-background-color: WHITE");
+
+        usernameField.setStyle(GUI.setTextfieldStyle());
+        emailField.setStyle(GUI.setTextfieldStyle());
+        confirmEmailField.setStyle(GUI.setTextfieldStyle());
+        passwordField.setStyle(GUI.setTextfieldStyle());
+        confirmPasswordField.setStyle(GUI.setTextfieldStyle());
+
+        registerButton.setStyle(GUI.setButtonStyle());
+        cancelButton.setStyle(GUI.setButtonStyle());
+
     }
 
 }

@@ -8,17 +8,15 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
@@ -31,17 +29,16 @@ public class LoginController implements Initializable {
     private TextField usernameField;
     @FXML
     private PasswordField passwordField;
+    @FXML
+    private Button queueButton, registerButton, forgotButton;
 
     private DataStream dataStream = new DataStream();
+    private GUI GUI = new GUI();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        pane.setStyle("-fx-background-color: WHITE");
-        File file = new File("resources/icon.png");
-        Image image = new Image(file.toURI().toString());
-        imageView.setImage(image);
-
+        setGuiDesign();
 
     }
 
@@ -114,6 +111,20 @@ public class LoginController implements Initializable {
 
         //The thread closes
         dataStream.disconnectFromServer();
+
+    }
+
+    private void setGuiDesign () {
+
+        pane.setStyle("-fx-background-color: WHITE");
+        imageView.setImage(GUI.setBackgroundImage());
+
+        queueButton.setStyle(GUI.setButtonStyle());
+        registerButton.setStyle(GUI.setButtonStyle());
+        forgotButton.setStyle(GUI.setButtonStyle());
+
+        usernameField.setStyle(GUI.setTextfieldStyle());
+        passwordField.setStyle(GUI.setTextfieldStyle());
 
     }
 

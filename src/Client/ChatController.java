@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -15,12 +16,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class ChatController implements Initializable {
 
-    DataStream dataStream = new DataStream();
     @FXML
     private AnchorPane pane;
     @FXML
@@ -28,15 +27,19 @@ public class ChatController implements Initializable {
     @FXML
     private TextField messageField;
     @FXML
-    private TextArea messageArea;
-    private TextArea helpMessageArea;
+    private TextArea messageArea, helpMessageArea;
+    @FXML
+    private Button sendButton;
+
     private String currentUser;
+
+    private DataStream dataStream = new DataStream();
+    private GUI GUI = new GUI();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        pane.setStyle("-fx-background-color: WHITE");
-        tabPane.setStyle("-fx-background-color: WHITE");
+        setGuiDesign();
 
         // Connects to the server when the scene is initialized
         dataStream.connectToServer();
@@ -90,7 +93,7 @@ public class ChatController implements Initializable {
     }
 
     // Method to update chat
-    public void updateChat() {
+    private void updateChat() {
 
         try {
             Thread thread = new Thread(() -> {
@@ -148,4 +151,14 @@ public class ChatController implements Initializable {
         }
     }
 
+    private void setGuiDesign () {
+
+        pane.setStyle("-fx-background-color: WHITE");
+        tabPane.setStyle("-fx-background-color: WHITE");
+
+        messageField.setStyle("-fx-background-color: WHITE; -fx-background-radius: 16px;");
+
+        sendButton.setStyle(GUI.setButtonStyle());
+
+    }
 }
