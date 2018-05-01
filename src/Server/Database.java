@@ -4,8 +4,8 @@ import java.sql.*;
 
 public class Database {
 
-    PreparedStatement statement = null;
-    Connection c = null;
+    private PreparedStatement statement = null;
+    private Connection c = null;
 
     // Connection url for database
     private String url = "jdbc:mysql://den1.mysql5.gear.host/qup?user=qup&password=Sv3t8?CUfd!S";
@@ -13,11 +13,6 @@ public class Database {
     // Prepared statement to add room to the db
     private String addRoom = "insert into qup.room(room_id, room_name, room_password, isPrivate)" +
             " VAlUES(?,?,?,?)";
-
-    private int roomId;
-    private String roomName;
-    private String roomPassword;
-    private boolean isPrivate;
 
     // Prepared statement to add user into the db
     private String addUserUrl = "insert into qup.user(user_id, user_name, user_password, user_mail, isAdmin, isBlocked)" +

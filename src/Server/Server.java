@@ -35,7 +35,7 @@ public class Server {
     public void startThread() throws IOException {
 
 
-        ServerSocket ss = new ServerSocket(8000);
+        ServerSocket ss = new ServerSocket(8080);
 
         while (true) {
 

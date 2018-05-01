@@ -89,11 +89,6 @@ public class ServerProtocol {
 
     }
 
-    // Unused method
-    public void chatProtocol(String command, Object data) {
-
-    }
-
     //Method to create user id
     public int createUserId() {
 
