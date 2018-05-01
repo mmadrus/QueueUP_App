@@ -4,15 +4,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -95,6 +95,16 @@ public class ChatController implements Initializable {
         return user;
     }
 
+    public void addTab () {
+        Tab tab = new Tab();
+        tab.setText("New Chat");
+        HBox hbox = new HBox();
+        hbox.getChildren().add(new javafx.scene.control.TextArea());
+        hbox.setAlignment(Pos.CENTER);
+        tab.setContent(hbox);
+        tabPane.getTabs().add(tab);
+    }
+
     // Method to update chat
     private void updateChat() {
 
@@ -123,7 +133,7 @@ public class ChatController implements Initializable {
                             for (int p = 0; p < user.length(); p++) {
 
                                 // Removes the * form the returned username, keeps the letters and numbers and then
-                                // saves them into the StringBuilder finaluser
+                                // saves them into the StringBuilder finalUser
                                 if (!String.valueOf(user.charAt(p)).equals("*")) {
 
                                     finalUser.append(String.valueOf(user.charAt(p)));
@@ -168,4 +178,5 @@ public class ChatController implements Initializable {
         sendButton.setStyle(GUI.setButtonStyle());
 
     }
+
 }

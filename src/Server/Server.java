@@ -35,7 +35,7 @@ public class Server {
     public void startThread() throws IOException {
 
 
-        ServerSocket ss = new ServerSocket(8080);
+        ServerSocket ss = new ServerSocket(8000);
 
         while (true) {
 
@@ -130,7 +130,7 @@ public class Server {
                     // Saves the rest into another string
                     String data = recieved.substring(2, recieved.length());
 
-                    // Checks for the commands that have something to do with the databse
+                    // Checks for the commands that have something to do with the database
                     if (command.equals("/1") || command.equals("/2") || command.equals("/3") || command.equals("/j")
                             || command.equals("/k") || command.equals("/b") || command.equals("/a")
                             || command.equals("/d") || command.equals("/p") || command.equals("/w")

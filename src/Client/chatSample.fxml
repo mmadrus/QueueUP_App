@@ -10,7 +10,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="pane" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.ChatController">
+<AnchorPane fx:id="pane" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.ChatController">
     <children>
         <TabPane fx:id="tabPane" layoutX="200.0" prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE">
             <tabs>
@@ -54,5 +54,6 @@
         <Label layoutX="70.0" layoutY="6.0" text="Channels" />
         <Label layoutX="1074.0" layoutY="6.0" text="Users" />
         <Button fx:id="logoutButton" layoutX="1036.0" layoutY="627.0" mnemonicParsing="false" onAction="#logout" prefHeight="60.0" prefWidth="120.0" text="Logout" />
+      <Button fx:id="addTabButton" layoutX="35.0" layoutY="627.0" mnemonicParsing="false" onAction="#addTab" prefHeight="60.0" prefWidth="120.0" text="Add tab" />
     </children>
 </AnchorPane>

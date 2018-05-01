@@ -73,7 +73,7 @@ public class RegController implements Initializable {
             } else {
 
                 // else, it checks so that the username is only using letters and numbers
-                if (usernamelength(usernameField.getText())) {
+                if (usernameLength(usernameField.getText())) {
 
                     //Pads the username and password to make it fit into the string thats being sent
                     String username = String.format("%-16s", usernameField.getText()).replace(' ', '*');
@@ -135,7 +135,7 @@ public class RegController implements Initializable {
     }
 
     // Method to check username is only letters and numbers
-    private boolean usernamelength(String name) {
+    private boolean usernameLength(String name) {
         return name.matches("[a-zA-Z0-9]{3,16}");
     }
 
