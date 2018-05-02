@@ -57,6 +57,8 @@ public class ChatController implements Initializable {
         // Connects to the server when the scene is initialized
         dataStream.connectToServer();
 
+        dataStream.sendDataStream("/u" + getCurrentUser());
+
         // Creates a thread that constantly updates the chat
         updateChat();
 
@@ -106,6 +108,10 @@ public class ChatController implements Initializable {
         return user;
     }
 
+    public String getCurrentUser() {
+        return currentUser;
+    }
+
     public void addTab () {
 
         tabPane.getTabs().add(GUI.createNewTab());
@@ -151,6 +157,29 @@ public class ChatController implements Initializable {
                             // Appends the text the finaluser and message into the message area for the chat
                             messageArea.appendText("[" + finalUser + "] " + msg.substring(20) + "\n");
 
+
+                        } else if (msg.substring(0,2).equals("/u")) {
+
+                            //Saves the user name from the string into a variable
+                            String user = msg.substring(2);
+
+                            // Create a new string builder to later save the user name in
+                            StringBuilder finalUser = new StringBuilder();
+
+                            // For loop to convert the padded username returned from the server into a username without pads
+                            for (int p = 0; p < user.length(); p++) {
+
+                                // Removes the * form the returned username, keeps the letters and numbers and then
+                                // saves them into the StringBuilder finalUser
+                                if (!String.valueOf(user.charAt(p)).equals("*")) {
+
+                                    finalUser.append(String.valueOf(user.charAt(p)));
+                                }
+
+                            }
+
+                            // Appends the text the finaluser and message into the message area for the chat
+                            onlineUsersArea.appendText(finalUser + "\n");
 
                         }
 

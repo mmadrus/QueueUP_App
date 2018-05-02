@@ -79,7 +79,6 @@ public class Database {
 
             resultSet.next();
 
-
             String mail = resultSet.getString("user_mail");
 
             if (mail.equals(email)) {

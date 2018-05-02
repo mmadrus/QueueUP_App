@@ -74,6 +74,7 @@ public class LoginController implements Initializable {
                 String username = String.format("%-16s", usernameField.getText()).replace(' ', '*');
                 String password = String.format("%-20s", passwordField.getText()).replace(' ', '*');
 
+
                 String user = "/6" + username + password;
 
                 // Connects to the server and starts a thread
@@ -93,7 +94,9 @@ public class LoginController implements Initializable {
                 // Calls for the chat controller
                 ChatController chatController = loader.getController();
                 // Sets the current user in the chat controller to the one filled in into the username textfield
-                chatController.setCurrentUser(username);
+
+                    System.out.println(usernameField.getText());
+                chatController.setCurrentUser(usernameField.getText());
 
                 Scene scene = new Scene(root, 1200, 700);
                 stage.setScene(scene);

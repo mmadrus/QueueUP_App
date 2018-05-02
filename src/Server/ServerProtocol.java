@@ -81,39 +81,6 @@ public class ServerProtocol {
 
 
         }
-        try {
-
-            //Creates an user id
-            int id = createUserId();
-
-            // Connects to the db
-            Database db = new Database();
-
-            //Returns true or false if the email exists in the db
-            //The email starts at the 36th place in the string called data
-            boolean found = db.searchForUserEmail(data.substring(36));
-
-            //If the email does not exist it adds the user and returns the boolean as true
-            if (found == false) {
-
-                //Calls for add user method in the db class
-                // Username starts index 0 and ends at 16, password starts at 16 and ends at 36 and email starts at 36
-                db.addUser(id, data.substring(0, 16), data.substring(16, 36), data.substring(36));
-
-
-                succesfull = true;
-
-            } else { // else returns the boolean as false because the email already exists
-
-
-                succesfull = false;
-
-            }
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-        }
 
 
         // Checks that the booleans are correct

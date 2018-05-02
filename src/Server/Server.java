@@ -148,7 +148,8 @@ public class Server {
 
                         running = false;
 
-                    } else if (command.equals("/m")) { // Checks of the command is a regular message to send it directly
+                    } else if (command.equals("/m") || command.equals("/u")) {
+                                                        // Checks of the command is a regular message to send it directly
                                                         // back to the clients
 
                         //Calls for the send to client method
