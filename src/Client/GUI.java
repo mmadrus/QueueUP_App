@@ -39,7 +39,7 @@ public class GUI {
 
         Tab newTab = new Tab();
         newTab.setText("New Tab");
-        newTab.isClosable();
+        newTab.setClosable(true);
 
         AnchorPane newPane = new AnchorPane();
         newPane.setMinWidth(0.0);
