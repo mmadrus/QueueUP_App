@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.security.Guard;
 import java.util.ResourceBundle;
 
 public class ChatController implements Initializable {
@@ -28,7 +29,7 @@ public class ChatController implements Initializable {
     @FXML
     private TextField messageField;
     @FXML
-    private TextArea messageArea, helpMessageArea;
+    private TextArea textArea, messageArea;
     @FXML
     private Button sendButton;
     @FXML
@@ -102,15 +103,16 @@ public class ChatController implements Initializable {
     }
 
     public void addTab () {
-        if (whisper(messageField.getText())){
-            Tab tab = new Tab();
+
+            /*Tab tab = new Tab();
             tab.setText("New Chat");
             HBox hbox = new HBox();
             hbox.getChildren().add(new javafx.scene.control.TextArea());
             hbox.setAlignment(Pos.CENTER);
             tab.setContent(hbox);
-            tabPane.getTabs().add(tab);
-        }
+            tabPane.getTabs().add(tab);*/
+
+        tabPane.getTabs().add(GUI.createNewTab());
     }
 
     // Method to update chat
