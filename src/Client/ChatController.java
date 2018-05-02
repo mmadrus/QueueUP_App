@@ -1,5 +1,9 @@
 package Client;
 
+import javafx.animation.Animation;
+import javafx.animation.Interpolator;
+import javafx.animation.RotateTransition;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,10 +18,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
 import java.security.Guard;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class ChatController implements Initializable {
@@ -29,20 +35,18 @@ public class ChatController implements Initializable {
     @FXML
     private TextField messageField;
     @FXML
-    private TextArea textArea, messageArea;
+    private TextArea textArea, messageArea, helpMessageArea, offlineUsersArea, onlineUsersArea;
     @FXML
-    private Button sendButton;
+    private Button sendButton, logoutButton;
     @FXML
-    private ImageView chatBackground, chatBackground1;
-
-    @FXML
-    private TextArea channelUser;
+    private ImageView chatBackground, chatBackground1, settingImageButton;
 
     private String currentUser;
 
     private DataStream dataStream = new DataStream();
     private GUI GUI = new GUI();
-    
+
+    private ArrayList<TextArea> textAreaList = new ArrayList<>();
 
 
     @Override
@@ -104,15 +108,8 @@ public class ChatController implements Initializable {
 
     public void addTab () {
 
-            /*Tab tab = new Tab();
-            tab.setText("New Chat");
-            HBox hbox = new HBox();
-            hbox.getChildren().add(new javafx.scene.control.TextArea());
-            hbox.setAlignment(Pos.CENTER);
-            tab.setContent(hbox);
-            tabPane.getTabs().add(tab);*/
-
         tabPane.getTabs().add(GUI.createNewTab());
+
     }
 
     // Method to update chat
@@ -187,10 +184,50 @@ public class ChatController implements Initializable {
 
         sendButton.setStyle(GUI.setButtonStyle());
 
+        settingImageButton.setImage(GUI.setSettingImage());
+
     }
 
-    public boolean whisper (String value){
-        return value.contains("/w");
+    public void rotateSettingForward () {
+
+        try {
+
+            RotateTransition rt = new RotateTransition();
+            rt.setNode(settingImageButton);
+            rt.setFromAngle(0);
+            rt.setToAngle(45);
+            rt.setInterpolator(Interpolator.LINEAR);
+            rt.setCycleCount(1);
+            rt.setDuration(new Duration(300));
+
+            rt.play();
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+
+    }
+
+    public void rotateSettingBackward () {
+
+        try {
+
+            RotateTransition rt = new RotateTransition();
+            rt.setNode(settingImageButton);
+            rt.setFromAngle(0);
+            rt.setToAngle(-45);
+            rt.setInterpolator(Interpolator.LINEAR);
+            rt.setCycleCount(1);
+            rt.setDuration(new Duration(300));
+
+            rt.play();
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+
     }
 
 }

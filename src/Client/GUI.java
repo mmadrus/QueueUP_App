@@ -1,5 +1,6 @@
 package Client;
 
+import javafx.fxml.FXML;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
@@ -35,11 +36,24 @@ public class GUI {
         return image;
     }
 
+    public Image setSettingImage () {
+
+        File file = new File("resources/settingsImage.png");
+        Image image = new Image(file.toURI().toString());
+
+        return image;
+
+
+    }
+
     public Tab createNewTab () {
+
+        //String tabID = String.valueOf(id);
 
         Tab newTab = new Tab();
         newTab.setText("New Tab");
         newTab.setClosable(true);
+        //newTab.setId(tabID);
 
         AnchorPane newPane = new AnchorPane();
         newPane.setMinWidth(0.0);
