@@ -96,13 +96,15 @@ public class ChatController implements Initializable {
     }
 
     public void addTab () {
-        Tab tab = new Tab();
-        tab.setText("New Chat");
-        HBox hbox = new HBox();
-        hbox.getChildren().add(new javafx.scene.control.TextArea());
-        hbox.setAlignment(Pos.CENTER);
-        tab.setContent(hbox);
-        tabPane.getTabs().add(tab);
+        if (whisper(messageField.getText())){
+            Tab tab = new Tab();
+            tab.setText("New Chat");
+            HBox hbox = new HBox();
+            hbox.getChildren().add(new javafx.scene.control.TextArea());
+            hbox.setAlignment(Pos.CENTER);
+            tab.setContent(hbox);
+            tabPane.getTabs().add(tab);
+        }
     }
 
     // Method to update chat
@@ -177,6 +179,10 @@ public class ChatController implements Initializable {
 
         sendButton.setStyle(GUI.setButtonStyle());
 
+    }
+
+    public boolean whisper (String value){
+        return value.contains("/w");
     }
 
 }

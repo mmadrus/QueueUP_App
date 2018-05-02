@@ -41,7 +41,7 @@ public class DataStream extends Thread {
         try {
 
             // Conncects to the server host and the port for the server
-            s = new Socket("ua-83-226-35-221.cust.bredbandsbolaget.se", 8080);
+            s = new Socket("hkrwlan-32-231.clients.hkr.se", 8080);
 
             dis = new DataInputStream(s.getInputStream());
             dos = new DataOutputStream(s.getOutputStream());
