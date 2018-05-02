@@ -27,6 +27,10 @@ public class Database {
     // Prepared statement to check for users in the db
     private String userLoginUrl = "select user_name, user_password from qup.user where user_name = ? AND user_password = ?";
 
+    // Prepared statement to check for username and usermail in db
+    private String forgotPasswordUrl = "select user_name, user_mail from qup.user where user_name = ? AND user_mail = ?";
+
+    // Prepared statement to check for username in db
     private String channelUserList = "select user_name from user";
 
 
@@ -100,11 +104,11 @@ public class Database {
     }
 
     // Method to check for usernames with their corresponding passwords
-    public boolean userLogin (String name, String password) {
+    public boolean userLogin(String name, String password) {
 
         boolean exist = false;
 
-        try (PreparedStatement statement = c.prepareStatement(userLoginUrl)){
+        try (PreparedStatement statement = c.prepareStatement(userLoginUrl)) {
 
             statement.setString(1, name);
             statement.setString(2, password);
@@ -134,12 +138,12 @@ public class Database {
     }
 
     // Method to update user textArea
-    public ArrayList<String> userList(){
-            ArrayList<String>userList = new ArrayList<>();
-        try (PreparedStatement statement = c.prepareStatement(channelUserList)){
+    public ArrayList<String> userList() {
+        ArrayList<String> userList = new ArrayList<>();
+        try (PreparedStatement statement = c.prepareStatement(channelUserList)) {
             ResultSet rs = statement.executeQuery();
 
-            while (rs.next()){
+            while (rs.next()) {
                 userList.add(rs.getString(1));
             }
 
@@ -151,13 +155,13 @@ public class Database {
     }
 
     // A method to add rooms to a database
-    public void addRoom(int id, String roomName, String roomPassword, Boolean isPrivate){
+    public void addRoom(int id, String roomName, String roomPassword, Boolean isPrivate) {
         try (PreparedStatement statement = c.prepareStatement(addRoomUrl)) {
 
             statement.setInt(1, id);
-            statement.setString(2,roomName);
-            statement.setString(3,roomPassword);
-            statement.setBoolean(4,false);
+            statement.setString(2, roomName);
+            statement.setString(3, roomPassword);
+            statement.setBoolean(4, false);
 
             statement.execute();
 
@@ -205,9 +209,41 @@ public class Database {
 
     }
 
+    public boolean forgotPassword(String name, String email) {
+        boolean exist = false;
 
-    public void channelList(){
+        try (PreparedStatement statement = c.prepareStatement(forgotPasswordUrl)) {
 
+            statement.setString(1, name);
+            statement.setString(2, email);
+            ResultSet resultSet = statement.executeQuery();
+
+            resultSet.next();
+
+
+            String names = resultSet.getString("user_name");
+            String mail = resultSet.getString("user_mail");
+
+            if (mail.equals(email) && names.equals(name)) {
+
+                System.out.println(mail);
+                exist = true;
+
+            } else {
+
+                exist = false;
+            }
+
+
+        } catch (Exception e) {
+
+            e.getSuppressed();
+
+        }
+        return exist;
     }
+
+        public void channelList () {
+        }
 
 }
