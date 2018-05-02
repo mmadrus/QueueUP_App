@@ -34,10 +34,15 @@ public class ChatController implements Initializable {
     @FXML
     private ImageView chatBackground, chatBackground1;
 
+    @FXML
+    private TextArea channelUser;
+
     private String currentUser;
 
     private DataStream dataStream = new DataStream();
     private GUI GUI = new GUI();
+    
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -49,6 +54,7 @@ public class ChatController implements Initializable {
 
         // Creates a thread that constantly updates the chat
         updateChat();
+
 
 
     }

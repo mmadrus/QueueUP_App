@@ -1,6 +1,7 @@
 package Server;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class Database {
 
@@ -23,6 +24,9 @@ public class Database {
 
     // Prepared statement to check for users in the db
     private String userLoginUrl = "select user_name, user_password from qup.user where user_name = ? AND user_password = ?";
+
+    private String channelUserList = "select user_name from user";
+
 
     // database constructor
     public Database() throws SQLException {
@@ -125,6 +129,22 @@ public class Database {
         }
 
         return exist;
+    }
+
+    public ArrayList<String> userList(){
+            ArrayList<String>userList = new ArrayList<>();
+        try (PreparedStatement statement = c.prepareStatement(channelUserList)){
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()){
+                userList.add(rs.getString(1));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return userList;
     }
 
 }
