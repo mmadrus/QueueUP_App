@@ -112,6 +112,7 @@ public class LoginController implements Initializable {
                     accountError.show();
 
                 }}catch(Exception e){
+                    //If the server is down and the user is trying to log in this will pop up that the server is not running.
                     Alert notConnected = new Alert(Alert.AlertType.INFORMATION);
                     notConnected.setTitle("Unable to connect");
                     notConnected.setHeaderText("Could not reach the server");
@@ -122,7 +123,6 @@ public class LoginController implements Initializable {
         }
 
         //The thread closes
-
         dataStream.disconnectFromServer();
 
     }
