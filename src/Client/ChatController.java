@@ -42,6 +42,7 @@ public class ChatController implements Initializable {
     private ImageView chatBackground, chatBackground1, settingImageButton;
 
     private String currentUser;
+    private String hm = "hghghgghg";
 
     private DataStream dataStream = new DataStream();
     private GUI GUI = new GUI();

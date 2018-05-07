@@ -16,6 +16,7 @@ public class Server {
     private ServerProtocol serverProtocol = new ServerProtocol();
 
     private int counter = 0;
+    String mm = "Filip u suck";
 
     // Runs when server is started
     public static void main(String[] args) {
