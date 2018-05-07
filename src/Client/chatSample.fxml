@@ -50,7 +50,7 @@
             </graphic>
         </Button>
         <TextArea editable="false" focusTraversable="false" layoutX="5.0" layoutY="34.0" prefHeight="564.0" prefWidth="190.0" />
-        <TextArea fx:id="onlineUsersArea" editable="false" focusTraversable="false" layoutX="1006.0" layoutY="57.0" prefHeight="250.0" prefWidth="190.0" />
+        <TextArea fx:id="onlineUsersArea" editable="false" focusTraversable="false" layoutX="1006.0" layoutY="57.0" prefHeight="250.0" prefWidth="190.0" wrapText="true" />
         <Label layoutX="70.0" layoutY="6.0" text="Channels" />
         <Label layoutX="1062.0" layoutY="34.0" text="Online Users" />
         <Button fx:id="logoutButton" layoutX="1036.0" layoutY="627.0" mnemonicParsing="false" onAction="#logout" prefHeight="60.0" prefWidth="120.0" text="Logout" />

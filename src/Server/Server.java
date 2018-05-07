@@ -15,6 +15,8 @@ public class Server {
     private ArrayList<ClientHandler> clientHandlers = new ArrayList<>();
     private ServerProtocol serverProtocol = new ServerProtocol();
 
+    private int counter = 0;
+
     // Runs when server is started
     public static void main(String[] args) {
 
@@ -133,8 +135,6 @@ public class Server {
                 // Infinite loop to make it always receive information from the clients
                 while (running) {
 
-                    sendOnlineListToClient();
-
                     //Saves the data stream from the client into a string
                     String recieved = dis.readUTF();
 
@@ -146,7 +146,7 @@ public class Server {
 
                     // Checks for the commands that have something to do with the database
                     if (command.equals("/1") || command.equals("/2") || command.equals("/3") || command.equals("/j")
-                            || command.equals("/k") || command.equals("/b") || command.equals("/a")
+                            || command.equals("/k") || command.equals("/b")
                             || command.equals("/d") || command.equals("/p") || command.equals("/w")
                             || command.equals("/4") || command.equals("/5") || command.equals("/6")) {
 
@@ -169,6 +169,14 @@ public class Server {
                         //Calls for the send to client method
                         sendToClient(recieved);
 
+
+                    } else if (command.equals("/a")){
+
+                        if (serverProtocol.onlineUsers.size() > counter) {
+
+                            sendOnlineListToClient();
+                            counter+=1;
+                        }
 
                     }
 

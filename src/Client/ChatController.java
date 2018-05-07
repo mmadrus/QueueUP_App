@@ -129,6 +129,8 @@ public class ChatController implements Initializable {
 
                     try {
 
+                        dataStream.sendDataStream("/a1");
+
                         // Saves the data stream from the server into a string
                         String msg = dataStream.recieveDataStream();
 
@@ -203,18 +205,29 @@ public class ChatController implements Initializable {
 
                             }
 
-                            System.out.println(finalUser);
+                            boolean exist = false;
 
                             for (int i = 0; i < userClass.userList.size(); i++){
 
-                                if (!String.valueOf(finalUser).equals(userClass.userList.get(i))) {
+                                if (String.valueOf(finalUser).equals(userClass.userList.get(i))) {
 
-                                    userClass.userList.add(String.valueOf(finalUser));
-                                    onlineUsersArea.appendText(String.valueOf(finalUser));
 
-                                    System.out.println(String.valueOf(finalUser + "Bajs"));
+                                    exist = true;
+                                    break;
+
+                                } else {
+
+                                    exist = false;
+
 
                                 }
+                            }
+
+                            if (exist == false) {
+
+                                userClass.userList.add(String.valueOf(finalUser));
+                                onlineUsersArea.appendText(String.valueOf(finalUser)+"\n");
+
                             }
 
 

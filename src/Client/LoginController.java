@@ -85,8 +85,10 @@ public class LoginController implements Initializable {
                 // Sends the username and password as a string with the command /6 to the server
                 dataStream.sendDataStream(user);
 
+                String serverResponse = dataStream.recieveDataStream();
+                System.out.println(serverResponse + " SR");
                 // Checks for the return statement from the server, if it returns true then the user will log into the chat
-                if (dataStream.recieveDataStream().equals("true")) {
+                if (serverResponse.equals("true")) {
 
                 Node node = (Node) event.getSource();
                 Stage stage = (Stage) node.getScene().getWindow();
@@ -113,6 +115,7 @@ public class LoginController implements Initializable {
         }
 
         //The thread closes
+
         dataStream.disconnectFromServer();
 
     }

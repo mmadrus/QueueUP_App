@@ -65,14 +65,14 @@ public class ServerProtocol {
                     boolean foundUser = db.userLogin(data.substring(0,16), data.substring(16, 36));
 
                     // Just a check if the method in the db is working
-                    System.out.println(data.substring(0,16) + "\n" + data.substring(16,36));
+                    //System.out.println(data.substring(0,16) + "\n" + data.substring(16,36));
 
                     // Returns a boolean whether or not the username and password is found
                     if (foundUser == false) {
 
                         succesfull = false;
 
-                    } else {
+                    } else if (foundUser == true){
 
                         db.setUpdateStatusToOnline(data.substring(0,16));
                         onlineUsers.add(data.substring(0,16));
@@ -116,6 +116,8 @@ public class ServerProtocol {
 
         // Checks that the booleans are correct
         System.out.println("success: " + succesfull);
+
+        System.out.println(succesfull);
 
         return succesfull;
 
