@@ -72,6 +72,11 @@ public class ServerProtocol {
 
                     } else {
 
+                        db.setUpdateStatusToOnline(data.substring(0,16));
+                        onlineUsers.add(data.substring(0,16));
+
+                        System.out.println(onlineUsers.size());
+
                         succesfull = true;
 
                     }

@@ -13,6 +13,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -42,7 +43,6 @@ public class ChatController implements Initializable {
     private ImageView chatBackground, chatBackground1, settingImageButton;
 
     private String currentUser;
-    private String hm = "hghghgghg";
 
     private DataStream dataStream = new DataStream();
     private GUI GUI = new GUI();
@@ -228,6 +228,7 @@ public class ChatController implements Initializable {
 
                                 userClass.userList.add(String.valueOf(finalUser));
                                 onlineUsersArea.appendText(String.valueOf(finalUser)+"\n");
+
 
                             }
 

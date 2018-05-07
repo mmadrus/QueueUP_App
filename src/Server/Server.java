@@ -16,7 +16,6 @@ public class Server {
     private ServerProtocol serverProtocol = new ServerProtocol();
 
     private int counter = 0;
-    String mm = "Filip u suck";
 
     // Runs when server is started
     public static void main(String[] args) {
@@ -47,8 +46,11 @@ public class Server {
 
 
                 Socket s = ss.accept();
-                System.out.println("Connected to: " + ss);
+                String str = ss.toString();
+                System.out.println("Connected to: " + s);
                 System.out.println("Assigning new thread");
+
+                System.out.println(str);
 
                 // Saves the connected thread into an arraylist
                 clientHandlers.add(new ClientHandler(s));
@@ -92,6 +94,7 @@ public class Server {
         private DataInputStream dis;
         private DataOutputStream dos;
         private Socket s;
+        //private String currentUser;
 
         private volatile boolean running = true;
 
@@ -148,7 +151,7 @@ public class Server {
                     // Checks for the commands that have something to do with the database
                     if (command.equals("/1") || command.equals("/2") || command.equals("/3") || command.equals("/j")
                             || command.equals("/k") || command.equals("/b")
-                            || command.equals("/d") || command.equals("/p") || command.equals("/w")
+                            || command.equals("/d") || command.equals("/p")
                             || command.equals("/4") || command.equals("/5") || command.equals("/6")) {
 
                         // Checks for the return statement from the protocol, if false then it send it to the client

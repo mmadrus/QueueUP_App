@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextArea?>
@@ -49,7 +50,7 @@
                 <TextField fx:id="messageField" layoutX="150.0" layoutY="150.0" prefHeight="50.0" prefWidth="744.0" />
             </graphic>
         </Button>
-        <TextArea editable="false" focusTraversable="false" layoutX="5.0" layoutY="34.0" prefHeight="564.0" prefWidth="190.0" />
+        <TextArea editable="false" focusTraversable="false" layoutX="5.0" layoutY="34.0" prefHeight="278.0" prefWidth="190.0" />
         <TextArea fx:id="onlineUsersArea" editable="false" focusTraversable="false" layoutX="1006.0" layoutY="57.0" prefHeight="250.0" prefWidth="190.0" wrapText="true" />
         <Label layoutX="70.0" layoutY="6.0" text="Channels" />
         <Label layoutX="1062.0" layoutY="34.0" text="Online Users" />
@@ -57,5 +58,6 @@
       <TextArea fx:id="offlineUsersArea" editable="false" layoutX="1006.0" layoutY="348.0" prefHeight="250.0" prefWidth="190.0" />
       <Label layoutX="1061.0" layoutY="324.0" text="Offline Users" />
       <ImageView fx:id="settingImageButton" fitHeight="60.0" fitWidth="60.0" layoutX="70.0" layoutY="627.0" onMouseClicked="#addTab" onMouseEntered="#rotateSettingForward" onMouseExited="#rotateSettingBackward" pickOnBounds="true" preserveRatio="true" />
+      <ListView fx:id="test" layoutX="13.0" layoutY="350.0" prefHeight="200.0" prefWidth="174.0" />
     </children>
 </AnchorPane>

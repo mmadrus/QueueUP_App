@@ -35,6 +35,9 @@ public class Database {
 
     private String userSearch = "Select user_name from user where user_name = ?";
 
+    // Update status to online
+    private String updateStatusToOnline = "update qup.user set user_isOnline = 1 where user_ID = ?";
+
 
     // database constructor
     public Database() throws SQLException {
@@ -274,5 +277,20 @@ public class Database {
 
         public void channelList () {
         }
+
+    public void setUpdateStatusToOnline (String username) {
+
+        try (PreparedStatement statement = c.prepareStatement(updateStatusToOnline)) {
+
+            statement.setString(1, username);
+            statement.execute();
+
+            System.out.println("Status set to online");
+
+        } catch (Exception e) {
+            System.out.println("Not set as online");
+        }
+
+    }
 
 }
