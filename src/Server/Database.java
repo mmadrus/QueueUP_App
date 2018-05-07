@@ -33,13 +33,8 @@ public class Database {
     // Prepared statement to check for username in db
     private String channelUserList = "select user_name from user";
 
-    // Update status to online
-    private String updateStatusToOnline = "update qup.user set user_isOnline = 1 where user_ID = ?";
+    private String userSearch = "Select user_name from user where user_name = ?";
 
-    // Search for userID
-    private String searchForUserID = "update qup.user set user_isOnline = 1 where user_name = ?";
-
-    private String searchForUser = "select user_name from qup.user where user_name = ?";
 
     // database constructor
     public Database() throws SQLException {
@@ -215,6 +210,34 @@ public class Database {
 
     }
 
+    public boolean searchForUser (String username) {
+        boolean exist = false;
+
+        try (PreparedStatement statement = c.prepareStatement(userSearch)){
+
+            statement.setString(1, username);
+            ResultSet resultSet = statement.executeQuery();
+
+            resultSet.next();
+
+            String user = resultSet.getString("user_name");
+
+            if (user.equals(username)) {
+
+                System.out.println(user);
+                exist = true;
+
+            } else {
+
+                exist = false;
+            }
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return exist;
+    }
+
     public boolean forgotPassword(String name, String email) {
         boolean exist = false;
 
@@ -249,45 +272,7 @@ public class Database {
         return exist;
     }
 
-    public void channelList () { }
-
-    public void setUpdateStatusToOnline (String username) {
-
-        try (PreparedStatement statement = c.prepareStatement(updateStatusToOnline)) {
-
-            statement.setString(1, username);
-            statement.execute();
-
-            System.out.println("Status set to online");
-
-        } catch (Exception e) {
-            System.out.println("Not set as online");
+        public void channelList () {
         }
-
-    }
-
-    public boolean searchForUsername (String username) {
-
-        boolean found = true;
-
-        try (PreparedStatement statement = c.prepareStatement(searchForUser)) {
-
-            statement.setString(1, username);
-            statement.execute();
-
-            System.out.println("User found");
-
-            found = true;
-
-        } catch (Exception e) {
-            System.out.println("FAIL");
-
-            found = false;
-        }
-
-        return found;
-
-    }
-
 
 }

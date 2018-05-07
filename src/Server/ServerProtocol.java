@@ -2,8 +2,6 @@ package Server;
 
 import Client.DataStream;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -65,19 +63,14 @@ public class ServerProtocol {
                     boolean foundUser = db.userLogin(data.substring(0,16), data.substring(16, 36));
 
                     // Just a check if the method in the db is working
-                    //System.out.println(data.substring(0,16) + "\n" + data.substring(16,36));
+                    System.out.println(data.substring(0,16) + "\n" + data.substring(16,36));
 
                     // Returns a boolean whether or not the username and password is found
                     if (foundUser == false) {
 
                         succesfull = false;
 
-                    } else if (foundUser == true){
-
-                        db.setUpdateStatusToOnline(data.substring(0,16));
-                        onlineUsers.add(data.substring(0,16));
-
-                        System.out.println(onlineUsers.size());
+                    } else {
 
                         succesfull = true;
 
@@ -88,27 +81,30 @@ public class ServerProtocol {
                     e.printStackTrace();
 
                 }
-
-
-        } else if (command.equals("/7")) {
+        } else if (command.equals("/w")){
 
             try {
 
                 Database db = new Database();
 
-                boolean found = db.searchForUsername(data.substring(0,16));
+                boolean foundUser = db.searchForUser(data.substring(0,16));
 
-                if (found == true){
+                System.out.println(data.substring(0,16));
 
-                    succesfull = true;
-
-                } else {
+                // Returns a boolean whether or not the username and password is found
+                if (foundUser == false) {
 
                     succesfull = false;
 
-                }
-            } catch (Exception e) {
+                } else {
 
+                    succesfull = true;
+
+                }
+
+                //db.searchForUser("");
+
+            } catch (Exception e){
                 e.printStackTrace();
             }
         }
@@ -116,8 +112,6 @@ public class ServerProtocol {
 
         // Checks that the booleans are correct
         System.out.println("success: " + succesfull);
-
-        System.out.println(succesfull);
 
         return succesfull;
 

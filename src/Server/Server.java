@@ -179,6 +179,15 @@ public class Server {
                             counter+=1;
                         }
 
+                    } else if (command.equals("/w")){
+
+                         serverProtocol.databaseProtocol(command,data);
+
+                            String username = data.substring(0, 17);
+                            String message = data.substring(17);
+
+
+
                     }
 
                 }
