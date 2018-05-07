@@ -78,7 +78,7 @@ public class LoginController implements Initializable {
 
 
                 String user = "/6" + username + password;
-
+                try{
                 // Connects to the server and starts a thread
                 dataStream.connectToServer();
 
@@ -111,6 +111,13 @@ public class LoginController implements Initializable {
                     accountError.setContentText("Please enter your username and password");
                     accountError.show();
 
+                }}catch(Exception e){
+                    Alert notConnected = new Alert(Alert.AlertType.INFORMATION);
+                    notConnected.setTitle("Unable to connect");
+                    notConnected.setHeaderText("Could not reach the server");
+                    notConnected.setContentText("Server is down");
+                    notConnected.show();
+                    e.getSuppressed();
                 }
         }
 
