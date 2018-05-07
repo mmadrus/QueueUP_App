@@ -71,6 +71,18 @@ public class Server {
 
     }
 
+    private void sendOnlineListToClient () {
+
+        for (ClientHandler c: clientHandlers) {
+
+            for (String u: serverProtocol.onlineUsers){
+
+                c.sendDataStream(c, "/a" + u);
+                System.out.println();
+            }
+        }
+    }
+
     // Nested class in the server class
     class ClientHandler extends Thread {
 
@@ -120,6 +132,8 @@ public class Server {
 
                 // Infinite loop to make it always receive information from the clients
                 while (running) {
+
+                    sendOnlineListToClient();
 
                     //Saves the data stream from the client into a string
                     String recieved = dis.readUTF();

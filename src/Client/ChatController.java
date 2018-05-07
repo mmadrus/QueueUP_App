@@ -45,8 +45,8 @@ public class ChatController implements Initializable {
 
     private DataStream dataStream = new DataStream();
     private GUI GUI = new GUI();
+    private User userClass = new User();
 
-    private ArrayList<TextArea> textAreaList = new ArrayList<>();
 
 
     @Override
@@ -57,7 +57,8 @@ public class ChatController implements Initializable {
         // Connects to the server when the scene is initialized
         dataStream.connectToServer();
 
-        dataStream.sendDataStream("/u" + getCurrentUser());
+        //dataStream.sendDataStream("/u" + getCurrentUser());
+        userClass.userList.add("Not really a user");
 
         // Creates a thread that constantly updates the chat
         updateChat();
@@ -181,6 +182,42 @@ public class ChatController implements Initializable {
                             // Appends the text the finaluser and message into the message area for the chat
                             onlineUsersArea.appendText(finalUser + "\n");
 
+                        } else if (msg.substring(0,2).equals("/a")) {
+
+                            //Saves the user name from the string into a variable
+                            String user = msg.substring(2, 18);
+
+                            // Create a new string builder to later save the user name in
+                            StringBuilder finalUser = new StringBuilder();
+
+                            // For loop to convert the padded username returned from the server into a username without pads
+                            for (int p = 0; p < user.length(); p++) {
+
+                                // Removes the * form the returned username, keeps the letters and numbers and then
+                                // saves them into the StringBuilder finalUser
+                                if (!String.valueOf(user.charAt(p)).equals("*")) {
+
+                                    finalUser.append(String.valueOf(user.charAt(p)));
+                                }
+
+
+                            }
+
+                            System.out.println(finalUser);
+
+                            for (int i = 0; i < userClass.userList.size(); i++){
+
+                                if (!String.valueOf(finalUser).equals(userClass.userList.get(i))) {
+
+                                    userClass.userList.add(String.valueOf(finalUser));
+                                    onlineUsersArea.appendText(String.valueOf(finalUser));
+
+                                    System.out.println(String.valueOf(finalUser + "Bajs"));
+
+                                }
+                            }
+
+
                         }
 
 
@@ -212,6 +249,7 @@ public class ChatController implements Initializable {
         messageField.setStyle("-fx-background-color: WHITE; -fx-background-radius: 16px;");
 
         sendButton.setStyle(GUI.setButtonStyle());
+        logoutButton.setStyle(GUI.setButtonStyle());
 
         settingImageButton.setImage(GUI.setSettingImage());
 

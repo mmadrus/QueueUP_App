@@ -33,6 +33,13 @@ public class Database {
     // Prepared statement to check for username in db
     private String channelUserList = "select user_name from user";
 
+    // Update status to online
+    private String updateStatusToOnline = "update qup.user set user_isOnline = 1 where user_ID = ?";
+
+    // Search for userID
+    private String searchForUserID = "update qup.user set user_isOnline = 1 where user_name = ?";
+
+    private String searchForUser = "select user_name from qup.user where user_name = ?";
 
     // database constructor
     public Database() throws SQLException {
@@ -242,7 +249,45 @@ public class Database {
         return exist;
     }
 
-        public void channelList () {
+    public void channelList () { }
+
+    public void setUpdateStatusToOnline (String username) {
+
+        try (PreparedStatement statement = c.prepareStatement(updateStatusToOnline)) {
+
+            statement.setString(1, username);
+            statement.execute();
+
+            System.out.println("Status set to online");
+
+        } catch (Exception e) {
+            System.out.println("Not set as online");
         }
+
+    }
+
+    public boolean searchForUsername (String username) {
+
+        boolean found = true;
+
+        try (PreparedStatement statement = c.prepareStatement(searchForUser)) {
+
+            statement.setString(1, username);
+            statement.execute();
+
+            System.out.println("User found");
+
+            found = true;
+
+        } catch (Exception e) {
+            System.out.println("FAIL");
+
+            found = false;
+        }
+
+        return found;
+
+    }
+
 
 }

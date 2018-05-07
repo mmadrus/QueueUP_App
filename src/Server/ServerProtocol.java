@@ -2,9 +2,14 @@ package Server;
 
 import Client.DataStream;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class ServerProtocol {
+
+    public ArrayList<String> onlineUsers = new ArrayList<>();
 
     // Method for the commands that have something to do with the db, takes the command as a parameter and the rest as another
     // returns a boolean which is later sent to the client as a string
@@ -69,6 +74,11 @@ public class ServerProtocol {
 
                     } else {
 
+                        db.setUpdateStatusToOnline(data.substring(0,16));
+                        onlineUsers.add(data.substring(0,16));
+
+                        System.out.println(onlineUsers.size());
+
                         succesfull = true;
 
                     }
@@ -80,6 +90,27 @@ public class ServerProtocol {
                 }
 
 
+        } else if (command.equals("/7")) {
+
+            try {
+
+                Database db = new Database();
+
+                boolean found = db.searchForUsername(data.substring(0,16));
+
+                if (found == true){
+
+                    succesfull = true;
+
+                } else {
+
+                    succesfull = false;
+
+                }
+            } catch (Exception e) {
+
+                e.printStackTrace();
+            }
         }
 
 
