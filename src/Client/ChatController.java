@@ -1,30 +1,24 @@
 package Client;
 
-import javafx.animation.Animation;
 import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
-import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
-import java.security.Guard;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class ChatController implements Initializable {
@@ -36,19 +30,19 @@ public class ChatController implements Initializable {
     @FXML
     private TextField messageField;
     @FXML
-    private TextArea textArea, messageArea, helpMessageArea, offlineUsersArea, onlineUsersArea;
+    private TextArea textArea, messageArea, helpMessageArea;
     @FXML
     private Button sendButton, logoutButton;
     @FXML
     private ImageView chatBackground, chatBackground1, settingImageButton;
+    @FXML
+    private ListView<String> onlineUsersArea;
 
     private String currentUser;
 
     private DataStream dataStream = new DataStream();
     private GUI GUI = new GUI();
     private User userClass = new User();
-
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -102,23 +96,51 @@ public class ChatController implements Initializable {
 
     }
 
-    // Method to set current user
-    public String setCurrentUser(String user) {
-
-        currentUser = user;
-
-        return user;
-    }
-
-    public String getCurrentUser() {
-        return currentUser;
-    }
-
-    public void addTab () {
+    @FXML
+    public void addTab (ActionEvent event) {
 
         tabPane.getTabs().add(GUI.createNewTab());
 
     }
+
+    @FXML
+    public void popupMenu(MouseEvent event) {
+
+        MenuItem sendWhisper = new MenuItem("Send Message");
+        MenuItem closeMenu = new MenuItem("Close");
+
+        ContextMenu contextMenu = new ContextMenu();
+
+        contextMenu.getItems().addAll(sendWhisper, closeMenu);
+
+        contextMenu.setAutoHide(true);
+
+        contextMenu.show(pane, event.getScreenX(), event.getScreenY());
+
+        closeMenu.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                contextMenu.hide();
+            }
+        });
+
+        sendWhisper.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+                String wantedUser = onlineUsersArea.getSelectionModel().getSelectedItem();
+
+                String wantedUsername = String.format("%-16s", wantedUser).replace(' ', '*');
+                dataStream.sendDataStream("/w" + currentUser + wantedUsername);
+            }
+        });
+
+
+
+
+
+    }
+
 
     // Method to update chat
     private void updateChat() {
@@ -183,7 +205,7 @@ public class ChatController implements Initializable {
                             }
 
                             // Appends the text the finaluser and message into the message area for the chat
-                            onlineUsersArea.appendText(finalUser + "\n");
+                            //onlineUsersArea.appendText(finalUser + "\n");
 
                         } else if (msg.substring(0,2).equals("/a")) {
 
@@ -227,7 +249,10 @@ public class ChatController implements Initializable {
                             if (exist == false) {
 
                                 userClass.userList.add(String.valueOf(finalUser));
-                                onlineUsersArea.appendText(String.valueOf(finalUser)+"\n");
+                                //onlineUsersArea.appendText(String.valueOf(finalUser)+"\n");
+                                System.out.println(String.valueOf(finalUser));
+                                //onlineUsersArea.getItems().add(String.valueOf(finalUser));
+                                onlineUsersArea.getItems().add(String.valueOf(finalUser));
 
 
                             }
@@ -251,6 +276,18 @@ public class ChatController implements Initializable {
             nPE.getSuppressed();
 
         }
+    }
+
+    // Method to set current user
+    public String setCurrentUser(String user) {
+
+        currentUser = user;
+
+        return user;
+    }
+
+    public String getCurrentUser() {
+        return currentUser;
     }
 
     private void setGuiDesign () {

@@ -1,11 +1,20 @@
 package Client;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+
 import java.io.File;
 
 public class GUI {
@@ -84,4 +93,19 @@ public class GUI {
         return newTab;
 
     }
+
+    /*public ContextMenu helpHell () {
+
+        final Group root = new Group();
+
+        MenuItem menuItem = new MenuItem("Send Message");
+
+        ContextMenu contextMenu = new ContextMenu();
+
+        contextMenu.getItems().add(menuItem);
+
+
+
+        return contextMenu;
+    }*/
 }
