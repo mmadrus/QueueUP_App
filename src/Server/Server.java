@@ -184,10 +184,10 @@ public class Server {
 
                     } else if (command.equals("/w")){
 
-                        //Check if methods works
-                        System.out.println(data);
+                         serverProtocol.databaseProtocol(command,data);
 
-                        //Input method here
+                            String username = data.substring(0, 17);
+                            String message = data.substring(17);
 
 
 

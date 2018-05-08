@@ -92,22 +92,23 @@ public class ServerProtocol {
 
                 Database db = new Database();
 
-                boolean foundUser = db.searchForUser(data.substring(0,16));
+                boolean founduser1 = db.searchForUser(data.substring(0,16));
+                boolean founduser2 = db.searchForUser(data.substring(16));
 
-                System.out.println(data.substring(0,16));
+                //System.out.println(data.substring(0,16));
 
                 // Returns a boolean whether or not the username and password is found
-                if (foundUser == false) {
+                if (founduser1 && founduser2 == false) {
 
                     succesfull = false;
 
                 } else {
 
+                    db.createPrivateRoom(data.substring(0,16), data.substring(16));
+
                     succesfull = true;
 
                 }
-
-                //db.searchForUser("");
 
             } catch (Exception e){
                 e.printStackTrace();
@@ -120,6 +121,42 @@ public class ServerProtocol {
 
         return succesfull;
 
+    }
+
+    public int getUserId (String u) {
+
+        int i = 0;
+
+        try {
+
+            Database db = new Database();
+
+            i = db.setFindUserId(u);
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+
+        return i;
+    }
+
+    public int getRoomID (int idOne, int idTwo) {
+
+        int i = 0;
+
+        try {
+
+            Database db = new Database();
+
+            i = db.searchForPrivateRoom(idOne, idTwo);
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+
+        return i;
     }
 
     //Method to create user id

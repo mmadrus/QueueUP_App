@@ -38,6 +38,13 @@ public class Database {
     // Update status to online
     private String updateStatusToOnline = "update qup.user set user_isOnline = 1 where user_ID = ?";
 
+    private String createPrivateChat = "insert into qup.user_has_user(user_user_ID, user_user_ID1)" +
+            " VAlUES(?,?)";
+
+    private String findUserId = "select user_ID from qup.user where user_name = ?";
+
+    private String findPrivateRoom = "select room_room_ID from room_has_user where user_user_ID = ? AND user_user_ID = ? AND room_room_ID like '01%'";
+
 
     // database constructor
     public Database() throws SQLException {
@@ -213,6 +220,33 @@ public class Database {
 
     }
 
+    public void createPrivateRoom (String user1, String user2) {
+
+        try (PreparedStatement statement = c.prepareStatement(findUserId)){
+
+                statement.setString(1, user1);
+                ResultSet resultSet1 = statement.executeQuery();
+                resultSet1.next();
+                String userId1 = resultSet1.getString("user_ID");
+
+                statement.setString(1, user2);
+                ResultSet resultSet2 = statement.executeQuery();
+                resultSet2.next();
+                String userId2 = resultSet2.getString("user_ID");
+
+                PreparedStatement statement1 = c.prepareStatement(createPrivateChat);
+
+                statement1.setString(1, userId1);
+                statement1.setString(2, userId2);
+                ResultSet resultSet3 = statement1.executeQuery();
+                resultSet3.next();
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
     public boolean searchForUser (String username) {
         boolean exist = false;
 
@@ -292,5 +326,58 @@ public class Database {
         }
 
     }
+
+    public int setFindUserId (String username) {
+
+        int userID;
+
+        try (PreparedStatement statement = c.prepareStatement(findUserId)) {
+
+            statement.setString(1, username);
+            statement.execute();
+
+            ResultSet resultSet = statement.executeQuery();
+
+            resultSet.next();
+
+            String user = resultSet.getString("user_ID");
+
+            userID = Integer.parseInt(user);
+
+            System.out.println("ID: " + userID);
+
+        } catch (Exception e) {
+
+            userID = 0;
+            System.out.println("ID: " + userID);
+        }
+
+        return userID;
+
+    }
+
+    public int searchForPrivateRoom (int idOne, int idTwo) {
+
+        int id = 0;
+
+        try (PreparedStatement statement = c.prepareStatement(findPrivateRoom)){
+
+            statement.setInt(1, idOne);
+            statement.setInt(2, idTwo);
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+
+            String roomID = resultSet.getString("room_room_ID");
+
+            id = Integer.parseInt(roomID);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return id;
+    }
+
+
 
 }
