@@ -105,6 +105,7 @@ public class Server {
             dis = new DataInputStream(s.getInputStream());
 
             this.s = s;
+            //this.currentUser = currentUser;
 
             start();
         }
@@ -195,7 +196,7 @@ public class Server {
 
                                 String newRoomId = "01" + String.valueOf(serverProtocol.createRoomId());
 
-                                dos.writeUTF(recieved + newRoomId);
+                                sendToClient(recieved + newRoomId);
 
                             } else {
 

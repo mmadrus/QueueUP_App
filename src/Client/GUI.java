@@ -16,9 +16,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class GUI {
+
+    private ArrayList<Tab> tabHandler = new ArrayList<>();
 
     public String setButtonStyle() {
 
@@ -90,6 +93,8 @@ public class GUI {
 
         newPane.getChildren().addAll(imageView, newTextArea);
 
+        tabHandler.add(newTab);
+
         newTab.setContent(newPane);
 
         System.out.println(newTab.getUserData());
@@ -98,4 +103,7 @@ public class GUI {
 
     }
 
+    public ArrayList<Tab> getTabHandler() {
+        return tabHandler;
+    }
 }

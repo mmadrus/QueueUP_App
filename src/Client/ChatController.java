@@ -44,8 +44,6 @@ public class ChatController implements Initializable {
     private TabPane tabPane;
     @FXML
     private TextField messageField;
-    /*@FXML
-    private TextArea textArea, messageArea, helpMessageArea;*/
     @FXML
     private Button sendButton, logoutButton;
     @FXML
@@ -62,7 +60,8 @@ public class ChatController implements Initializable {
     private DataStream dataStream = new DataStream();
     private GUI GUI = new GUI();
     private User userClass = new User();
-private Database database;
+
+    //private Database database;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -141,8 +140,16 @@ private Database database;
         // Checks that the textfield for the message isnt empty
         if (!messageField.getText().isEmpty()) {
 
+            // Sends message to selected tab, needs to change to send to tab with that ID
+            TextArea thisArea = new TextArea();
+            thisArea.getUserData();
+            AnchorPane pane = ((AnchorPane) tabPane.getSelectionModel().getSelectedItem().getContent());
+            thisArea =(TextArea)pane.getChildren().get(1);
+
+            System.out.println("Send to TextArea: " + thisArea.getUserData());
+
             // Creates a string with the message command, current user and the message, then sends it to the server
-            dataStream.sendDataStream("/m" + "[" + currentUser + "] " + messageField.getText());
+            dataStream.sendDataStream("/m" + thisArea.getUserData() + currentUser + messageField.getText());
 
             messageField.clear();
 
@@ -218,7 +225,7 @@ private Database database;
                         if (msg.substring(0,2).equals("/m")) {
 
                             //Saves the user name from the string into a variable
-                            String user = msg.substring(3,19);
+                            String user = msg.substring(12,28);
 
                             // Create a new string builder to later save the user name in
                             StringBuilder finalUser = new StringBuilder();
@@ -235,15 +242,38 @@ private Database database;
 
                             }
 
-                            // Sends message to selected tab, needs to change to send to tab with that ID
-                            TextArea thisArea = new TextArea();
-                            thisArea.getUserData();
-                            AnchorPane pane = ((AnchorPane) tabPane.getSelectionModel().getSelectedItem().getContent());
-                            //TextArea pool = ((TextArea) lol.getChildren().get(1));
-                            thisArea =(TextArea)pane.getChildren().get(1);
+                            System.out.println("/m test: " + finalUser);
+                            System.out.println("/m room: " + msg.substring(2,10));
 
-                            // Appends the text the finaluser and message into the message area for the chat
-                            thisArea.appendText("[" + finalUser + "] " + msg.substring(20) + "\n");
+                            for (Tab room: GUI.getTabHandler()) {
+
+                                System.out.println("hejsan");
+                                System.out.println(room);
+                                System.out.println(msg.substring(2,12));
+
+                                if (room.getUserData().equals(msg.substring(2,12))) {
+
+                                    System.out.println("bajs");
+
+
+                                    // Sends message to selected tab, needs to change to send to tab with that ID
+                                    TextArea thisArea = new TextArea();
+                                    //thisArea.getUserData();
+                                    AnchorPane pane = ((AnchorPane) room.getContent());
+
+                                    //TextArea pool = ((TextArea) lol.getChildren().get(1));
+                                    thisArea =(TextArea)pane.getChildren().get(1);
+
+                                    // Appends the text the finaluser and message into the message area for the chat
+                                    thisArea.appendText("[" + finalUser + "] " + msg.substring(28) + "\n");
+                                    System.out.println("Receiving TextArea: " + thisArea.getUserData());
+
+                                    break;
+
+
+
+                                }
+                            }
 
 
                         } else if (msg.substring(0,2).equals("/u")) {
@@ -319,11 +349,15 @@ private Database database;
 
                         } else if (msg.substring(0,2).equals("/w")) {
 
+                            System.out.println("This message: " + msg);
+
                             //Saves the user name from the string into a variable
-                            String user = msg.substring(18, 34);
+                            String user = msg.substring(2, 18);
+
+                            System.out.println("user 1:" + user);
 
                             // Create a new string builder to later save the user name in
-                            StringBuilder finalUser = new StringBuilder();
+                            StringBuilder finalUser1 = new StringBuilder();
 
                             // For loop to convert the padded username returned from the server into a username without pads
                             for (int p = 0; p < user.length(); p++) {
@@ -332,24 +366,69 @@ private Database database;
                                 // saves them into the StringBuilder finalUser
                                 if (!String.valueOf(user.charAt(p)).equals("*")) {
 
-                                    finalUser.append(String.valueOf(user.charAt(p)));
+                                    finalUser1.append(String.valueOf(user.charAt(p)));
                                 }
 
 
                             }
 
-                            String tabId = msg.substring(34);
+                            System.out.println("tester 1: " + finalUser1);
 
-                            Platform.runLater(new Runnable(){
-                                @Override
-                                public void run() {
+                            //Saves the user name from the string into a variable
+                            String userTwo = msg.substring(18, 34);
 
-                                    addTab(String.valueOf(finalUser),tabId);
+                            System.out.println("user 2:" + userTwo);
+
+                            // Create a new string builder to later save the user name in
+                            StringBuilder finalUser2 = new StringBuilder();
+
+                            // For loop to convert the padded username returned from the server into a username without pads
+                            for (int p = 0; p < userTwo.length(); p++) {
+
+                                // Removes the * form the returned username, keeps the letters and numbers and then
+                                // saves them into the StringBuilder finalUser
+                                if (!String.valueOf(userTwo.charAt(p)).equals("*")) {
+
+                                    finalUser2.append(String.valueOf(userTwo.charAt(p)));
                                 }
-                            });
 
 
-                            System.out.println(finalUser);
+                            }
+
+                            System.out.println("tester 2: " + finalUser2);
+
+
+                            if (msg.substring(2,18).equals(currentUser) || msg.substring(18,34).equals(currentUser)) {
+
+                                String tabId = msg.substring(34);
+
+                                if (user.equals(currentUser)) {
+
+                                    Platform.runLater(new Runnable(){
+                                        @Override
+                                        public void run() {
+
+                                            addTab(String.valueOf(finalUser2),tabId);
+                                        }
+                                    });
+
+                                } else {
+
+                                    Platform.runLater(new Runnable(){
+                                        @Override
+                                        public void run() {
+
+                                            addTab(String.valueOf(finalUser1),tabId);
+                                        }
+                                    });
+
+                                }
+
+
+                            }
+
+
+                            System.out.println(finalUser1 + "\n" + finalUser2);
                             System.out.println(msg.substring(34));
 
 
