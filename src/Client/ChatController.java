@@ -1,10 +1,13 @@
 package Client;
 
+import Server.Database;
 import javafx.animation.Animation;
 import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -28,12 +31,15 @@ import java.io.IOException;
 import java.net.URL;
 import java.security.Guard;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.ResourceBundle;
 
 public class ChatController implements Initializable {
 
     @FXML
     private AnchorPane pane;
+    @FXML
+    private TextField searchField;
     @FXML
     private TabPane tabPane;
     @FXML
@@ -56,8 +62,7 @@ public class ChatController implements Initializable {
     private DataStream dataStream = new DataStream();
     private GUI GUI = new GUI();
     private User userClass = new User();
-
-
+private Database database;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -75,6 +80,38 @@ public class ChatController implements Initializable {
 
         // Creates a thread that constantly updates the chat
         updateChat();
+
+        // Ongoing method for searching for online users.
+        /*searchField.setOnKeyTyped(event -> {
+            searchField.requestFocus();
+            String searchValue = searchField.getText();
+
+            User user = new User();
+            ArrayList<String>onlineUser=user.getUserList();
+
+            Collections.sort(onlineUser);
+            for(int i =0;i<onlineUser.size();i++){
+                String s=onlineUser.get(i);
+
+                if(s.substring(0,1).equalsIgnoreCase(searchValue.substring(0,1))){
+                 for (int j=0;j<onlineUser.size();j++){
+                  ObservableList<String>hej = FXCollections.observableArrayList();
+                  String sj=onlineUser.get(j);
+                  hej.add(sj);
+
+                    onlineUsersArea.setItems(hej);
+                 }
+                }
+                else{
+                    System.out.println("Failure");
+                }
+
+            }
+
+
+
+
+        });*/
 
 
 

@@ -11,7 +11,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="pane" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.ChatController">
+<AnchorPane fx:id="pane" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.ChatController">
     <children>
         <TabPane fx:id="tabPane" layoutX="200.0" prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE">
             <tabs>
@@ -55,6 +55,7 @@
         <Label layoutX="1062.0" layoutY="34.0" text="Online Users" />
         <Button fx:id="logoutButton" layoutX="1036.0" layoutY="627.0" mnemonicParsing="false" onAction="#logout" prefHeight="60.0" prefWidth="120.0" text="Logout" />
       <ImageView fx:id="settingImageButton" fitHeight="60.0" fitWidth="60.0" layoutX="70.0" layoutY="627.0" onMouseEntered="#rotateSettingForward" onMouseExited="#rotateSettingBackward" pickOnBounds="true" preserveRatio="true" />
-      <ListView fx:id="onlineUsersArea" layoutX="1006.0" layoutY="57.0" onMouseClicked="#popupMenu"  prefHeight="539.0" prefWidth="190.0" />
+      <ListView fx:id="onlineUsersArea" layoutX="1006.0" layoutY="57.0" onMouseClicked="#popupMenu" prefHeight="539.0" prefWidth="190.0" />
+      <TextField fx:id="searchField" alignment="CENTER" layoutX="1027.0" layoutY="6.0" promptText="Search" />
     </children>
 </AnchorPane>

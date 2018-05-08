@@ -1,5 +1,7 @@
 package Server;
 
+import Client.User;
+
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -36,7 +38,7 @@ public class Database {
     private String userSearch = "Select user_name from user where user_name = ?";
 
     // Update status to online
-    private String updateStatusToOnline = "update qup.user set user_isOnline = 1 where user_ID = ?";
+    private String updateStatusToOnline = "update qup.user set isOnline = 1 where user_ID = ?";
 
     private String createPrivateChat = "insert into qup.user_has_user(user_user_ID, user_user_ID1)" +
             " VAlUES(?,?)";
@@ -322,6 +324,7 @@ public class Database {
             System.out.println("Status set to online");
 
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("Not set as online");
         }
 
@@ -391,7 +394,6 @@ public class Database {
 
         return k;
     }
-
 
 
 }
