@@ -42,6 +42,8 @@ public class ChatController implements Initializable {
     @FXML
     private ImageView chatBackground, chatBackground1, settingImageButton;
 
+    @FXML Tab currentTab;
+
     private String currentUser;
 
     private DataStream dataStream = new DataStream();
@@ -60,6 +62,9 @@ public class ChatController implements Initializable {
 
         //dataStream.sendDataStream("/u" + getCurrentUser());
         userClass.userList.add("Not really a user");
+
+        tabPane.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) ->currentTab =newValue);
+
 
         // Creates a thread that constantly updates the chat
         updateChat();
@@ -158,8 +163,17 @@ public class ChatController implements Initializable {
 
                             }
 
+                            // Sends message to selected tab, needs to change to send to tab with that ID
+                            TextArea thisArea = new TextArea();
+                            thisArea.getUserData();
+                            AnchorPane pane = ((AnchorPane) tabPane.getSelectionModel().getSelectedItem().getContent());
+                            //TextArea pool = ((TextArea) lol.getChildren().get(1));
+                            thisArea =(TextArea)pane.getChildren().get(1);
+                            System.out.println(thisArea.getUserData());
+                            System.out.println(currentTab.getUserData());
+
                             // Appends the text the finaluser and message into the message area for the chat
-                            messageArea.appendText("[" + finalUser + "] " + msg.substring(20) + "\n");
+                            thisArea.appendText("[" + finalUser + "] " + msg.substring(20) + "\n");
 
 
                         } else if (msg.substring(0,2).equals("/u")) {

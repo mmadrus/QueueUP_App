@@ -16,6 +16,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 
 import java.io.File;
+import java.util.Random;
 
 public class GUI {
 
@@ -57,12 +58,14 @@ public class GUI {
 
     public Tab createNewTab () {
 
-        //String tabID = String.valueOf(id);
+        Random random = new Random();
+        String id = String.format("%08d", random.nextInt(100000000));
+        String tabID = String.valueOf("01" + id);
 
         Tab newTab = new Tab();
         newTab.setText("New Tab");
         newTab.setClosable(true);
-        //newTab.setId(tabID);
+        newTab.setUserData(tabID);
 
         AnchorPane newPane = new AnchorPane();
         newPane.setMinWidth(0.0);
@@ -82,6 +85,7 @@ public class GUI {
         newTextArea.setWrapText(true);
         newTextArea.setPrefWidth(800);
         newTextArea.setPrefHeight(563);
+        newTextArea.setUserData(tabID);
 
         AnchorPane.setTopAnchor(imageView,0.0);
         AnchorPane.setTopAnchor(newTextArea, 0.0);
