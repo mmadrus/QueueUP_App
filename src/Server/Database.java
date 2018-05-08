@@ -43,7 +43,7 @@ public class Database {
 
     private String findUserId = "select user_ID from qup.user where user_name = ?";
 
-    private String findPrivateRoom = "select room_room_ID from room_has_user where user_user_ID = ? AND user_user_ID = ? AND room_room_ID like '01%'";
+    private String findPrivateRoom = "select pmessage_id from qup.user_has_user where user_user_ID = ? AND user_user_ID1 = ? AND pmessage_id like '01%'";
 
 
     // database constructor
@@ -356,9 +356,11 @@ public class Database {
 
     }
 
-    public int searchForPrivateRoom (int idOne, int idTwo) {
+    public boolean searchForPrivateRoom (int idOne, int idTwo) {
 
         int id = 0;
+        String test = "";
+        boolean k = true;
 
         try (PreparedStatement statement = c.prepareStatement(findPrivateRoom)){
 
@@ -367,15 +369,27 @@ public class Database {
             ResultSet resultSet = statement.executeQuery();
             resultSet.next();
 
-            String roomID = resultSet.getString("room_room_ID");
+            String roomFound = resultSet.getString(1);
 
-            id = Integer.parseInt(roomID);
+            if (roomFound.isEmpty()) {
+
+                k = false;
+
+            } else {
+
+                /*ResultSet rs = statement.executeQuery();
+                String reslust = rs.getString(1);
+                id = Integer.parseInt(reslust);
+                System.out.println("Nej");*/
+
+                k = true;
+            }
 
         }catch (Exception e){
             e.printStackTrace();
         }
 
-        return id;
+        return k;
     }
 
 

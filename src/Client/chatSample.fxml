@@ -54,7 +54,7 @@
         <Label layoutX="70.0" layoutY="34.0" text="Channels" />
         <Label layoutX="1062.0" layoutY="34.0" text="Online Users" />
         <Button fx:id="logoutButton" layoutX="1036.0" layoutY="627.0" mnemonicParsing="false" onAction="#logout" prefHeight="60.0" prefWidth="120.0" text="Logout" />
-      <ImageView fx:id="settingImageButton" fitHeight="60.0" fitWidth="60.0" layoutX="70.0" layoutY="627.0" onMouseClicked="#addTab" onMouseEntered="#rotateSettingForward" onMouseExited="#rotateSettingBackward" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="settingImageButton" fitHeight="60.0" fitWidth="60.0" layoutX="70.0" layoutY="627.0" onMouseEntered="#rotateSettingForward" onMouseExited="#rotateSettingBackward" pickOnBounds="true" preserveRatio="true" />
       <ListView fx:id="onlineUsersArea" layoutX="1006.0" layoutY="57.0" onMouseClicked="#popupMenu"  prefHeight="539.0" prefWidth="190.0" />
     </children>
 </AnchorPane>

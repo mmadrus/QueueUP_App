@@ -88,7 +88,7 @@ public class LoginController implements Initializable {
                 dataStream.sendDataStream(user);
 
                 String serverResponse = dataStream.recieveDataStream();
-                //System.out.println(serverResponse + " SR");
+                System.out.println(serverResponse + " SR");
                 // Checks for the return statement from the server, if it returns true then the user will log into the chat
                 if (serverResponse.equals("true")) {
 
@@ -121,7 +121,7 @@ public class LoginController implements Initializable {
                 notConnected.setHeaderText("Could not reach the server");
                 notConnected.setContentText("Server is down");
                 notConnected.show();
-                e.getSuppressed();
+                e.printStackTrace();
             }
 
         }

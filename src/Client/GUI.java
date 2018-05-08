@@ -56,16 +56,14 @@ public class GUI {
 
     }
 
-    public Tab createNewTab () {
+    public Tab createNewTab (String name, String id) {
 
-        Random random = new Random();
-        String id = String.format("%08d", random.nextInt(100000000));
-        String tabID = String.valueOf("01" + id);
+        System.out.println(id);
 
         Tab newTab = new Tab();
-        newTab.setText("New Tab");
+        newTab.setText(name);
         newTab.setClosable(true);
-        newTab.setUserData(tabID);
+        newTab.setUserData(id);
 
         AnchorPane newPane = new AnchorPane();
         newPane.setMinWidth(0.0);
@@ -85,7 +83,7 @@ public class GUI {
         newTextArea.setWrapText(true);
         newTextArea.setPrefWidth(800);
         newTextArea.setPrefHeight(563);
-        newTextArea.setUserData(tabID);
+        newTextArea.setUserData(id);
 
         AnchorPane.setTopAnchor(imageView,0.0);
         AnchorPane.setTopAnchor(newTextArea, 0.0);
@@ -93,6 +91,8 @@ public class GUI {
         newPane.getChildren().addAll(imageView, newTextArea);
 
         newTab.setContent(newPane);
+
+        System.out.println(newTab.getUserData());
 
         return newTab;
 

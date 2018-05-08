@@ -4,6 +4,7 @@ import javafx.animation.Animation;
 import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -37,17 +38,18 @@ public class ChatController implements Initializable {
     private TabPane tabPane;
     @FXML
     private TextField messageField;
-    @FXML
-    private TextArea textArea, messageArea, helpMessageArea;
+    /*@FXML
+    private TextArea textArea, messageArea, helpMessageArea;*/
     @FXML
     private Button sendButton, logoutButton;
     @FXML
     private ImageView chatBackground, chatBackground1, settingImageButton;
 
     @FXML
-    ListView<String> onlineUsersArea;
+    private ListView<String> onlineUsersArea;
 
-    @FXML Tab currentTab;
+    @FXML
+    private Tab currentTab;
 
     private String currentUser;
 
@@ -124,9 +126,9 @@ public class ChatController implements Initializable {
         return currentUser;
     }
 
-    public void addTab () {
+    public void addTab (String user, String id) {
 
-        tabPane.getTabs().add(GUI.createNewTab());
+        tabPane.getTabs().add(GUI.createNewTab(user, id));
 
     }
 
@@ -202,8 +204,6 @@ public class ChatController implements Initializable {
                             AnchorPane pane = ((AnchorPane) tabPane.getSelectionModel().getSelectedItem().getContent());
                             //TextArea pool = ((TextArea) lol.getChildren().get(1));
                             thisArea =(TextArea)pane.getChildren().get(1);
-                            System.out.println(thisArea.getUserData());
-                            System.out.println(currentTab.getUserData());
 
                             // Appends the text the finaluser and message into the message area for the chat
                             thisArea.appendText("[" + finalUser + "] " + msg.substring(20) + "\n");
@@ -278,6 +278,43 @@ public class ChatController implements Initializable {
 
 
                             }
+
+
+                        } else if (msg.substring(0,2).equals("/w")) {
+
+                            //Saves the user name from the string into a variable
+                            String user = msg.substring(18, 34);
+
+                            // Create a new string builder to later save the user name in
+                            StringBuilder finalUser = new StringBuilder();
+
+                            // For loop to convert the padded username returned from the server into a username without pads
+                            for (int p = 0; p < user.length(); p++) {
+
+                                // Removes the * form the returned username, keeps the letters and numbers and then
+                                // saves them into the StringBuilder finalUser
+                                if (!String.valueOf(user.charAt(p)).equals("*")) {
+
+                                    finalUser.append(String.valueOf(user.charAt(p)));
+                                }
+
+
+                            }
+
+                            String tabId = msg.substring(34);
+
+                            Platform.runLater(new Runnable(){
+                                @Override
+                                public void run() {
+
+                                    addTab(String.valueOf(finalUser),tabId);
+                                }
+                            });
+
+
+                            System.out.println(finalUser);
+                            System.out.println(msg.substring(34));
+
 
 
                         }

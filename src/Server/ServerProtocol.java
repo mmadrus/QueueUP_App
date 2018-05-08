@@ -141,7 +141,7 @@ public class ServerProtocol {
         return i;
     }
 
-    public int getRoomID (int idOne, int idTwo) {
+    /*public int getRoomID (int idOne, int idTwo) {
 
         int i = 0;
 
@@ -157,7 +157,7 @@ public class ServerProtocol {
         }
 
         return i;
-    }
+    }*/
 
     //Method to create user id
     public int createUserId() {
@@ -167,6 +167,42 @@ public class ServerProtocol {
         String id = String.format("%04d", random.nextInt(10000));
 
         return Integer.parseInt(id);
+    }
+
+    public int createRoomId () {
+
+        Random random = new Random();
+        String id = String.format("%08d", random.nextInt(100000000));
+
+        return Integer.parseInt(id);
+    }
+
+    public int testM (int idOne, int idTwo) {
+
+        int id = 0;
+
+        try {
+
+            Database db = new Database();
+
+            boolean found = db.searchForPrivateRoom(idOne, idTwo);
+
+            if (found == true) {
+
+                id = 1234;
+
+            } else if (found == false){
+
+                id = 0;
+            }
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+
+        return id;
+
     }
 
 }

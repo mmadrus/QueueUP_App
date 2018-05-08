@@ -184,14 +184,29 @@ public class Server {
 
                     } else if (command.equals("/w")){
 
-                         int idOne = serverProtocol.getUserId(data.substring(0,16));
-                         int idTwo = serverProtocol.getUserId(data.substring(16,32));
+                        try {
 
-                         int roomID = serverProtocol.getRoomID(idOne, idTwo);
+                            int idOne = serverProtocol.getUserId(data.substring(0, 16));
+                            int idTwo = serverProtocol.getUserId(data.substring(16, 32));
 
-                        System.out.println("1: " + idOne);
-                        System.out.println("2: " + idTwo);
-                        System.out.println("3: " + roomID);
+                            int roomID = serverProtocol.testM(idOne, idTwo);
+
+                            if (roomID != 0) {
+
+                                String newRoomId = "01" + String.valueOf(serverProtocol.createRoomId());
+
+                                dos.writeUTF(recieved + newRoomId);
+
+                            } else {
+
+                                System.out.println(roomID);
+                            }
+
+                        } catch (Exception e) {
+
+                            e.printStackTrace();
+                        }
+
 
 
 
