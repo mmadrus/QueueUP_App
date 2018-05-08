@@ -12,6 +12,7 @@ public class DataStream extends Thread {
     private Socket s;
     private DataOutputStream dos;
     private DataInputStream dis;
+    String str = "prrrrrr";
 
     // Sends string to the server
     public void sendDataStream(String data) {
