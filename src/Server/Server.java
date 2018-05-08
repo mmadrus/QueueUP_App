@@ -184,10 +184,14 @@ public class Server {
 
                     } else if (command.equals("/w")){
 
-                         serverProtocol.databaseProtocol(command,data);
+                         int idOne = serverProtocol.getUserId(data.substring(0,16));
+                         int idTwo = serverProtocol.getUserId(data.substring(16,32));
 
-                            String username = data.substring(0, 17);
-                            String message = data.substring(17);
+                         int roomID = serverProtocol.getRoomID(idOne, idTwo);
+
+                        System.out.println("1: " + idOne);
+                        System.out.println("2: " + idTwo);
+                        System.out.println("3: " + roomID);
 
 
 

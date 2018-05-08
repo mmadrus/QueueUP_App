@@ -98,18 +98,4 @@ public class GUI {
 
     }
 
-    /*public ContextMenu helpHell () {
-
-        final Group root = new Group();
-
-        MenuItem menuItem = new MenuItem("Send Message");
-
-        ContextMenu contextMenu = new ContextMenu();
-
-        contextMenu.getItems().add(menuItem);
-
-
-
-        return contextMenu;
-    }*/
 }
