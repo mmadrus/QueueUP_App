@@ -1,7 +1,5 @@
 package Server;
 
-import Client.User;
-
 import java.sql.*;
 import java.util.ArrayList;
 
