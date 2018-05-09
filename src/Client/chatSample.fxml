@@ -11,7 +11,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="pane" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.ChatController">
+<AnchorPane fx:id="pane" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.ChatController">
     <children>
         <TabPane fx:id="tabPane" layoutX="200.0" prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE">
             <tabs>
@@ -38,7 +38,7 @@
                               <Image url="@../../resources/icon.png" />
                            </image>
                         </ImageView>
-                                <TextArea fx:id="helpMessageArea" editable="false" focusTraversable="false" opacity="0.75" prefHeight="563.0" prefWidth="800.0" />
+                                <TextArea fx:id="helpMessageArea" editable="false" focusTraversable="false" opacity="0.75" prefHeight="563.0" prefWidth="800.0" text="&#10;&#10;&#10;&#10;          &#10;&#10;&#10;&#10;&#10;          Welcome to QUP the new great chat application!&#10;&#10;          In the &quot;#General&quot; chat you and all other users online can communicate at all time.&#10;&#10;          Here in &quot;#Help&quot; you will find information of what you can do in this program, be sure to stick around for when new fun commands gets added!&#10;&#10;           &lt;--- To the left you have the &quot;Channels&quot; list where you will see the active channales which you can join.&#10;&#10;          To the right you have the &quot;Online Users&quot; list where you will find all the users currently online, if you right-click on a name you can even open up a private message with that person! ---&gt;&#10;&#10;          Please respect each other and keep a civil tone and no swearwords, it is important that evreybody respect each other in order for everyone to enjoy this application.&#10;          Failure to follow rules will result in a bann :( so keep it clean!&#10;&#10;&#10;          We hope you will enjoy QUP and look forward to you using our chat!&#10;          / The dev team&#10;&#10;          B-)" />
                             </children>
                         </AnchorPane>
                     </content>
@@ -50,12 +50,11 @@
                 <TextField fx:id="messageField" layoutX="150.0" layoutY="150.0" prefHeight="50.0" prefWidth="744.0" />
             </graphic>
         </Button>
-        <TextArea editable="false" focusTraversable="false" layoutX="5.0" layoutY="57.0" prefHeight="539.0" prefWidth="190.0" />
+        <TextArea editable="false" focusTraversable="false" layoutX="4.0" layoutY="57.0" prefHeight="540.0" prefWidth="190.0" />
         <Label layoutX="70.0" layoutY="34.0" text="Channels" />
         <Label layoutX="1062.0" layoutY="34.0" text="Online Users" />
         <Button fx:id="logoutButton" layoutX="1036.0" layoutY="627.0" mnemonicParsing="false" onAction="#logout" prefHeight="60.0" prefWidth="120.0" text="Logout" />
-      <ImageView fx:id="settingImageButton" fitHeight="60.0" fitWidth="60.0" layoutX="70.0" layoutY="627.0" onMouseEntered="#rotateSettingForward" onMouseExited="#rotateSettingBackward" pickOnBounds="true" preserveRatio="true" />
-      <ListView fx:id="onlineUsersArea" layoutX="1006.0" layoutY="57.0" onMouseClicked="#popupMenu" prefHeight="539.0" prefWidth="190.0" />
-      <TextField fx:id="searchField" alignment="CENTER" layoutX="1027.0" layoutY="6.0" promptText="Search" />
+      <ImageView fx:id="settingImageButton" fitHeight="60.0" fitWidth="60.0" layoutX="70.0" layoutY="627.0" onMouseClicked="#addTab" onMouseEntered="#rotateSettingForward" onMouseExited="#rotateSettingBackward" pickOnBounds="true" preserveRatio="true" />
+      <ListView fx:id="onlineUsersArea" layoutX="1006.0" layoutY="57.0" onMouseClicked="#popupMenu" prefHeight="540.0" prefWidth="190.0" />
     </children>
 </AnchorPane>
