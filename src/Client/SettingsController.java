@@ -18,11 +18,13 @@ import java.util.ResourceBundle;
 
 public class SettingsController implements Initializable {
 
-    @FXML private Button Button;
+    @FXML private Button backButton, forgotPasswordButton, changePasswordButton;
+
+    private GUI GUI = new GUI();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        setGuiDesign();
     }
 
     public void backToChat (javafx.event.ActionEvent event) throws IOException {
@@ -32,6 +34,14 @@ public class SettingsController implements Initializable {
         Parent root = loader.load();
         Scene scene = new Scene(root, 1200, 700);
         stage.setScene(scene);
+    }
+
+    private void setGuiDesign () {
+
+        backButton.setStyle(GUI.setButtonStyle());
+        forgotPasswordButton.setStyle(GUI.setButtonStyle());
+        changePasswordButton.setStyle(GUI.setButtonStyle());
+
     }
 
 }

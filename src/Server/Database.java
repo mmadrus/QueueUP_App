@@ -357,13 +357,13 @@ public class Database {
 
     }
 
-    public boolean searchForPrivateRoom (int idOne, int idTwo) {
+    public boolean searchForPrivateRoom (int idOne, int idTwo)throws SQLException {
 
         int id = 0;
         String test = "";
         boolean k = true;
 
-        try (PreparedStatement statement = c.prepareStatement(findPrivateRoom)){
+        try (PreparedStatement statement = c.prepareStatement(findPrivateRoom)) {
 
             statement.setInt(1, idOne);
             statement.setInt(2, idTwo);
@@ -386,6 +386,8 @@ public class Database {
                 k = true;
             }
 
+        }catch (SQLException e){
+            e.printStackTrace();
         }catch (Exception e){
             e.printStackTrace();
         }
