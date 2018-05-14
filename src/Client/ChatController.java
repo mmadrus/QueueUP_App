@@ -122,9 +122,33 @@ public class ChatController implements Initializable {
         stage.setScene(scene);
     }
 
+    public void settings (MouseEvent event) throws IOException{
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                try {
+
+                    Stage stage = new Stage();
+                    Parent root = FXMLLoader.load(getClass().getResource("settingSample.fxml"));
+                    stage.setTitle("Settings");
+                    stage.setScene(new Scene(root));
+                    stage.show();
+
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+                }
+        });
+
+
+
+    }
+
     // If the user sends a message
     @FXML
     public void send(ActionEvent event) {
+
 
         // Checks that the textfield for the message isnt empty
         if (!messageField.getText().isEmpty()) {
