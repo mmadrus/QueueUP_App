@@ -73,8 +73,6 @@ public class ServerProtocol {
                         db.setUpdateStatusToOnline(data.substring(0,16));
                         onlineUsers.add(data.substring(0,16));
 
-                        System.out.println(onlineUsers.size());
-
                         succesfull = true;
 
                     }
@@ -111,11 +109,19 @@ public class ServerProtocol {
             } catch (Exception e){
                 e.printStackTrace();
             }
+        } else if (command.equals("/0")){
+
+            try {
+
+                Database db = new Database();
+
+
+                db.setUpdateStatusToOffline(data.substring(0,16));
+
+            } catch (Exception e){
+                e.printStackTrace();
+            }
         }
-
-
-        // Checks that the booleans are correct
-        System.out.println("success: " + succesfull);
 
         return succesfull;
 

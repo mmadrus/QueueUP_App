@@ -2,11 +2,13 @@ package Server;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class Server {
@@ -51,6 +53,7 @@ public class Server {
                 System.out.println("Assigning new thread");
 
                 System.out.println(str);
+                System.out.println(s.toString());
 
                 // Saves the connected thread into an arraylist
                 clientHandlers.add(new ClientHandler(s));
@@ -168,22 +171,22 @@ public class Server {
                         running = false;
 
                     } else if (command.equals("/m") || command.equals("/u")) {
-                                                        // Checks of the command is a regular message to send it directly
-                                                        // back to the clients
+                        // Checks of the command is a regular message to send it directly
+                        // back to the clients
 
                         //Calls for the send to client method
                         sendToClient(recieved);
 
 
-                    } else if (command.equals("/a")){
+                    } else if (command.equals("/a")) {
 
                         if (serverProtocol.onlineUsers.size() > counter) {
 
                             sendOnlineListToClient();
-                            counter+=1;
+                            counter += 1;
                         }
 
-                    } else if (command.equals("/w")){
+                    } else if (command.equals("/w")) {
 
                         try {
 
@@ -209,10 +212,40 @@ public class Server {
                         }
 
 
+                    } else if (command.equals("/0")) {
 
+                        sendToClient("/8" + data.substring(5));
+                        System.out.println("Fuck");
+
+                        for (int i = 0; i < clientHandlers.size(); i++) {
+
+                            //if (String.valueOf(c.s.getPort()).equals(data)){
+
+                            if (String.valueOf(clientHandlers.get(i).s.getPort()).equals(data.substring(0,5))) {
+
+                                for (int u = 0; u < serverProtocol.onlineUsers.size(); u++){
+
+                                    if (serverProtocol.onlineUsers.get(u).equals(data.substring(5))){
+
+                                        serverProtocol.onlineUsers.remove(u);
+                                        System.out.println("Kalkon");
+                                        break;
+                                    }
+                                }
+
+                                serverProtocol.databaseProtocol(command, data.substring(5));
+                                counter -= 1;
+                                clientHandlers.get(i).s.close();
+                                clientHandlers.remove(i);
+
+                            }
+                        }
                     }
-
                 }
+            } catch (EOFException eofE) {
+
+                eofE.printStackTrace();
+
             } catch (Exception e) {
 
                 e.printStackTrace();

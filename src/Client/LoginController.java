@@ -76,7 +76,6 @@ public class LoginController implements Initializable {
 
             String currentUser = username;
 
-
             String user = "/6" + username + password;
 
             try {
@@ -88,7 +87,7 @@ public class LoginController implements Initializable {
                 dataStream.sendDataStream(user);
 
                 String serverResponse = dataStream.recieveDataStream();
-                System.out.println(serverResponse + " SR");
+
                 // Checks for the return statement from the server, if it returns true then the user will log into the chat
                 if (serverResponse.equals("true")) {
 

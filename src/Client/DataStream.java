@@ -66,5 +66,10 @@ public class DataStream extends Thread {
 
         }
     }
+
+    public int getSocketPort () {
+
+        return s.getLocalPort();
+    }
 }
 

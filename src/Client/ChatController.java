@@ -3,7 +3,10 @@ package Client;
 import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -35,16 +38,14 @@ public class ChatController implements Initializable {
     @FXML
     private Button sendButton, logoutButton;
     @FXML
-    private ImageView chatBackground, chatBackground1, settingImageButton;
-
+    private ImageView chatBackground1, settingImageButton;
     @FXML
     private ListView<String> onlineUsersArea;
-
     @FXML
     private Tab currentTab;
 
-
     private String currentUser;
+    private volatile boolean running = true;
 
     private DataStream dataStream = new DataStream();
     private GUI GUI = new GUI();
@@ -56,6 +57,7 @@ public class ChatController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         setGuiDesign();
+        addGeneralTab();
 
         // Connects to the server when the scene is initialized
         dataStream.connectToServer();
@@ -63,56 +65,25 @@ public class ChatController implements Initializable {
         //dataStream.sendDataStream("/u" + getCurrentUser());
         userClass.userList.add("Not really a user");
 
-        tabPane.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) ->currentTab =newValue);
-
+        tabPane.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> currentTab = newValue);
 
         // Creates a thread that constantly updates the chat
         updateChat();
-
-        // Ongoing method for searching for online users.
-        /*searchField.setOnKeyTyped(event -> {
-            searchField.requestFocus();
-            String searchValue = searchField.getText();
-
-            User user = new User();
-            ArrayList<String>onlineUser=user.getUserList();
-
-            Collections.sort(onlineUser);
-            for(int i =0;i<onlineUser.size();i++){
-                String s=onlineUser.get(i);
-
-                if(s.substring(0,1).equalsIgnoreCase(searchValue.substring(0,1))){
-                 for (int j=0;j<onlineUser.size();j++){
-                  ObservableList<String>hej = FXCollections.observableArrayList();
-                  String sj=onlineUser.get(j);
-                  hej.add(sj);
-
-                    onlineUsersArea.setItems(hej);
-                 }
-                }
-                else{
-                    System.out.println("Failure");
-                }
-
-            }
-
-
-
-
-        });*/
-
-
 
     }
 
     // If the user wants to log out
     @FXML
-    public void logout(ActionEvent event) throws IOException {
+    public void handleLogoutButton(ActionEvent event) throws IOException, InterruptedException {
 
-        // Disconnects from the server
-        dataStream.disconnectFromServer();
+        dataStream.sendDataStream("/0" + dataStream.getSocketPort() + currentUser);
+
+        running = false;
+        GUI.emptyTabHandler();
         //Sets current user to null
         setCurrentUser(null);
+
+        Thread.sleep(3000);
 
         Node node = (Node) event.getSource();
         Stage stage = (Stage) node.getScene().getWindow();
@@ -120,9 +91,12 @@ public class ChatController implements Initializable {
         Parent root = loader.load();
         Scene scene = new Scene(root, 1200, 700);
         stage.setScene(scene);
+
+        dataStream.disconnectFromServer();
     }
 
-    public void settings (MouseEvent event) throws IOException{
+    @FXML
+    public void handleSettingsButton(MouseEvent event) throws IOException {
 
         Platform.runLater(new Runnable() {
             @Override
@@ -135,12 +109,11 @@ public class ChatController implements Initializable {
                     stage.setScene(new Scene(root));
                     stage.show();
 
-                } catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-                }
+            }
         });
-
 
 
     }
@@ -157,9 +130,8 @@ public class ChatController implements Initializable {
             TextArea thisArea = new TextArea();
             thisArea.getUserData();
             AnchorPane pane = ((AnchorPane) tabPane.getSelectionModel().getSelectedItem().getContent());
-            thisArea =(TextArea)pane.getChildren().get(1);
+            thisArea = (TextArea) pane.getChildren().get(1);
 
-            System.out.println("Send to TextArea: " + thisArea.getUserData());
 
             // Creates a string with the message command, current user and the message, then sends it to the server
             dataStream.sendDataStream("/m" + thisArea.getUserData() + currentUser + messageField.getText());
@@ -183,7 +155,7 @@ public class ChatController implements Initializable {
         return currentUser;
     }
 
-    public void addTab (String user, String id) {
+    public void addTab(String user, String id) {
 
         tabPane.getTabs().add(GUI.createNewTab(user, id));
 
@@ -209,8 +181,18 @@ public class ChatController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 String wantedUser = onlineUsersArea.getSelectionModel().getSelectedItem();
-                String wantedUsername = String.format("%-16s", wantedUser).replace(' ', '*');
-                dataStream.sendDataStream("/w" + currentUser + wantedUsername);
+
+                try {
+
+                    if (!wantedUser.equals(null)) {
+                        String wantedUsername = String.format("%-16s", wantedUser).replace(' ', '*');
+                        dataStream.sendDataStream("/w" + currentUser + wantedUsername);
+                    }
+
+                } catch (NullPointerException e) {
+
+                    contextMenu.hide();
+                }
 
             }
         });
@@ -223,7 +205,7 @@ public class ChatController implements Initializable {
         try {
             Thread thread = new Thread(() -> {
 
-                while (true) {
+                while (running) {
 
                     try {
 
@@ -235,10 +217,10 @@ public class ChatController implements Initializable {
                         // Checks for the command at the first two indexes
 
                         // If the command is /m then it is a message
-                        if (msg.substring(0,2).equals("/m")) {
+                        if (msg.substring(0, 2).equals("/m")) {
 
                             //Saves the user name from the string into a variable
-                            String user = msg.substring(12,28);
+                            String user = msg.substring(12, 28);
 
                             // Create a new string builder to later save the user name in
                             StringBuilder finalUser = new StringBuilder();
@@ -255,18 +237,38 @@ public class ChatController implements Initializable {
 
                             }
 
-                            System.out.println("/m test: " + finalUser);
-                            System.out.println("/m room: " + msg.substring(2,10));
+                            for (Tab room : GUI.getTabHandler()) {
 
-                            for (Tab room: GUI.getTabHandler()) {
 
-                                System.out.println("hejsan");
-                                System.out.println(room);
-                                System.out.println(msg.substring(2,12));
+                                if (room.getUserData().equals(msg.substring(2, 12))) {
 
-                                if (room.getUserData().equals(msg.substring(2,12))) {
+                                    boolean roomOpen = false;
 
-                                    System.out.println("bajs");
+                                    for (int i = 1; i < GUI.getTabHandler().size(); i++) {
+
+                                        if (!tabPane.getTabs().get(i - 1).equals(room)) {
+
+                                            roomOpen = false;
+
+                                        } else {
+
+                                            roomOpen = true;
+                                            break;
+                                        }
+
+                                    }
+
+                                    if (roomOpen == false) {
+
+                                        room.setOnClosed(new EventHandler<Event>() {
+                                            @Override
+                                            public void handle(Event event) {
+
+                                                tabPane.getTabs().add(room);
+
+                                            }
+                                        });
+                                    }
 
 
                                     // Sends message to selected tab, needs to change to send to tab with that ID
@@ -275,21 +277,19 @@ public class ChatController implements Initializable {
                                     AnchorPane pane = ((AnchorPane) room.getContent());
 
                                     //TextArea pool = ((TextArea) lol.getChildren().get(1));
-                                    thisArea =(TextArea)pane.getChildren().get(1);
+                                    thisArea = (TextArea) pane.getChildren().get(1);
 
                                     // Appends the text the finaluser and message into the message area for the chat
                                     thisArea.appendText("[" + finalUser + "] " + msg.substring(28) + "\n");
-                                    System.out.println("Receiving TextArea: " + thisArea.getUserData());
 
                                     break;
-
 
 
                                 }
                             }
 
 
-                        } else if (msg.substring(0,2).equals("/u")) {
+                        } else if (msg.substring(0, 2).equals("/u")) {
 
                             //Saves the user name from the string into a variable
                             String user = msg.substring(2);
@@ -312,7 +312,7 @@ public class ChatController implements Initializable {
                             // Appends the text the finaluser and message into the message area for the chat
                             //onlineUsersArea.appendText(finalUser + "\n");
 
-                        } else if (msg.substring(0,2).equals("/a")) {
+                        } else if (msg.substring(0, 2).equals("/a")) {
 
                             //Saves the user name from the string into a variable
                             String user = msg.substring(2, 18);
@@ -335,7 +335,7 @@ public class ChatController implements Initializable {
 
                             boolean exist = false;
 
-                            for (int i = 0; i < userClass.userList.size(); i++){
+                            for (int i = 0; i < userClass.userList.size(); i++) {
 
                                 if (String.valueOf(finalUser).equals(userClass.userList.get(i))) {
 
@@ -354,103 +354,163 @@ public class ChatController implements Initializable {
                             if (exist == false) {
 
                                 userClass.userList.add(String.valueOf(finalUser));
-                                onlineUsersArea.getItems().add(String.valueOf(finalUser));
-
 
                             }
 
+                            ObservableList<String> listie = FXCollections.observableArrayList();
 
-                        } else if (msg.substring(0,2).equals("/w")) {
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
 
-                            System.out.println("This message: " + msg);
+                                        for (int q = 0; q < listie.size(); q++) {
+
+                                            listie.remove(q);
+                                        }
+
+                                        for (int q = 0; q < userClass.userList.size(); q++) {
+
+                                            listie.add(q, userClass.userList.get(q));
+                                        }
+
+
+
+                                    onlineUsersArea.setItems(listie);
+                                }
+                            });
+
+
+                        } else if (msg.substring(0, 2).equals("/w")) {
+
+                            String n = null;
 
                             //Saves the user name from the string into a variable
-                            String user = msg.substring(2, 18);
+                            if (!msg.substring(2, 18).equals("null") || !msg.substring(18, 34).equals("null")) {
+                                String user = msg.substring(2, 18);
 
-                            System.out.println("user 1:" + user);
+                                // Create a new string builder to later save the user name in
+                                StringBuilder finalUser1 = new StringBuilder();
+
+                                // For loop to convert the padded username returned from the server into a username without pads
+                                for (int p = 0; p < user.length(); p++) {
+
+                                    // Removes the * form the returned username, keeps the letters and numbers and then
+                                    // saves them into the StringBuilder finalUser
+                                    if (!String.valueOf(user.charAt(p)).equals("*")) {
+
+                                        finalUser1.append(String.valueOf(user.charAt(p)));
+                                    }
+
+
+                                }
+
+                                //Saves the user name from the string into a variable
+                                String userTwo = msg.substring(18, 34);
+
+                                // Create a new string builder to later save the user name in
+                                StringBuilder finalUser2 = new StringBuilder();
+
+                                // For loop to convert the padded username returned from the server into a username without pads
+                                for (int p = 0; p < userTwo.length(); p++) {
+
+                                    // Removes the * form the returned username, keeps the letters and numbers and then
+                                    // saves them into the StringBuilder finalUser
+                                    if (!String.valueOf(userTwo.charAt(p)).equals("*")) {
+
+                                        finalUser2.append(String.valueOf(userTwo.charAt(p)));
+                                    }
+
+
+                                }
+
+                                if (msg.substring(2, 18).equals(currentUser) || msg.substring(18, 34).equals(currentUser)) {
+
+                                    String tabId = msg.substring(34);
+
+                                    if (user.equals(currentUser)) {
+
+                                        Platform.runLater(new Runnable() {
+                                            @Override
+                                            public void run() {
+
+                                                addTab(String.valueOf(finalUser2), tabId);
+                                            }
+                                        });
+
+                                    } else {
+
+                                        Platform.runLater(new Runnable() {
+                                            @Override
+                                            public void run() {
+
+                                                addTab(String.valueOf(finalUser1), tabId);
+                                            }
+                                        });
+
+                                    }
+
+
+                                }
+
+                            }
+
+                        } else if (msg.substring(0, 2).equals("/8")) {
 
                             // Create a new string builder to later save the user name in
-                            StringBuilder finalUser1 = new StringBuilder();
+                            StringBuilder finalUser = new StringBuilder();
 
                             // For loop to convert the padded username returned from the server into a username without pads
-                            for (int p = 0; p < user.length(); p++) {
+                            for (int p = 0; p < msg.substring(2).length(); p++) {
 
                                 // Removes the * form the returned username, keeps the letters and numbers and then
                                 // saves them into the StringBuilder finalUser
-                                if (!String.valueOf(user.charAt(p)).equals("*")) {
+                                if (!String.valueOf(msg.substring(2).charAt(p)).equals("*")) {
 
-                                    finalUser1.append(String.valueOf(user.charAt(p)));
+                                    finalUser.append(String.valueOf(msg.substring(2).charAt(p)));
                                 }
 
 
                             }
 
-                            System.out.println("tester 1: " + finalUser1);
+                            for (int i = 0; i < userClass.userList.size(); i++) {
 
-                            //Saves the user name from the string into a variable
-                            String userTwo = msg.substring(18, 34);
 
-                            System.out.println("user 2:" + userTwo);
+                                if (userClass.userList.get(i).equals(String.valueOf(finalUser))) {
 
-                            // Create a new string builder to later save the user name in
-                            StringBuilder finalUser2 = new StringBuilder();
-
-                            // For loop to convert the padded username returned from the server into a username without pads
-                            for (int p = 0; p < userTwo.length(); p++) {
-
-                                // Removes the * form the returned username, keeps the letters and numbers and then
-                                // saves them into the StringBuilder finalUser
-                                if (!String.valueOf(userTwo.charAt(p)).equals("*")) {
-
-                                    finalUser2.append(String.valueOf(userTwo.charAt(p)));
+                                    userClass.userList.remove(i);
                                 }
-
 
                             }
 
-                            System.out.println("tester 2: " + finalUser2);
+                            ObservableList<String> listie = FXCollections.observableArrayList();
+
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                    for (int q = 0; q < listie.size(); q++) {
+
+                                        listie.remove(q);
+                                    }
+
+                                    for (int q = 0; q < userClass.userList.size(); q++) {
+
+                                        listie.add(q, userClass.userList.get(q));
+
+                                    }
 
 
-                            if (msg.substring(2,18).equals(currentUser) || msg.substring(18,34).equals(currentUser)) {
 
-                                String tabId = msg.substring(34);
-
-                                if (user.equals(currentUser)) {
-
-                                    Platform.runLater(new Runnable(){
-                                        @Override
-                                        public void run() {
-
-                                            addTab(String.valueOf(finalUser2),tabId);
-                                        }
-                                    });
-
-                                } else {
-
-                                    Platform.runLater(new Runnable(){
-                                        @Override
-                                        public void run() {
-
-                                            addTab(String.valueOf(finalUser1),tabId);
-                                        }
-                                    });
-
+                                    onlineUsersArea.setItems(listie);
                                 }
-
-
-                            }
-
-
-                            System.out.println(finalUser1 + "\n" + finalUser2);
-                            System.out.println(msg.substring(34));
-
-
+                            });
 
                         }
 
 
                     } catch (Exception e) {
 
+                        Thread.currentThread().interrupt();
                         e.printStackTrace();
                     }
                 }
@@ -466,12 +526,13 @@ public class ChatController implements Initializable {
         }
     }
 
-    private void setGuiDesign () {
+
+    private void setGuiDesign() {
 
         pane.setStyle("-fx-background-color: WHITE");
         tabPane.setStyle("-fx-background-color: WHITE");
 
-        chatBackground.setImage(GUI.setBackgroundImage());
+        //chatBackground.setImage(GUI.setBackgroundImage());
         chatBackground1.setImage(GUI.setBackgroundImage());
 
         messageField.setStyle("-fx-background-color: WHITE; -fx-background-radius: 16px;");
@@ -483,7 +544,7 @@ public class ChatController implements Initializable {
 
     }
 
-    public void rotateSettingForward () {
+    public void rotateSettingForward() {
 
         try {
 
@@ -504,7 +565,7 @@ public class ChatController implements Initializable {
 
     }
 
-    public void rotateSettingBackward () {
+    public void rotateSettingBackward() {
 
         try {
 
@@ -524,5 +585,11 @@ public class ChatController implements Initializable {
         }
 
     }
+
+    private void addGeneralTab() {
+
+        tabPane.getTabs().add(GUI.addGeneralTab());
+    }
+
 
 }

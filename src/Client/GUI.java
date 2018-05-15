@@ -55,7 +55,8 @@ public class GUI {
 
         Tab newTab = new Tab();
         newTab.setText(name);
-        newTab.setClosable(true);
+        newTab.setClosable(false);
+        newTab.setDisable(false);
         newTab.setUserData(id);
 
         AnchorPane newPane = new AnchorPane();
@@ -96,4 +97,53 @@ public class GUI {
     public ArrayList<Tab> getTabHandler() {
         return tabHandler;
     }
+
+    public Tab addGeneralTab () {
+
+        Tab newTab = new Tab();
+        newTab.setText("#General");
+        newTab.setClosable(false);
+        newTab.setUserData("1000000001");
+
+        AnchorPane newPane = new AnchorPane();
+        newPane.setMinWidth(0.0);
+        newPane.setMinHeight(0.0);
+        newPane.setPrefHeight(180);
+        newPane.setPrefWidth(200);
+
+        ImageView imageView = new ImageView();
+        imageView.setFitHeight(563);
+        imageView.setFitWidth(800);
+        imageView.setPreserveRatio(true);
+        imageView.setImage(setBackgroundImage());
+
+        TextArea newTextArea = new TextArea();
+        newTextArea.setOpacity(0.75);
+        newTextArea.setEditable(false);
+        newTextArea.setWrapText(true);
+        newTextArea.setPrefWidth(800);
+        newTextArea.setPrefHeight(563);
+        newTextArea.setUserData("1000000001");
+
+        AnchorPane.setTopAnchor(imageView,0.0);
+        AnchorPane.setTopAnchor(newTextArea, 0.0);
+
+        newPane.getChildren().addAll(imageView, newTextArea);
+
+        tabHandler.add(newTab);
+
+        newTab.setContent(newPane);
+
+        System.out.println(newTab.getUserData());
+
+        return newTab;
+
+
+    }
+
+    public void emptyTabHandler () {
+
+        tabHandler.clear();
+    }
+
 }

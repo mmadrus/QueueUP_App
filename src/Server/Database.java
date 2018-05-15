@@ -18,8 +18,8 @@ public class Database {
     private String searchForRoomUrl = "select room_name from qup.room where room_name = ?";
 
     // Prepared statement to add user into the db
-    private String addUserUrl = "insert into qup.user(user_id, user_name, user_password, user_mail, isAdmin, isBlocked)" +
-            " VALUES ( ?,?,?,?,?,?)";
+    private String addUserUrl = "insert into qup.user(user_id, user_name, user_password, user_mail, isAdmin, isBlocked, isOnline)" +
+            " VALUES ( ?,?,?,?,?,?,?)";
 
     // Prepared statement to check for emails in the db
     private String searchForUserEmailUrl = "select user_mail from qup.user where user_mail = ?";
@@ -36,7 +36,10 @@ public class Database {
     private String userSearch = "Select user_name from user where user_name = ?";
 
     // Update status to online
-    private String updateStatusToOnline = "update qup.user set isOnline = 1 where user_ID = ?";
+    private String updateStatusToOnline = "update qup.user set isOnline = true where user_name = ?";
+
+    // Update status to offline
+    private String updateStatusToOffline = "update qup.user set isOnline = false where user_name = ?";
 
     private String createPrivateChat = "insert into qup.user_has_user(user_user_ID, user_user_ID1)" +
             " VAlUES(?,?)";
@@ -69,6 +72,7 @@ public class Database {
             statement.setString(4, email);
             statement.setBoolean(5, false);
             statement.setBoolean(6, false);
+            statement.setBoolean(7, false);
 
             statement.execute();
 
@@ -328,13 +332,30 @@ public class Database {
 
     }
 
+    public void setUpdateStatusToOffline (String username) {
+
+        try (PreparedStatement statement = c.prepareStatement(updateStatusToOffline)) {
+
+            statement.setString(1, username);
+            statement.execute();
+
+            System.out.println("Status set to online");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Not set as online");
+        }
+
+    }
+
     public int setFindUserId (String username) {
 
         int userID;
 
         try (PreparedStatement statement = c.prepareStatement(findUserId)) {
 
-            statement.setString(1, username);
+            statement.setBoolean(1, true);
+            statement.setString(2, username);
             statement.execute();
 
             ResultSet resultSet = statement.executeQuery();
