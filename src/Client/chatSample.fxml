@@ -42,6 +42,6 @@
         <Button fx:id="logoutButton" layoutX="1036.0" layoutY="627.0" mnemonicParsing="false" onAction="#handleLogoutButton" prefHeight="60.0" prefWidth="120.0" text="Logout" />
       <ImageView fx:id="settingImageButton" fitHeight="60.0" fitWidth="60.0" layoutX="70.0" layoutY="627.0" onMouseClicked="#handleSettingsButton" onMouseEntered="#rotateSettingForward" onMouseExited="#rotateSettingBackward" pickOnBounds="true" preserveRatio="true" />
       <ListView fx:id="onlineUsersArea" layoutX="1006.0" layoutY="57.0" onMouseClicked="#popupMenu" prefHeight="540.0" prefWidth="190.0" />
-      <TextField fx:id="searchField" alignment="CENTER" layoutX="1027.0" layoutY="7.0" onAction="#searchView" promptText="Search " />
+      <TextField fx:id="searchField" alignment="CENTER" layoutX="1027.0" layoutY="7.0" onKeyPressed="#searchView" promptText="Search " />
     </children>
 </AnchorPane>
