@@ -12,4 +12,9 @@
       <entry name="!?*.clj" />
     </wildcardResourcePatterns>
   </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="QueueUP_App" options="--add-exports=java.base/com.sun.net.ssl.internal.ssl=ALL-UNNAMED" />
+    </option>
+  </component>
 </project>

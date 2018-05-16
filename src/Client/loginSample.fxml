@@ -27,6 +27,6 @@
         </PasswordField>
         <Button fx:id="queueButton" layoutX="550.0" layoutY="444.0" mnemonicParsing="false" onAction="#login" prefHeight="31.0" prefWidth="100.0" text="QueueUP" />
         <Button fx:id="registerButton" layoutX="550.0" layoutY="494.0" mnemonicParsing="false" onAction="#registerAccount" prefHeight="31.0" prefWidth="100.0" text="Register" />
-        <Button fx:id="forgotButton" layoutX="529.0" layoutY="544.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="140.0" text="Forgot Password" />
+        <Button fx:id="forgotButton" layoutX="529.0" layoutY="544.0" mnemonicParsing="false" onAction="#handleForgotPassword" prefHeight="31.0" prefWidth="140.0" text="Forgot Password" />
     </children>
 </AnchorPane>

@@ -131,6 +131,28 @@ public class LoginController implements Initializable {
 
     }
 
+    @FXML
+    public void handleForgotPassword (ActionEvent event) {
+
+
+        try {
+
+            dataStream.connectToServer();
+
+            String username = String.format("%-16s", usernameField.getText()).replace(' ', '*');
+
+            dataStream.sendDataStream("/f" + username);
+
+
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+
+        dataStream.disconnectFromServer();
+    }
+
     private void setGuiDesign() {
 
         pane.setStyle("-fx-background-color: WHITE");

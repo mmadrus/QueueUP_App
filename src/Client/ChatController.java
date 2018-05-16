@@ -51,8 +51,6 @@ public class ChatController implements Initializable {
     private GUI GUI = new GUI();
     private User userClass = new User();
 
-    //private Database database;
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -61,9 +59,6 @@ public class ChatController implements Initializable {
 
         // Connects to the server when the scene is initialized
         dataStream.connectToServer();
-
-        //dataStream.sendDataStream("/u" + getCurrentUser());
-        userClass.userList.add("Not really a user");
 
         tabPane.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> currentTab = newValue);
 

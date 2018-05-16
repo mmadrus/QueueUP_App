@@ -91,6 +91,7 @@ public class RegController implements Initializable {
                     //If the return statement is true from the server then it changes scene to the login scene
                     if (dataStream.recieveDataStream().equals("true")) {
 
+                        //dataStream.sendDataStream("/e" + emailField.getText());
                         Node node = (Node) event.getSource();
                         Stage stage = (Stage) node.getScene().getWindow();
 

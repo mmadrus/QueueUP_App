@@ -41,7 +41,7 @@ public class DataStream extends Thread {
         try {
 
             // Conncects to the server host and the port for the server
-            s = new Socket("localhost" +
+            s = new Socket("194.47.41.217" +
                     "", 8080);
 
             dis = new DataInputStream(s.getInputStream());

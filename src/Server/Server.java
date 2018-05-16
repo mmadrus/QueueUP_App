@@ -194,7 +194,7 @@ public class Server {
                             int idOne = serverProtocol.getUserId(data.substring(0, 16));
                             int idTwo = serverProtocol.getUserId(data.substring(16, 32));
 
-                            int roomID = serverProtocol.testM(idOne, idTwo);
+                            int roomID = serverProtocol.privateMessage(idOne, idTwo);
 
                             if (roomID != 0) {
 
@@ -241,6 +241,9 @@ public class Server {
 
                             }
                         }
+                    } else if (command.equals("/f")) {
+
+                        serverProtocol.forgotPassword(data);
                     }
                 }
             } catch (EOFException eofE) {

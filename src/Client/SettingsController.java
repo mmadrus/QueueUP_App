@@ -16,7 +16,7 @@ import java.util.ResourceBundle;
 
 public class SettingsController implements Initializable {
 
-    @FXML private Button backButton, forgotPasswordButton, changePasswordButton;
+    @FXML private Button backButton, changePasswordButton;
 
     private GUI GUI = new GUI();
 
@@ -37,7 +37,6 @@ public class SettingsController implements Initializable {
     private void setGuiDesign () {
 
         backButton.setStyle(GUI.setButtonStyle());
-        forgotPasswordButton.setStyle(GUI.setButtonStyle());
         changePasswordButton.setStyle(GUI.setButtonStyle());
 
     }

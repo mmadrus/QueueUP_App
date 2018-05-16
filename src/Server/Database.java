@@ -33,7 +33,7 @@ public class Database {
     private String userLoginUrl = "select user_name, user_password from qup.user where user_name = ? AND user_password = ?";
 
     // Prepared statement to check for username and usermail in db
-    private String forgotPasswordUrl = "select user_name, user_mail from qup.user where user_name = ? AND user_mail = ?";
+    private String forgotPasswordUrl = "select user_password, user_mail from qup.user where user_name = ?";
 
     // Prepared statement to check for username in db
     private String channelUserList = "select user_name from user";
@@ -52,6 +52,10 @@ public class Database {
     private String findUserId = "select user_ID from qup.user where user_name = ?";
 
     private String findPrivateRoom = "select pmessage_id from qup.user_has_user where user_user_ID1 = ? AND user_user_ID2 = ? AND pmessage_id like '01%'";
+
+    private String getUsernameURL = "select user_name from qup.user where user_mail = ?";
+
+    private String getPasswordURL = "select user_password from qup.user where user_mail = ?";
 
 
     // database constructor
@@ -311,38 +315,30 @@ public class Database {
         return exist;
     }
 
-    public boolean forgotPassword(String name, String email) {
-        boolean exist = false;
+    public String forgotPassword(String name) {
+
+        String userDetails = null;
 
         try (PreparedStatement statement = c.prepareStatement(forgotPasswordUrl)) {
 
             statement.setString(1, name);
-            statement.setString(2, email);
             ResultSet resultSet = statement.executeQuery();
 
             resultSet.next();
 
 
-            String names = resultSet.getString("user_name");
+            String password = resultSet.getString("user_password");
             String mail = resultSet.getString("user_mail");
 
-            if (mail.equals(email) && names.equals(name)) {
-
-                System.out.println(mail);
-                exist = true;
-
-            } else {
-
-                exist = false;
-            }
-
+            userDetails = name + password + mail;
 
         } catch (Exception e) {
 
             e.getSuppressed();
 
         }
-        return exist;
+
+        return userDetails;
     }
 
     public void channelList() {
@@ -446,6 +442,44 @@ public class Database {
         }
 
         return k;
+    }
+
+    public String getUsername (String email) {
+
+        String user = null;
+
+        try (PreparedStatement statement = c.prepareStatement(getUsernameURL)){
+
+            statement.setString(1, email);
+            ResultSet resultSet = statement.executeQuery();
+
+            resultSet.next();
+
+            user = resultSet.getString("user_name");
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+    public String getUserPassword (String email) {
+
+        String password = null;
+
+        try (PreparedStatement statement = c.prepareStatement(getPasswordURL)){
+
+            statement.setString(1, email);
+            ResultSet resultSet = statement.executeQuery();
+
+            resultSet.next();
+
+            password = resultSet.getString("user_password");
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return password;
     }
 
 
