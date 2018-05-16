@@ -216,7 +216,7 @@ public class Server {
                     } else if (command.equals("/0")) {
 
                         sendToClient("/8" + data.substring(5));
-                        System.out.println("Fuck");
+
 
                         for (int i = 0; i < clientHandlers.size(); i++) {
 
@@ -229,7 +229,6 @@ public class Server {
                                     if (serverProtocol.onlineUsers.get(u).equals(data.substring(5))){
 
                                         serverProtocol.onlineUsers.remove(u);
-                                        System.out.println("Kalkon");
                                         break;
                                     }
                                 }

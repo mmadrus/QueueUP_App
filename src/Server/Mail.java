@@ -45,51 +45,6 @@ public class Mail {
 
         }
 
-       /* // Recipient's email ID needs to be mentioned.
-      String to = userEmail;
-
-      // Sender's email ID needs to be mentioned
-      String from = "qupchat@gmail.com";
-
-      // Assuming you are sending email from localhost
-      String host = "194.47.41.217";
-
-      // Get system properties
-      Properties properties = System.getProperties();
-
-      // Setup mail server
-      properties.setProperty("mail.smtp.host", host);
-
-      // Get the default Session object.
-      Session session = Session.getDefaultInstance(properties);
-
-      try {
-         // Create a default MimeMessage object.
-         MimeMessage message = new MimeMessage(session);
-
-         // Set From: header field of the header.
-         message.setFrom(new InternetAddress(from));
-
-         // Set To: header field of the header.
-         message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-
-         // Set Subject: header field
-         message.setSubject("Your QUP!");
-
-         // Now set the actual message
-         message.setText("Here is your user details.\n\nUsername: " + username +
-                 "\nPassword: " + password + "\n\nHope you enjoy your QUP! :)");
-
-         // Send message
-         Transport.send(message);
-         System.out.println("Sent message successfully....");
-
-      } catch (Exception mex) {
-
-         mex.printStackTrace();
-
-      }*/
-
     }
 
 } //Source: https://www.mkyong.com/java/javamail-api-sending-email-via-gmail-smtp-example/

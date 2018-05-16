@@ -67,34 +67,6 @@ public class ChatController implements Initializable {
 
     }
 
-    //Search method for Online users
-    @FXML
-    public void searchView(){
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-
-                ObservableList<String> observableList = FXCollections.observableArrayList(userClass.userList);
-
-                searchField.textProperty().addListener(((observable, oldValue, newValue) -> {
-                    onlineUsersArea.getItems().clear();
-
-                    for (int j = 0; j < observableList.size(); j++) {
-
-                        if (observableList.get(j).contains(searchField.getCharacters())){
-                            onlineUsersArea.getItems().add(observableList.get(j));
-
-                        }
-                    }
-
-
-                }));
-
-            }
-        });
-
-    }
-
     // If the user wants to log out
     @FXML
     public void handleLogoutButton(ActionEvent event) throws IOException, InterruptedException {
@@ -102,11 +74,10 @@ public class ChatController implements Initializable {
         dataStream.sendDataStream("/0" + dataStream.getSocketPort() + currentUser);
 
         running = false;
+        userClass.userList.clear();
         GUI.emptyTabHandler();
         //Sets current user to null
         setCurrentUser(null);
-
-        Thread.sleep(3000);
 
         Node node = (Node) event.getSource();
         Stage stage = (Stage) node.getScene().getWindow();
@@ -380,22 +351,22 @@ public class ChatController implements Initializable {
 
                             }
 
+
                             ObservableList<String> listie = FXCollections.observableArrayList();
 
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
 
-                                        for (int q = 0; q < listie.size(); q++) {
+                                    for (int q = 0; q < listie.size(); q++) {
 
-                                            listie.remove(q);
-                                        }
+                                        listie.remove(q);
+                                    }
 
-                                        for (int q = 0; q < userClass.userList.size(); q++) {
+                                    for (int q = 0; q < userClass.userList.size(); q++) {
 
-                                            listie.add(q, userClass.userList.get(q));
-                                        }
-
+                                        listie.add(q, userClass.userList.get(q));
+                                    }
 
 
                                     onlineUsersArea.setItems(listie);
@@ -505,26 +476,25 @@ public class ChatController implements Initializable {
 
                             }
 
-                            ObservableList<String> listie = FXCollections.observableArrayList();
+                            ObservableList<String> onlineUserList = FXCollections.observableArrayList();
 
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
 
-                                    for (int q = 0; q < listie.size(); q++) {
+                                    for (int q = 0; q < onlineUserList.size(); q++) {
 
-                                        listie.remove(q);
+                                        onlineUserList.remove(q);
                                     }
 
                                     for (int q = 0; q < userClass.userList.size(); q++) {
 
-                                        listie.add(q, userClass.userList.get(q));
+                                        onlineUserList.add(q, userClass.userList.get(q));
 
                                     }
 
 
-
-                                    onlineUsersArea.setItems(listie);
+                                    onlineUsersArea.setItems(onlineUserList);
                                 }
                             });
 
@@ -613,6 +583,43 @@ public class ChatController implements Initializable {
 
         tabPane.getTabs().add(GUI.addGeneralTab());
     }
+
+    //Search method for Online users
+    @FXML
+    public void searchView(){
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+
+                ObservableList<String> observableList = FXCollections.observableArrayList(userClass.userList);
+
+                searchField.textProperty().addListener(((observable, oldValue, newValue) -> {
+                    onlineUsersArea.getItems().clear();
+
+                    for (int j = 0; j < observableList.size(); j++) {
+
+                        if (observableList.get(j).contains(searchField.getCharacters())){
+                            onlineUsersArea.getItems().add(observableList.get(j));
+
+                        }
+                    }
+
+
+                    if (searchField.getText().length() <= 0) {
+
+                        dataStream.sendDataStream("/a1");
+                    }
+                }));
+
+            }
+        });
+
+
+
+    }
+
+
 
 
 }
