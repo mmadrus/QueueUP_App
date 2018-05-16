@@ -67,6 +67,34 @@ public class ChatController implements Initializable {
 
     }
 
+    //Search method for Online users
+    @FXML
+    public void searchView(){
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+
+                ObservableList<String> observableList = FXCollections.observableArrayList(userClass.userList);
+
+                searchField.textProperty().addListener(((observable, oldValue, newValue) -> {
+                    onlineUsersArea.getItems().clear();
+
+                    for (int j = 0; j < observableList.size(); j++) {
+
+                        if (observableList.get(j).contains(searchField.getCharacters())){
+                            onlineUsersArea.getItems().add(observableList.get(j));
+
+                        }
+                    }
+
+
+                }));
+
+            }
+        });
+
+    }
+
     // If the user wants to log out
     @FXML
     public void handleLogoutButton(ActionEvent event) throws IOException, InterruptedException {
