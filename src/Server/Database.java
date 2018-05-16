@@ -1,5 +1,10 @@
 package Server;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -41,12 +46,12 @@ public class Database {
     // Update status to offline
     private String updateStatusToOffline = "update qup.user set isOnline = false where user_name = ?";
 
-    private String createPrivateChat = "insert into qup.user_has_user(user_user_ID, user_user_ID1)" +
-            " VAlUES(?,?)";
+    private String createPrivateChat = "insert into qup.user_has_user(user_user_ID1, user_user_ID2, pmessage_time, pmessage_id)" +
+            " VAlUES(?,?,?,?)";
 
     private String findUserId = "select user_ID from qup.user where user_name = ?";
 
-    private String findPrivateRoom = "select pmessage_id from qup.user_has_user where user_user_ID = ? AND user_user_ID1 = ? AND pmessage_id like '01%'";
+    private String findPrivateRoom = "select pmessage_id from qup.user_has_user where user_user_ID1 = ? AND user_user_ID2 = ? AND pmessage_id like '01%'";
 
 
     // database constructor
@@ -224,37 +229,64 @@ public class Database {
 
     }
 
-    public void createPrivateRoom (String user1, String user2) {
+    public void createPrivateRoom(String user1, String user2) {
 
-        try (PreparedStatement statement = c.prepareStatement(findUserId)){
+        try (PreparedStatement statement = c.prepareStatement(findUserId)) {
 
-                statement.setString(1, user1);
-                ResultSet resultSet1 = statement.executeQuery();
-                resultSet1.next();
-                String userId1 = resultSet1.getString("user_ID");
+            statement.setString(1, user1);
+            ResultSet resultSet1 = statement.executeQuery();
+            resultSet1.next();
+            String userId1 = resultSet1.getString("user_ID");
 
-                statement.setString(1, user2);
-                ResultSet resultSet2 = statement.executeQuery();
-                resultSet2.next();
-                String userId2 = resultSet2.getString("user_ID");
+            statement.setString(1, user2);
+            ResultSet resultSet2 = statement.executeQuery();
+            resultSet2.next();
+            String userId2 = resultSet2.getString("user_ID");
 
-                PreparedStatement statement1 = c.prepareStatement(createPrivateChat);
+//                PreparedStatement statement1 = c.prepareStatement(createPrivateChat);
+//
+//                statement1.setString(1, userId1);
+//                statement1.setString(2, userId2);
+//                ResultSet resultSet3 = statement1.executeQuery();
+//                resultSet3.next();
 
-                statement1.setString(1, userId1);
-                statement1.setString(2, userId2);
-                ResultSet resultSet3 = statement1.executeQuery();
-                resultSet3.next();
-
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
 
-    public boolean searchForUser (String username) {
+    public void userHasUser(String user1, String user2, int room) {
+        try (PreparedStatement statement = c.prepareStatement(createPrivateChat)) {
+
+
+            Timestamp time = new Timestamp(System.currentTimeMillis());
+
+            //File file = new File("TEST.txt");
+            //FileInputStream fi = new FileInputStream(file);
+
+            statement.setString(1, user1);
+            System.out.println("Databas metod för att skapa privat rum anv1 = " + user1);
+            statement.setString(2, user2);
+            System.out.println("Databas metod för att skapa privat rum anv2 = " + user2);
+            statement.setTimestamp(3, time);
+            System.out.println("Databas metod för att skapa privat rum tid =" + time);
+            //statement.setAsciiStream(4, fi, (int) file.length());
+            statement.setInt(4, room);
+            System.out.println("Databas metod för att skapa privat rum rumID =" + room);
+            statement.execute();
+            //Files.write(file,StandardOpenOption.CREATE,StandardOpenOption.APPEND);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public boolean searchForUser(String username) {
         boolean exist = false;
 
-        try (PreparedStatement statement = c.prepareStatement(userSearch)){
+        try (PreparedStatement statement = c.prepareStatement(userSearch)) {
 
             statement.setString(1, username);
             ResultSet resultSet = statement.executeQuery();
@@ -273,7 +305,7 @@ public class Database {
                 exist = false;
             }
 
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return exist;
@@ -313,10 +345,10 @@ public class Database {
         return exist;
     }
 
-        public void channelList () {
-        }
+    public void channelList() {
+    }
 
-    public void setUpdateStatusToOnline (String username) {
+    public void setUpdateStatusToOnline(String username) {
 
         try (PreparedStatement statement = c.prepareStatement(updateStatusToOnline)) {
 
@@ -332,7 +364,7 @@ public class Database {
 
     }
 
-    public void setUpdateStatusToOffline (String username) {
+    public void setUpdateStatusToOffline(String username) {
 
         try (PreparedStatement statement = c.prepareStatement(updateStatusToOffline)) {
 
@@ -348,23 +380,23 @@ public class Database {
 
     }
 
-    public int setFindUserId (String username) {
+    public int setFindUserId(String username) {
 
         int userID;
 
         try (PreparedStatement statement = c.prepareStatement(findUserId)) {
 
-            statement.setBoolean(1, true);
-            statement.setString(2, username);
+           // statement.setBoolean(1, true);
+            statement.setString(1, username);
             statement.execute();
 
             ResultSet resultSet = statement.executeQuery();
 
             resultSet.next();
 
-            String user = resultSet.getString("user_ID");
+            userID = resultSet.getInt("user_ID");
 
-            userID = Integer.parseInt(user);
+           // userID = Integer.parseInt(user);
 
             System.out.println("ID: " + userID);
 
@@ -378,7 +410,7 @@ public class Database {
 
     }
 
-    public boolean searchForPrivateRoom (int idOne, int idTwo)throws SQLException {
+    public boolean searchForPrivateRoom(int idOne, int idTwo) throws SQLException {
 
         int id = 0;
         String test = "";
@@ -407,9 +439,9 @@ public class Database {
                 k = true;
             }
 
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

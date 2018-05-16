@@ -1,5 +1,6 @@
 package Server;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -101,10 +102,13 @@ public class ServerProtocol {
                 } else {
 
                     db.createPrivateRoom(data.substring(0,16), data.substring(16));
+                    System.out.println("kollar om denna körs");
 
                     succesfull = true;
 
                 }
+
+                System.out.println(succesfull);
 
             } catch (Exception e){
                 e.printStackTrace();
@@ -181,7 +185,7 @@ public class ServerProtocol {
         return Integer.parseInt(id);
     }
 
-    public int testM (int idOne, int idTwo) {
+    public int testM (int idOne, int idTwo) throws SQLException {
 
         int id = 0;
 
@@ -193,13 +197,17 @@ public class ServerProtocol {
 
             if (found == true) {
 
-                id = 1234;
+                db.userHasUser(String.valueOf(idOne),String.valueOf(idTwo),createRoomId());
+
+
 
             } else if (found == false){
 
                 id = 0;
             }
 
+        } catch (SQLException e){
+            System.out.println(" Körs denna eller ? ");
         } catch (Exception e) {
 
             e.printStackTrace();
