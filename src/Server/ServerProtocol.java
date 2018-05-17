@@ -14,7 +14,7 @@ public class ServerProtocol {
     public boolean databaseProtocol(String command, String data) {
 
         boolean succesfull = true;
-
+        String nuFunkarDet;
         // Add user command
         if (command.equals("/1")) {
 
