@@ -60,6 +60,12 @@ public class Database {
     // Update status to online
     private String changePasswordURL = "update qup.user set user_password = ? where user_name = ?";
 
+    private String banUser = "update qup.user set isBlocked = true where user_name = ?";
+
+    private String isUserBanned = "select isBlocked from qup.user where user_name = ?";
+
+    private String unbanUserURL = "update qup.user set isBlocked = false where user_name = ?";
+
 
     // database constructor
     public Database() throws SQLException {
@@ -511,6 +517,82 @@ public class Database {
         }
 
         return changed;
+    }
+
+    public void setBanUser (String user) {
+
+        try (PreparedStatement statement = c.prepareStatement(banUser)){
+
+            statement.setString(1, user);
+            statement.execute();
+
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+    }
+
+    public boolean isBLocked (String username) {
+
+        boolean banned = true;
+
+        try (PreparedStatement statement = c.prepareStatement(isUserBanned)) {
+
+
+            statement.setString(1, username);
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+
+            boolean checkIsBanned = resultSet.getBoolean(1);
+
+            System.out.println(checkIsBanned);
+
+            if (checkIsBanned == false) {
+
+                banned = false;
+
+            } else {
+
+                banned = true;
+            }
+
+        } catch (Exception e ) {
+
+            e.printStackTrace();
+        }
+
+        return banned;
+    }
+
+    public boolean unbanUser (String username) {
+
+        boolean banned = true;
+
+        try (PreparedStatement statement = c.prepareStatement(unbanUserURL)) {
+
+
+            statement.setString(1, username);
+
+            boolean checkIsBanned = statement.execute();
+
+            System.out.println(checkIsBanned);
+
+            if (checkIsBanned == true) {
+
+                banned = false;
+
+            } else {
+
+                banned = true;
+            }
+
+        } catch (Exception e ) {
+
+            e.printStackTrace();
+        }
+
+        return banned;
     }
 
 

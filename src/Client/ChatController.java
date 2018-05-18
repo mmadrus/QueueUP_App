@@ -19,12 +19,15 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import javafx.util.Duration;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.stream.IntStream;
 
 public class ChatController implements Initializable {
 
@@ -51,6 +54,8 @@ public class ChatController implements Initializable {
     private GUI GUI = new GUI();
     private User userClass;
     private ArrayList<String> userList = new ArrayList<>();
+    private Sound sound = new Sound();
+    private Admin admin = new Admin();
     //public String currentUser;
 
     @Override
@@ -63,6 +68,7 @@ public class ChatController implements Initializable {
         dataStream.connectToServer();
 
         tabPane.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> currentTab = newValue);
+        admin.addAdmin();
 
         // Creates a thread that constantly updates the chat
         updateChat();
@@ -165,38 +171,107 @@ public class ChatController implements Initializable {
     @FXML
     public void popupMenu(MouseEvent event) {
         MenuItem sendWhisper = new MenuItem("Send Message");
+        MenuItem ban = new MenuItem("Ban user");
         MenuItem closeMenu = new MenuItem("Close");
-        ContextMenu contextMenu = new ContextMenu();
-        contextMenu.getItems().addAll(sendWhisper, closeMenu);
-        contextMenu.setAutoHide(true);
-        contextMenu.show(pane, event.getScreenX(), event.getScreenY());
-        closeMenu.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
 
-                contextMenu.hide();
+
+        boolean isAdmin = false;
+
+        for (int i = 0; i < admin.getAdminList().size(); i++) {
+
+            if (Data.getInstance().getUser().equals(admin.getAdminList().get(i))) {
+
+                isAdmin = true;
+                break;
+
+            } else {
+
+                isAdmin = false;
             }
-        });
 
-        sendWhisper.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                String wantedUser = onlineUsersArea.getSelectionModel().getSelectedItem();
+        }
 
-                try {
+        System.out.println(isAdmin);
 
-                    if (!wantedUser.equals(null)) {
-                        String wantedUsername = String.format("%-16s", wantedUser).replace(' ', '*');
-                        dataStream.sendDataStream("/w" + Data.getInstance().getUser() + wantedUsername);
+            if (isAdmin == false) {
+                ContextMenu contextMenuUser = new ContextMenu();
+                contextMenuUser.getItems().addAll(sendWhisper, closeMenu);
+                contextMenuUser.setAutoHide(true);
+                contextMenuUser.show(pane, event.getScreenX(), event.getScreenY());
+
+                closeMenu.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+
+                        contextMenuUser.hide();
                     }
+                });
 
-                } catch (NullPointerException e) {
+                sendWhisper.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        String wantedUser = onlineUsersArea.getSelectionModel().getSelectedItem();
 
-                    contextMenu.hide();
-                }
+                        try {
+
+                            if (!wantedUser.equals(null)) {
+                                String wantedUsername = String.format("%-16s", wantedUser).replace(' ', '*');
+                                dataStream.sendDataStream("/w" + Data.getInstance().getUser() + wantedUsername);
+                            }
+
+                        } catch (NullPointerException e) {
+
+                            contextMenuUser.hide();
+                        }
+
+                    }
+                });
+            } else if (isAdmin == true) {
+
+                ContextMenu contextMenuAdmin = new ContextMenu();
+                contextMenuAdmin.getItems().addAll(sendWhisper, ban, closeMenu);
+                contextMenuAdmin.setAutoHide(true);
+                contextMenuAdmin.show(pane, event.getScreenX(), event.getScreenY());
+
+                closeMenu.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+
+                        contextMenuAdmin.hide();
+                    }
+                });
+
+                sendWhisper.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        String wantedUser = onlineUsersArea.getSelectionModel().getSelectedItem();
+
+                        try {
+
+                            if (!wantedUser.equals(null)) {
+                                String wantedUsername = String.format("%-16s", wantedUser).replace(' ', '*');
+                                dataStream.sendDataStream("/w" + Data.getInstance().getUser() + wantedUsername);
+                            }
+
+                        } catch (NullPointerException e) {
+
+                            contextMenuAdmin.hide();
+                        }
+
+                    }
+                });
+
+                ban.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+
+                        String wantedUser = onlineUsersArea.getSelectionModel().getSelectedItem();
+                        String paddedUser = String.format("%-16s", wantedUser).replace(' ', '*');
+                        dataStream.sendDataStream("/b" + paddedUser);
+                    }
+                });
 
             }
-        });
 
     }
 
@@ -283,6 +358,10 @@ public class ChatController implements Initializable {
 
                                     // Appends the text the finaluser and message into the message area for the chat
                                     thisArea.appendText("[" + finalUser + "] " + msg.substring(28) + "\n");
+
+                                    if (!msg.substring(12, 28).equals(Data.getInstance().getUser())) {
+                                        sound.playSound();
+                                    }
 
                                     break;
 
@@ -506,6 +585,13 @@ public class ChatController implements Initializable {
                                 }
                             });
 
+                        } else if (msg.substring(0,2).equals("/b")) {
+
+                            System.out.println("hej");
+                            if (msg.substring(2).equals(Data.getInstance().getUser())) {
+
+                                forceLogout();
+                            }
                         }
 
 
@@ -627,6 +713,67 @@ public class ChatController implements Initializable {
 
     }
 
-    public void setCurrent () {}
+    private void forceLogout () {
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                try {
+
+                    dataStream.sendDataStream("/0" + dataStream.getSocketPort() + Data.getInstance().getUser());
+
+                    running = false;
+                    userList.clear();
+                    GUI.emptyTabHandler();
+                    //Sets current user to null
+                    //setCurrentUser(null);
+                    userClass = new User(null);
+
+                    Button button = new Button("test");
+                    button.setVisible(false);
+                    button.setOnAction(new EventHandler<ActionEvent>() {
+
+                        @Override
+                        public void handle(ActionEvent event) {
+
+                            try {
+
+                                FXMLLoader loader = new FXMLLoader(getClass().getResource("loginSample.fxml"));
+                                Parent root = loader.load();
+                                Scene scene = new Scene(root, 1200, 700);
+                                Stage stage = (Stage) logoutButton.getScene().getWindow();
+                                stage.setScene(scene);
+                                stage.show();
+
+                                dataStream.disconnectFromServer();
+
+                                Alert banned = new Alert(Alert.AlertType.INFORMATION);
+                                banned.setTitle("Banned");
+                                banned.setHeaderText("You have been banned!");
+                                banned.setContentText("You have been banned for bad behaviour");
+                                banned.show();
+
+                            } catch (Exception e) {
+
+                                e.printStackTrace();
+                            }
+
+                        }
+                    });
+
+                    button.fire();
+
+
+
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+    }
+
 
 }

@@ -153,7 +153,7 @@ public class Server {
 
                     // Checks for the commands that have something to do with the database
                     if (command.equals("/1") || command.equals("/2") || command.equals("/3") || command.equals("/j")
-                            || command.equals("/k") || command.equals("/b")
+                            || command.equals("/k")
                             || command.equals("/d") || command.equals("/c")
                             || command.equals("/4") || command.equals("/5") || command.equals("/6")) {
 
@@ -241,6 +241,13 @@ public class Server {
                     } else if (command.equals("/f")) {
 
                         serverProtocol.forgotPassword(data);
+
+                    }  else if (command.equals("/b")) {
+
+                        System.out.println(recieved);
+                        serverProtocol.banUser(data);
+                        sendToClient(recieved);
+
                     }
                 }
             } catch (EOFException eofE) {

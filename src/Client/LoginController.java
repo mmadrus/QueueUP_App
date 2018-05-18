@@ -83,30 +83,55 @@ public class LoginController implements Initializable {
                 dataStream.connectToServer();
 
                 // Sends the username and password as a string with the command /6 to the server
-                dataStream.sendDataStream(user);
+                dataStream.sendDataStream("/k" + username);
 
                 String serverResponse = dataStream.recieveDataStream();
 
                 // Checks for the return statement from the server, if it returns true then the user will log into the chat
-                if (serverResponse.equals("true")) {
+                if (serverResponse.equals("false")) {
 
-                    Node node = (Node) event.getSource();
-                    Stage stage = (Stage) node.getScene().getWindow();
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("chatSample.fxml"));
-                    Parent root = loader.load();
+                    dataStream.disconnectFromServer();
 
-                    Data.getInstance().setUser(username);
+                    dataStream.connectToServer();
+                    dataStream.sendDataStream(user);
 
-                    Scene scene = new Scene(root, 1200, 700);
-                    stage.setScene(scene);
+                    String secondServerResponse = dataStream.recieveDataStream();
+                    System.out.println(secondServerResponse);
+
+                    if (secondServerResponse.equals("true")) {
+                        Node node = (Node) event.getSource();
+                        Stage stage = (Stage) node.getScene().getWindow();
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("chatSample.fxml"));
+                        Parent root = loader.load();
+
+                        Data.getInstance().setUser(username);
+
+                        Scene scene = new Scene(root, 1200, 700);
+                        stage.setScene(scene);
+
+                        dataStream.disconnectFromServer();
+
+                    } else {
+
+                        Alert accountError = new Alert(Alert.AlertType.INFORMATION);
+                        accountError.setTitle("Wrong username or password");
+                        accountError.setHeaderText("The username or password does not exist");
+                        accountError.setContentText("Please enter your username and password");
+                        accountError.show();
+
+                        dataStream.disconnectFromServer();
+
+                    }
 
                 } else { //If the return statement from the the server is false then the username and password does not match something in the db
 
                     Alert accountError = new Alert(Alert.AlertType.INFORMATION);
-                    accountError.setTitle("Wrong username or password");
-                    accountError.setHeaderText("The username or password does not exist");
-                    accountError.setContentText("Please enter your username and password");
+                    accountError.setTitle("Banned!");
+                    accountError.setHeaderText("You can not login because your banned.");
+                    //accountError.setContentText("Please enter your username and password");
                     accountError.show();
+
+                    dataStream.disconnectFromServer();
                 }
 
             } catch (Exception e) {
@@ -117,13 +142,13 @@ public class LoginController implements Initializable {
                 notConnected.setContentText("Server is down");
                 notConnected.show();
                 e.printStackTrace();
+
+                dataStream.disconnectFromServer();
             }
 
         }
 
 
-        //The thread closes
-        dataStream.disconnectFromServer();
 
     }
 

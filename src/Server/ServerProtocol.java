@@ -183,6 +183,30 @@ public class ServerProtocol {
 
                 e.printStackTrace();
             }
+        } else if (command.equals("/k")) {
+
+            try {
+
+                Database db = new Database();
+
+                succesfull = db.isBLocked(data);
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+            }
+        } else if (command.equals("/4")) {
+
+            try {
+
+                Database db = new Database();
+
+                succesfull = db.unbanUser(data);
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+            }
         }
 
         return succesfull;
@@ -345,6 +369,22 @@ public class ServerProtocol {
 
         }
 
+    }
+
+    public void banUser(String user) {
+
+
+        try {
+
+            Database db = new Database();
+
+            db.setBanUser(user);
+
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
     }
 
 }

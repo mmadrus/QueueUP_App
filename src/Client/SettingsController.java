@@ -6,6 +6,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -14,17 +17,51 @@ import java.util.ResourceBundle;
 
 public class SettingsController implements Initializable {
 
-    @FXML private Button backButton, changePasswordButton;
+    @FXML private Button backButton, changePasswordButton, unbanUserButton;
     @FXML private PasswordField newPasswordField;
+    @FXML private TextField unbanUserField;
+    @FXML private ImageView imageView;
 
     private GUI GUI = new GUI();
     private DataStream dataStream = new DataStream();
-    private User user;
-    private String currentUser;
+    private Admin admin = new Admin();
+    private String user = Data.getInstance().getUser();
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setGuiDesign();
+
+        admin.addAdmin();
+
+        boolean isAdmin = false;
+
+        System.out.println("settings: " + user);
+        for (int i = 0; i < admin.getAdminList().size(); i++){
+
+            if (Data.getInstance().getUser().equals(admin.getAdminList().get(i))) {
+
+                isAdmin = true;
+                break;
+
+            } else {
+
+                isAdmin = false;
+
+            }
+        }
+
+        if (isAdmin == true) {
+
+            unbanUserButton.setVisible(true);
+            unbanUserField.setVisible(true);
+
+        } else {
+
+            unbanUserField.setVisible(false);
+            unbanUserButton.setVisible(false);
+
+        }
     }
 
     @FXML
@@ -94,10 +131,53 @@ public class SettingsController implements Initializable {
 
     }
 
+    @FXML
+    public void unbanUser (ActionEvent event) {
+
+        String username = String.format("%-16s", unbanUserField.getText()).replace(' ', '*');
+
+        try {
+
+            dataStream.connectToServer();
+
+            dataStream.sendDataStream("/4" + username);
+
+            if (dataStream.recieveDataStream().equals("false")) {
+
+                Alert passwordChange = new Alert(Alert.AlertType.INFORMATION);
+                passwordChange.setTitle("Failure");
+                passwordChange.setHeaderText("Unban session did not go throught.");
+                passwordChange.setContentText("Check server for error.");
+                passwordChange.show();
+
+                dataStream.disconnectFromServer();
+
+            } else {
+
+                Alert passwordChange = new Alert(Alert.AlertType.INFORMATION);
+                passwordChange.setTitle("Success!");
+                passwordChange.setHeaderText(unbanUserField.getText() + " is no longer banned.");
+                //passwordChange.setContentText("Server is down");
+                passwordChange.show();
+                dataStream.disconnectFromServer();
+            }
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+
+
+    }
+
     private void setGuiDesign () {
 
+        imageView.setImage(GUI.setBackgroundImage());
+        newPasswordField.setStyle(GUI.setTextfieldStyle());
+        unbanUserField.setStyle(GUI.setTextfieldStyle());
         backButton.setStyle(GUI.setButtonStyle());
         changePasswordButton.setStyle(GUI.setButtonStyle());
+        unbanUserButton.setStyle(GUI.setButtonStyle());
 
     }
 
