@@ -1,5 +1,7 @@
 package Server;
 
+import Client.DataStream;
+
 import javax.xml.crypto.Data;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -158,6 +160,27 @@ public class ServerProtocol {
                 db.setUpdateStatusToOffline(data.substring(0,16));
 
             } catch (Exception e){
+                e.printStackTrace();
+            }
+        } else if (command.equals("/c")) {
+
+            try {
+
+                Database db = new Database();
+
+                boolean changed = db.changePassword(data.substring(16), data.substring(0, 16));
+                if (changed == true) {
+
+                    succesfull = true;
+
+                } else {
+
+                    succesfull = false;
+                }
+
+
+            } catch (Exception e) {
+
                 e.printStackTrace();
             }
         }

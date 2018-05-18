@@ -55,7 +55,7 @@ public class GUI {
 
         Tab newTab = new Tab();
         newTab.setText(name);
-        newTab.setClosable(false);
+        newTab.setClosable(true);
         newTab.setDisable(false);
         newTab.setUserData(id);
 
@@ -96,6 +96,10 @@ public class GUI {
 
     public ArrayList<Tab> getTabHandler() {
         return tabHandler;
+    }
+
+    public void setTabHandler(ArrayList<Tab> tabHandler) {
+        this.tabHandler = tabHandler;
     }
 
     public Tab addGeneralTab () {

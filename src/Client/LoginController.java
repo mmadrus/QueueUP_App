@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.DoubleAccumulator;
 
 public class LoginController implements Initializable {
 
@@ -74,8 +75,6 @@ public class LoginController implements Initializable {
             String username = String.format("%-16s", usernameField.getText()).replace(' ', '*');
             String password = String.format("%-20s", passwordField.getText()).replace(' ', '*');
 
-            String currentUser = username;
-
             String user = "/6" + username + password;
 
             try {
@@ -96,10 +95,7 @@ public class LoginController implements Initializable {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("chatSample.fxml"));
                     Parent root = loader.load();
 
-                    // Calls for the chat controller
-                    ChatController chatController = loader.getController();
-                    // Sets the current user in the chat controller to the one filled in into the username textfield
-                    chatController.setCurrentUser(currentUser);
+                    Data.getInstance().setUser(username);
 
                     Scene scene = new Scene(root, 1200, 700);
                     stage.setScene(scene);

@@ -75,42 +75,53 @@ public class RegController implements Initializable {
                 // else, it checks so that the username is only using letters and numbers
                 if (usernameLength(usernameField.getText())) {
 
-                    //Pads the username and password to make it fit into the string thats being sent
-                    String username = String.format("%-16s", usernameField.getText()).replace(' ', '*');
-                    String password = String.format("%-20s", passwordField.getText()).replace(' ', '*');
+                    if (passwordField.getText().length() < 20) {
 
-                    //Create a string with command, the padded username and password with the email
-                    String user = "/1" + username + password + emailField.getText();
+                        //Pads the username and password to make it fit into the string thats being sent
+                        String username = String.format("%-16s", usernameField.getText()).replace(' ', '*');
+                        String password = String.format("%-20s", passwordField.getText()).replace(' ', '*');
 
-                    //Connects to server
-                    dataStream.connectToServer();
+                        //Create a string with command, the padded username and password with the email
+                        String user = "/1" + username + password + emailField.getText();
 
-                    //Sends the user string to the server
-                    dataStream.sendDataStream(user);
+                        //Connects to server
+                        dataStream.connectToServer();
 
-                    //If the return statement is true from the server then it changes scene to the login scene
-                    if (dataStream.recieveDataStream().equals("true")) {
+                        //Sends the user string to the server
+                        dataStream.sendDataStream(user);
 
-                        //dataStream.sendDataStream("/e" + emailField.getText());
-                        Node node = (Node) event.getSource();
-                        Stage stage = (Stage) node.getScene().getWindow();
+                        //If the return statement is true from the server then it changes scene to the login scene
+                        if (dataStream.recieveDataStream().equals("true")) {
 
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("loginSample.fxml"));
-                        Parent root = loader.load();
+                            //dataStream.sendDataStream("/e" + emailField.getText());
+                            Node node = (Node) event.getSource();
+                            Stage stage = (Stage) node.getScene().getWindow();
 
-                        Scene scene = new Scene(root, 1200, 700);
-                        stage.setScene(scene);
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("loginSample.fxml"));
+                            Parent root = loader.load();
+
+                            Scene scene = new Scene(root, 1200, 700);
+                            stage.setScene(scene);
 
 
-                    } else { //If the return statement is false then the registration is not complete
+                        } else { //If the return statement is false then the registration is not complete
+
+                            Alert accountError = new Alert(Alert.AlertType.INFORMATION);
+                            accountError.setTitle("Registration not complete!");
+                            accountError.setHeaderText("Username or E-Mail already exists.");
+                            accountError.show();
+                        }
+
+                        dataStream.disconnectFromServer();
+
+                    } else {
 
                         Alert accountError = new Alert(Alert.AlertType.INFORMATION);
                         accountError.setTitle("Registration not complete!");
-                        accountError.setHeaderText("Username or E-Mail already exists.");
+                        accountError.setHeaderText("Password must me less than 20 characters.");
                         accountError.show();
-                    }
 
-                    dataStream.disconnectFromServer();
+                    }
 
 
                 } else { //If the username is to long or there arent only letters and number

@@ -3,6 +3,13 @@ import java.util.*;
 
 public class User {
 
-  ArrayList<String> userList = new ArrayList<>();
+  private String currentUser;
 
+  public User(String currentUser) {
+    this.currentUser = currentUser;
+  }
+
+  public String getCurrentUser() {
+    return currentUser;
+  }
 }

@@ -1,14 +1,12 @@
 package Client;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.stage.Stage;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -17,21 +15,83 @@ import java.util.ResourceBundle;
 public class SettingsController implements Initializable {
 
     @FXML private Button backButton, changePasswordButton;
+    @FXML private PasswordField newPasswordField;
 
     private GUI GUI = new GUI();
+    private DataStream dataStream = new DataStream();
+    private User user;
+    private String currentUser;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setGuiDesign();
     }
 
-    public void backToChat (javafx.event.ActionEvent event) throws IOException {
-        Node node = (Node) event.getSource();
-        Stage stage = (Stage) node.getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("chatSample.fxml"));
-        Parent root = loader.load();
-        Scene scene = new Scene(root, 1200, 700);
-        stage.setScene(scene);
+    @FXML
+    public void backToChat (javafx.event.ActionEvent event) {
+
+        try {
+
+            Stage stage = (Stage) backButton.getScene().getWindow();
+            stage.close();
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+        }
+    }
+
+    @FXML
+    public void changePassword (ActionEvent event) {
+
+        try {
+
+            if (!newPasswordField.getText().isEmpty() && newPasswordField.getText().length() < 20) {
+
+                String password = String.format("%-20s", newPasswordField.getText()).replace(' ', '*');
+
+                dataStream.connectToServer();
+                dataStream.sendDataStream("/c" + Data.getInstance().getUser() + password);
+
+                if (dataStream.recieveDataStream().equals("false")) {
+
+                    Alert passwordChange = new Alert(Alert.AlertType.INFORMATION);
+                    passwordChange.setTitle("Failure");
+                    passwordChange.setHeaderText("Your password did not get updated");
+                    //passwordChange.setContentText("Server is down");
+                    passwordChange.show();
+
+                    dataStream.disconnectFromServer();
+
+                } else {
+
+                    Alert passwordChange = new Alert(Alert.AlertType.INFORMATION);
+                    passwordChange.setTitle("Success!");
+                    passwordChange.setHeaderText("Your password is now updated!");
+                    //passwordChange.setContentText("Server is down");
+                    passwordChange.show();
+                    dataStream.disconnectFromServer();
+                }
+            } else {
+
+                Alert passwordChange = new Alert(Alert.AlertType.INFORMATION);
+                passwordChange.setTitle("Failure");
+                passwordChange.setHeaderText("The field can not be empty and maximum of 20 characters.");
+                //passwordChange.setContentText("Server is down");
+                passwordChange.show();
+
+            }
+
+            } catch(Exception e){
+
+                e.printStackTrace();
+
+            }
+
+
+
+
     }
 
     private void setGuiDesign () {
@@ -40,5 +100,6 @@ public class SettingsController implements Initializable {
         changePasswordButton.setStyle(GUI.setButtonStyle());
 
     }
+
 
 }

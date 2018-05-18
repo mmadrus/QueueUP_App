@@ -23,6 +23,7 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class ChatController implements Initializable {
@@ -44,12 +45,13 @@ public class ChatController implements Initializable {
     @FXML
     private Tab currentTab;
 
-    private String currentUser;
     private volatile boolean running = true;
 
     private DataStream dataStream = new DataStream();
     private GUI GUI = new GUI();
-    private User userClass = new User();
+    private User userClass;
+    private ArrayList<String> userList = new ArrayList<>();
+    //public String currentUser;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -71,13 +73,14 @@ public class ChatController implements Initializable {
     @FXML
     public void handleLogoutButton(ActionEvent event) throws IOException, InterruptedException {
 
-        dataStream.sendDataStream("/0" + dataStream.getSocketPort() + currentUser);
+        dataStream.sendDataStream("/0" + dataStream.getSocketPort() + Data.getInstance().getUser());
 
         running = false;
-        userClass.userList.clear();
+        userList.clear();
         GUI.emptyTabHandler();
         //Sets current user to null
-        setCurrentUser(null);
+        //setCurrentUser(null);
+        userClass = new User(null);
 
         Node node = (Node) event.getSource();
         Stage stage = (Stage) node.getScene().getWindow();
@@ -90,7 +93,7 @@ public class ChatController implements Initializable {
     }
 
     @FXML
-    public void handleSettingsButton(MouseEvent event) throws IOException {
+    public void handleSettingsButton(MouseEvent event){
 
         Platform.runLater(new Runnable() {
             @Override
@@ -99,6 +102,10 @@ public class ChatController implements Initializable {
 
                     Stage stage = new Stage();
                     Parent root = FXMLLoader.load(getClass().getResource("settingSample.fxml"));
+
+                    //Data data = Data.getInstance();
+                    //data.setUser(userClass.getCurrentUser());
+
                     stage.setTitle("Settings");
                     stage.setScene(new Scene(root));
                     stage.show();
@@ -126,9 +133,10 @@ public class ChatController implements Initializable {
             AnchorPane pane = ((AnchorPane) tabPane.getSelectionModel().getSelectedItem().getContent());
             thisArea = (TextArea) pane.getChildren().get(1);
 
+            System.out.println(thisArea.getUserData());
 
             // Creates a string with the message command, current user and the message, then sends it to the server
-            dataStream.sendDataStream("/m" + thisArea.getUserData() + currentUser + messageField.getText());
+            dataStream.sendDataStream("/m" + thisArea.getUserData() + Data.getInstance().getUser() + messageField.getText());
 
             messageField.clear();
 
@@ -138,16 +146,15 @@ public class ChatController implements Initializable {
     }
 
     // Method to set current user
-    public String setCurrentUser(String user) {
+    /*public void setCurrentUser(String user) {
 
-        currentUser = user;
-
-        return user;
+        userClass.setCurrentUser(user);
+        currentUser = userClass.getCurrentUser();
     }
 
     public String getCurrentUser() {
         return currentUser;
-    }
+    }*/
 
     public void addTab(String user, String id) {
 
@@ -180,7 +187,7 @@ public class ChatController implements Initializable {
 
                     if (!wantedUser.equals(null)) {
                         String wantedUsername = String.format("%-16s", wantedUser).replace(' ', '*');
-                        dataStream.sendDataStream("/w" + currentUser + wantedUsername);
+                        dataStream.sendDataStream("/w" + Data.getInstance().getUser() + wantedUsername);
                     }
 
                 } catch (NullPointerException e) {
@@ -213,6 +220,7 @@ public class ChatController implements Initializable {
                         // If the command is /m then it is a message
                         if (msg.substring(0, 2).equals("/m")) {
 
+                            System.out.println(msg);
                             //Saves the user name from the string into a variable
                             String user = msg.substring(12, 28);
 
@@ -329,9 +337,9 @@ public class ChatController implements Initializable {
 
                             boolean exist = false;
 
-                            for (int i = 0; i < userClass.userList.size(); i++) {
+                            for (int i = 0; i < userList.size(); i++) {
 
-                                if (String.valueOf(finalUser).equals(userClass.userList.get(i))) {
+                                if (String.valueOf(finalUser).equals(userList.get(i))) {
 
 
                                     exist = true;
@@ -347,7 +355,7 @@ public class ChatController implements Initializable {
 
                             if (exist == false) {
 
-                                userClass.userList.add(String.valueOf(finalUser));
+                                userList.add(String.valueOf(finalUser));
 
                             }
 
@@ -363,9 +371,9 @@ public class ChatController implements Initializable {
                                         listie.remove(q);
                                     }
 
-                                    for (int q = 0; q < userClass.userList.size(); q++) {
+                                    for (int q = 0; q < userList.size(); q++) {
 
-                                        listie.add(q, userClass.userList.get(q));
+                                        listie.add(q, userList.get(q));
                                     }
 
 
@@ -417,11 +425,11 @@ public class ChatController implements Initializable {
 
                                 }
 
-                                if (msg.substring(2, 18).equals(currentUser) || msg.substring(18, 34).equals(currentUser)) {
+                                if (msg.substring(2, 18).equals(Data.getInstance().getUser()) || msg.substring(18, 34).equals(Data.getInstance().getUser())) {
 
                                     String tabId = msg.substring(34);
 
-                                    if (user.equals(currentUser)) {
+                                    if (user.equals(Data.getInstance().getUser())) {
 
                                         Platform.runLater(new Runnable() {
                                             @Override
@@ -466,12 +474,12 @@ public class ChatController implements Initializable {
 
                             }
 
-                            for (int i = 0; i < userClass.userList.size(); i++) {
+                            for (int i = 0; i < userList.size(); i++) {
 
 
-                                if (userClass.userList.get(i).equals(String.valueOf(finalUser))) {
+                                if (userList.get(i).equals(String.valueOf(finalUser))) {
 
-                                    userClass.userList.remove(i);
+                                    userList.remove(i);
                                 }
 
                             }
@@ -487,9 +495,9 @@ public class ChatController implements Initializable {
                                         onlineUserList.remove(q);
                                     }
 
-                                    for (int q = 0; q < userClass.userList.size(); q++) {
+                                    for (int q = 0; q < userList.size(); q++) {
 
-                                        onlineUserList.add(q, userClass.userList.get(q));
+                                        onlineUserList.add(q, userList.get(q));
 
                                     }
 
@@ -592,7 +600,7 @@ public class ChatController implements Initializable {
             @Override
             public void run() {
 
-                ObservableList<String> observableList = FXCollections.observableArrayList(userClass.userList);
+                ObservableList<String> observableList = FXCollections.observableArrayList(userList);
 
                 searchField.textProperty().addListener(((observable, oldValue, newValue) -> {
                     onlineUsersArea.getItems().clear();
@@ -619,7 +627,6 @@ public class ChatController implements Initializable {
 
     }
 
-
-
+    public void setCurrent () {}
 
 }

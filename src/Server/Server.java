@@ -156,7 +156,7 @@ public class Server {
                     // Checks for the commands that have something to do with the database
                     if (command.equals("/1") || command.equals("/2") || command.equals("/3") || command.equals("/j")
                             || command.equals("/k") || command.equals("/b")
-                            || command.equals("/d") || command.equals("/p")
+                            || command.equals("/d") || command.equals("/c")
                             || command.equals("/4") || command.equals("/5") || command.equals("/6")) {
 
                         // Checks for the return statement from the protocol, if false then it send it to the client

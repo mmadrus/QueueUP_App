@@ -57,6 +57,9 @@ public class Database {
 
     private String getPasswordURL = "select user_password from qup.user where user_mail = ?";
 
+    // Update status to online
+    private String changePasswordURL = "update qup.user set user_password = ? where user_name = ?";
+
 
     // database constructor
     public Database() throws SQLException {
@@ -480,6 +483,34 @@ public class Database {
             e.printStackTrace();
         }
         return password;
+    }
+
+    public boolean changePassword (String password, String username) {
+
+        boolean changed = true;
+
+        try (PreparedStatement statement = c.prepareStatement(changePasswordURL)) {
+
+
+            statement.setString(1, password);
+            statement.setString(2, username);
+
+            int i = statement.executeUpdate();
+
+            if (i == 1) {
+
+                changed = true;
+
+            } else if (i != 1) {
+
+                changed = false;
+            }
+        } catch (Exception e ) {
+
+            e.printStackTrace();
+        }
+
+        return changed;
     }
 
 
