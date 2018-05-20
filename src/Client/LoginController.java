@@ -96,15 +96,15 @@ public class LoginController implements Initializable {
                     dataStream.sendDataStream(user);
 
                     String secondServerResponse = dataStream.recieveDataStream();
-                    System.out.println(secondServerResponse);
 
                     if (secondServerResponse.equals("true")) {
+
+                        Data.getInstance().setUser(username);
+
                         Node node = (Node) event.getSource();
                         Stage stage = (Stage) node.getScene().getWindow();
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("chatSample.fxml"));
                         Parent root = loader.load();
-
-                        Data.getInstance().setUser(username);
 
                         Scene scene = new Scene(root, 1200, 700);
                         stage.setScene(scene);

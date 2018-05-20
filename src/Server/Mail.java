@@ -37,7 +37,6 @@ public class Mail {
 
             Transport.send(message);
 
-            System.out.println("Done");
 
         } catch (Exception e) {
 

@@ -19,15 +19,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import javafx.util.Duration;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
+import java.security.Guard;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.stream.IntStream;
 
 public class ChatController implements Initializable {
 
@@ -44,49 +42,51 @@ public class ChatController implements Initializable {
     @FXML
     private ImageView chatBackground1, settingImageButton;
     @FXML
-    private ListView<String> onlineUsersArea;
+    private ListView<String> onlineUsersArea, channelList;
     @FXML
-    private Tab currentTab;
+    private Tab currentTab, helpMessageTab;
 
     private volatile boolean running = true;
-
-    private DataStream dataStream = new DataStream();
     private GUI GUI = new GUI();
-    private User userClass;
     private ArrayList<String> userList = new ArrayList<>();
     private Sound sound = new Sound();
     private Admin admin = new Admin();
-    //public String currentUser;
+    private ObservableList<String> tabs = FXCollections.observableArrayList();
+    private Button tabBtn = new Button();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
         setGuiDesign();
         addGeneralTab();
-
+        tabs.add(GUI.getTab(0).getText());
+        GUI.addHelpTab(helpMessageTab.getText(), "1000000002");
+        Button btn = updateChannelListButton();
         // Connects to the server when the scene is initialized
-        dataStream.connectToServer();
+        Data.getInstance().connect();
 
         tabPane.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> currentTab = newValue);
         admin.addAdmin();
-
         // Creates a thread that constantly updates the chat
         updateChat();
+
+        btn.fire();
+
 
     }
 
     // If the user wants to log out
     @FXML
-    public void handleLogoutButton(ActionEvent event) throws IOException, InterruptedException {
+    public void handleLogoutButton(ActionEvent event) throws IOException {
 
-        dataStream.sendDataStream("/0" + dataStream.getSocketPort() + Data.getInstance().getUser());
+        Data.getInstance().send("/0" + Data.getInstance().getSocket() + Data.getInstance().getUser());
 
         running = false;
         userList.clear();
         GUI.emptyTabHandler();
         //Sets current user to null
         //setCurrentUser(null);
-        userClass = new User(null);
+        Data.getInstance().setUser(null);
 
         Node node = (Node) event.getSource();
         Stage stage = (Stage) node.getScene().getWindow();
@@ -95,11 +95,11 @@ public class ChatController implements Initializable {
         Scene scene = new Scene(root, 1200, 700);
         stage.setScene(scene);
 
-        dataStream.disconnectFromServer();
+        Data.getInstance().disconnect();
     }
 
     @FXML
-    public void handleSettingsButton(MouseEvent event){
+    public void handleSettingsButton(MouseEvent event) {
 
         Platform.runLater(new Runnable() {
             @Override
@@ -139,10 +139,8 @@ public class ChatController implements Initializable {
             AnchorPane pane = ((AnchorPane) tabPane.getSelectionModel().getSelectedItem().getContent());
             thisArea = (TextArea) pane.getChildren().get(1);
 
-            System.out.println(thisArea.getUserData());
-
             // Creates a string with the message command, current user and the message, then sends it to the server
-            dataStream.sendDataStream("/m" + thisArea.getUserData() + Data.getInstance().getUser() + messageField.getText());
+            Data.getInstance().send("/m" + thisArea.getUserData() + Data.getInstance().getUser() + messageField.getText());
 
             messageField.clear();
 
@@ -151,25 +149,59 @@ public class ChatController implements Initializable {
 
     }
 
-    // Method to set current user
-    /*public void setCurrentUser(String user) {
+    @FXML
+    public void addTab(String room) {
 
-        userClass.setCurrentUser(user);
-        currentUser = userClass.getCurrentUser();
+        boolean exists = true;
+
+
+        for (int c = 0; c < GUI.getTabHandler().size(); c++) {
+
+            for (int i = 0; i < tabPane.getTabs().size(); i++) {
+
+                if (tabPane.getTabs().get(i).getText().equals(room)) {
+
+                    exists = true;
+                    break;
+
+                } else {
+
+                    exists = false;
+                }
+
+            }
+
+
+            if (exists == false) {
+
+                        //tabPane.getTabs().add(GUI.getTab(c));
+                if (!GUI.getTab(c).getText().equals("#Help")) {
+
+                    Tab newTab = GUI.getTab(c);
+                    int index = c-1;
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            tabPane.getTabs().add(index, newTab);
+                        }
+                    });
+
+
+
+                }
+
+
+
+
+            }
+
+        }
+
     }
 
-    public String getCurrentUser() {
-        return currentUser;
-    }*/
-
-    public void addTab(String user, String id) {
-
-        tabPane.getTabs().add(GUI.createNewTab(user, id));
-
-    }
 
     @FXML
-    public void popupMenu(MouseEvent event) {
+    public void popupMenuUser(MouseEvent event) {
         MenuItem sendWhisper = new MenuItem("Send Message");
         MenuItem ban = new MenuItem("Ban user");
         MenuItem closeMenu = new MenuItem("Close");
@@ -191,87 +223,147 @@ public class ChatController implements Initializable {
 
         }
 
-        System.out.println(isAdmin);
 
-            if (isAdmin == false) {
-                ContextMenu contextMenuUser = new ContextMenu();
-                contextMenuUser.getItems().addAll(sendWhisper, closeMenu);
-                contextMenuUser.setAutoHide(true);
-                contextMenuUser.show(pane, event.getScreenX(), event.getScreenY());
+        if (isAdmin == false) {
+            ContextMenu contextMenuUser = new ContextMenu();
+            contextMenuUser.getItems().addAll(sendWhisper, closeMenu);
+            contextMenuUser.setAutoHide(true);
+            contextMenuUser.show(pane, event.getScreenX(), event.getScreenY());
 
-                closeMenu.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
+            closeMenu.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+
+                    contextMenuUser.hide();
+                }
+            });
+
+            sendWhisper.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    String wantedUser = onlineUsersArea.getSelectionModel().getSelectedItem();
+
+                    try {
+
+                        if (!wantedUser.equals(null)) {
+                            String wantedUsername = String.format("%-16s", wantedUser).replace(' ', '*');
+                            Data.getInstance().send("/w" + Data.getInstance().getUser() + wantedUsername);
+                        }
+
+                    } catch (NullPointerException e) {
 
                         contextMenuUser.hide();
                     }
-                });
 
-                sendWhisper.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-                        String wantedUser = onlineUsersArea.getSelectionModel().getSelectedItem();
+                }
+            });
+        } else if (isAdmin == true) {
 
-                        try {
+            ContextMenu contextMenuAdmin = new ContextMenu();
+            contextMenuAdmin.getItems().addAll(sendWhisper, ban, closeMenu);
+            contextMenuAdmin.setAutoHide(true);
+            contextMenuAdmin.show(pane, event.getScreenX(), event.getScreenY());
 
-                            if (!wantedUser.equals(null)) {
-                                String wantedUsername = String.format("%-16s", wantedUser).replace(' ', '*');
-                                dataStream.sendDataStream("/w" + Data.getInstance().getUser() + wantedUsername);
-                            }
+            closeMenu.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
 
-                        } catch (NullPointerException e) {
+                    contextMenuAdmin.hide();
+                }
+            });
 
-                            contextMenuUser.hide();
+            sendWhisper.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    String wantedUser = onlineUsersArea.getSelectionModel().getSelectedItem();
+
+                    try {
+
+                        if (!wantedUser.equals(null)) {
+                            String wantedUsername = String.format("%-16s", wantedUser).replace(' ', '*');
+                            Data.getInstance().send("/w" + Data.getInstance().getUser() + wantedUsername);
                         }
 
-                    }
-                });
-            } else if (isAdmin == true) {
-
-                ContextMenu contextMenuAdmin = new ContextMenu();
-                contextMenuAdmin.getItems().addAll(sendWhisper, ban, closeMenu);
-                contextMenuAdmin.setAutoHide(true);
-                contextMenuAdmin.show(pane, event.getScreenX(), event.getScreenY());
-
-                closeMenu.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
+                    } catch (NullPointerException e) {
 
                         contextMenuAdmin.hide();
                     }
-                });
 
-                sendWhisper.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-                        String wantedUser = onlineUsersArea.getSelectionModel().getSelectedItem();
+                }
+            });
 
-                        try {
+            ban.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
 
-                            if (!wantedUser.equals(null)) {
-                                String wantedUsername = String.format("%-16s", wantedUser).replace(' ', '*');
-                                dataStream.sendDataStream("/w" + Data.getInstance().getUser() + wantedUsername);
-                            }
+                    String wantedUser = onlineUsersArea.getSelectionModel().getSelectedItem();
+                    String paddedUser = String.format("%-16s", wantedUser).replace(' ', '*');
+                    Data.getInstance().send("/b" + paddedUser);
+                }
+            });
 
-                        } catch (NullPointerException e) {
+        }
 
-                            contextMenuAdmin.hide();
-                        }
+    }
 
-                    }
-                });
+    @FXML
+    public void popupMenuChannel(MouseEvent event) {
+        MenuItem joinChannel = new MenuItem("Join channel");
+        MenuItem createChannel = new MenuItem("Create channel");
+        MenuItem closeMenu = new MenuItem("Close");
 
-                ban.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
+        ContextMenu contextMenuUser1 = new ContextMenu();
 
-                        String wantedUser = onlineUsersArea.getSelectionModel().getSelectedItem();
-                        String paddedUser = String.format("%-16s", wantedUser).replace(' ', '*');
-                        dataStream.sendDataStream("/b" + paddedUser);
-                    }
-                });
+        contextMenuUser1.getItems().addAll(joinChannel, createChannel, closeMenu);
+        contextMenuUser1.setAutoHide(true);
+        contextMenuUser1.show(pane, event.getScreenX(), event.getScreenY());
+
+        closeMenu.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+                contextMenuUser1.hide();
+            }
+        });
+
+        joinChannel.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+                String roomName = channelList.getSelectionModel().getSelectedItem();
+                String finalRoom = roomName;
+
+                addTab(finalRoom);
+                tabBtn.fire();
+
 
             }
+        });
+
+        createChannel.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+                try {
+
+                    Stage stage = new Stage();
+                    Parent root = FXMLLoader.load(getClass().getResource("newRoomSample.fxml"));
+
+                    //Data data = Data.getInstance();
+                    //data.setUser(userClass.getCurrentUser());
+
+                    stage.setTitle("Create room");
+                    stage.setScene(new Scene(root));
+                    stage.show();
+
+                } catch (Exception e) {
+
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
 
     }
 
@@ -285,17 +377,18 @@ public class ChatController implements Initializable {
 
                     try {
 
-                        dataStream.sendDataStream("/a1");
+                        channelList.setItems(tabs);
+                        Data.getInstance().send("/a");
+
 
                         // Saves the data stream from the server into a string
-                        String msg = dataStream.recieveDataStream();
+                        String msg = Data.getInstance().recieve();
 
                         // Checks for the command at the first two indexes
 
                         // If the command is /m then it is a message
                         if (msg.substring(0, 2).equals("/m")) {
 
-                            System.out.println(msg);
                             //Saves the user name from the string into a variable
                             String user = msg.substring(12, 28);
 
@@ -514,7 +607,7 @@ public class ChatController implements Initializable {
                                             @Override
                                             public void run() {
 
-                                                addTab(String.valueOf(finalUser2), tabId);
+                                                GUI.createNewTab(String.valueOf(finalUser2), tabId);
                                             }
                                         });
 
@@ -524,7 +617,7 @@ public class ChatController implements Initializable {
                                             @Override
                                             public void run() {
 
-                                                addTab(String.valueOf(finalUser1), tabId);
+                                                GUI.createNewTab(String.valueOf(finalUser1), tabId);
                                             }
                                         });
 
@@ -585,13 +678,165 @@ public class ChatController implements Initializable {
                                 }
                             });
 
-                        } else if (msg.substring(0,2).equals("/b")) {
+                        } else if (msg.substring(0, 2).equals("/b")) {
 
-                            System.out.println("hej");
                             if (msg.substring(2).equals(Data.getInstance().getUser())) {
 
                                 forceLogout();
                             }
+                        } else if (msg.substring(0, 2).equals("/t")) {
+
+                            if (msg.substring(2, 3).equals("1")) {
+
+                                if (msg.substring(3, 19).equals(Data.getInstance().getUser())) {
+
+                                    // Create a new string builder to later save the user name in
+                                    StringBuilder finalRoom = new StringBuilder();
+
+                                    // For loop to convert the padded username returned from the server into a username without pads
+                                    for (int p = 0; p < msg.substring(19,39).length(); p++) {
+
+                                        // Removes the * form the returned username, keeps the letters and numbers and then
+                                        // saves them into the StringBuilder finalUser
+                                        if (!String.valueOf(msg.substring(19,39).charAt(p)).equals("*")) {
+
+                                            finalRoom.append(String.valueOf(msg.substring(19,39).charAt(p)));
+                                        }
+
+
+                                    }
+
+                                    Platform.runLater(new Runnable() {
+                                        @Override
+                                        public void run() {
+
+                                            tabs.remove(0, tabs.size());
+                                            channelList.setItems(tabs);
+
+                                        }
+                                    });
+
+
+                                    boolean exist = false;
+
+                                    for (int i = 0; i < GUI.getHiddenTabSize(); i++) {
+
+                                        if (String.valueOf(finalRoom).equals(GUI.getHidden(i))) {
+
+
+                                            exist = true;
+                                            break;
+
+                                        } else {
+
+                                            exist = false;
+
+
+                                        }
+                                    }
+
+                                    if (exist == false) {
+
+                                        GUI.addHiddenTab(String.valueOf(finalRoom), msg.substring(39));
+
+                                    }
+
+                                    Platform.runLater(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                    /*for (int q = 0; q < GUI.getCurrentTabSize(); q++) {
+
+                                        tabs.add(q, GUI.getTab(q));
+
+                                    }*/
+
+                                            for (int q = 0; q < GUI.getHiddenTabSize(); q++) {
+
+                                                tabs.add(q, GUI.getHidden(q));
+
+                                            }
+                                        }
+                                    });
+                                }
+
+                            } else {
+
+                                // Create a new string builder to later save the user name in
+                                StringBuilder finalRoom = new StringBuilder();
+
+                                // For loop to convert the padded username returned from the server into a username without pads
+                                for (int p = 0; p < msg.substring(2,22).length(); p++) {
+
+                                    // Removes the * form the returned username, keeps the letters and numbers and then
+                                    // saves them into the StringBuilder finalUser
+                                    if (!String.valueOf(msg.substring(2,22).charAt(p)).equals("*")) {
+
+                                        finalRoom.append(String.valueOf(msg.substring(2,22).charAt(p)));
+                                    }
+
+
+                                }
+
+                                Platform.runLater(new Runnable() {
+                                    @Override
+                                    public void run() {
+
+                                        tabs.clear();
+                                        channelList.setItems(tabs);
+
+                                    }
+                                });
+
+
+                                boolean exist = false;
+
+                                for (int i = 0; i < GUI.getHiddenTabSize(); i++) {
+
+                                    if (String.valueOf(finalRoom).equals(GUI.getHidden(i))) {
+
+
+                                        exist = true;
+                                        break;
+
+                                    } else {
+
+                                        exist = false;
+
+
+                                    }
+                                }
+
+                                if (exist == false) {
+
+                                    GUI.addHiddenTab(String.valueOf(finalRoom), msg.substring(22));
+
+                                }
+
+                                Platform.runLater(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                    /*for (int q = 0; q < GUI.getCurrentTabSize(); q++) {
+
+                                        tabs.add(q, GUI.getTab(q));
+
+                                    }*/
+
+                                        for (int q = 0; q < GUI.getHiddenTabSize(); q++) {
+
+                                            tabs.add(q, GUI.getHidden(q));
+
+                                        }
+                                    }
+                                });
+                            }
+
+
+                        } else if (msg.substring(0, 2).equals("/r")) {
+
+                            if (msg.substring(18, 19).equals("1")) {
+                                GUI.addHiddenTab(msg.substring(19), String.valueOf(GUI.getHiddenTabSize() + 1));
+                            }
+
                         }
 
 
@@ -680,7 +925,7 @@ public class ChatController implements Initializable {
 
     //Search method for Online users
     @FXML
-    public void searchView(){
+    public void searchView() {
 
         Platform.runLater(new Runnable() {
             @Override
@@ -693,7 +938,7 @@ public class ChatController implements Initializable {
 
                     for (int j = 0; j < observableList.size(); j++) {
 
-                        if (observableList.get(j).contains(searchField.getCharacters())){
+                        if (observableList.get(j).contains(searchField.getCharacters())) {
                             onlineUsersArea.getItems().add(observableList.get(j));
 
                         }
@@ -702,7 +947,7 @@ public class ChatController implements Initializable {
 
                     if (searchField.getText().length() <= 0) {
 
-                        dataStream.sendDataStream("/a1");
+                        Data.getInstance().send("/a1");
                     }
                 }));
 
@@ -710,24 +955,23 @@ public class ChatController implements Initializable {
         });
 
 
-
     }
 
-    private void forceLogout () {
+    private void forceLogout() {
 
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
                 try {
 
-                    dataStream.sendDataStream("/0" + dataStream.getSocketPort() + Data.getInstance().getUser());
+                    Data.getInstance().send("/0" + Data.getInstance().getSocket() + Data.getInstance().getUser());
 
                     running = false;
                     userList.clear();
                     GUI.emptyTabHandler();
                     //Sets current user to null
                     //setCurrentUser(null);
-                    userClass = new User(null);
+                    Data.getInstance().setUser(null);
 
                     Button button = new Button("test");
                     button.setVisible(false);
@@ -745,7 +989,7 @@ public class ChatController implements Initializable {
                                 stage.setScene(scene);
                                 stage.show();
 
-                                dataStream.disconnectFromServer();
+                                Data.getInstance().disconnect();
 
                                 Alert banned = new Alert(Alert.AlertType.INFORMATION);
                                 banned.setTitle("Banned");
@@ -764,9 +1008,6 @@ public class ChatController implements Initializable {
                     button.fire();
 
 
-
-
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -774,6 +1015,22 @@ public class ChatController implements Initializable {
         });
 
     }
+
+    private Button updateChannelListButton() {
+
+        Button btn = new Button("test");
+        btn.setVisible(false);
+
+        btn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Data.getInstance().send("/r" + "1" + Data.getInstance().getUser());
+            }
+        });
+
+        return btn;
+    }
+
 
 
 }

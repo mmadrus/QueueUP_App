@@ -15,7 +15,7 @@
     <children>
         <TabPane fx:id="tabPane" layoutX="200.0" prefHeight="600.0" prefWidth="800.0">
             <tabs>
-                <Tab closable="false" text="#Help">
+                <Tab fx:id="helpMessageTab" closable="false" text="#Help">
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                             <children>
@@ -36,12 +36,12 @@
                 <TextField fx:id="messageField" layoutX="150.0" layoutY="150.0" prefHeight="50.0" prefWidth="744.0" />
             </graphic>
         </Button>
-        <TextArea editable="false" focusTraversable="false" layoutX="4.0" layoutY="57.0" prefHeight="540.0" prefWidth="190.0" />
         <Label layoutX="70.0" layoutY="34.0" text="Channels" />
         <Label layoutX="1062.0" layoutY="34.0" text="Online Users" />
         <Button fx:id="logoutButton" layoutX="1036.0" layoutY="627.0" mnemonicParsing="false" onAction="#handleLogoutButton" prefHeight="60.0" prefWidth="120.0" text="Logout" />
       <ImageView fx:id="settingImageButton" fitHeight="60.0" fitWidth="60.0" layoutX="70.0" layoutY="627.0" onMouseClicked="#handleSettingsButton" onMouseEntered="#rotateSettingForward" onMouseExited="#rotateSettingBackward" pickOnBounds="true" preserveRatio="true" />
-      <ListView fx:id="onlineUsersArea" layoutX="1006.0" layoutY="57.0" onMouseClicked="#popupMenu" prefHeight="540.0" prefWidth="190.0" />
+      <ListView fx:id="onlineUsersArea" layoutX="1006.0" layoutY="57.0" onMouseClicked="#popupMenuUser" prefHeight="540.0" prefWidth="190.0" />
       <TextField fx:id="searchField" alignment="CENTER" layoutX="1013.0" layoutY="1.0" onKeyPressed="#searchView" promptText="Search For User" />
+      <ListView fx:id="channelList" layoutX="4.0" layoutY="57.0" onMouseClicked="#popupMenuChannel" prefHeight="540.0" prefWidth="190.0" />
     </children>
 </AnchorPane>

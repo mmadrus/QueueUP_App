@@ -10,6 +10,8 @@ import java.util.Random;
 public class ServerProtocol {
 
     public ArrayList<String> onlineUsers = new ArrayList<>();
+    public ArrayList<String> tabs = new ArrayList<>();
+    private int roomID = 1000000003;
 
     // Method for the commands that have something to do with the db, takes the command as a parameter and the rest as another
     // returns a boolean which is later sent to the client as a string
@@ -99,7 +101,6 @@ public class ServerProtocol {
                     boolean foundUser = db.userLogin(data.substring(0,16), data.substring(16, 36));
 
                     // Just a check if the method in the db is working
-                    System.out.println(data.substring(0,16) + "\n" + data.substring(16,36));
 
                     // Returns a boolean whether or not the username and password is found
                     if (foundUser == false) {
@@ -129,7 +130,6 @@ public class ServerProtocol {
                 boolean founduser1 = db.searchForUser(data.substring(0,16));
                 boolean founduser2 = db.searchForUser(data.substring(16));
 
-                //System.out.println(data.substring(0,16));
 
                 // Returns a boolean whether or not the username and password is found
                 if (founduser1 && founduser2 == false) {
@@ -304,16 +304,11 @@ public class ServerProtocol {
 
         try {
 
-            //Database db = new Database();
-
-            /*String username = db.getUsername(userEmail);
-            String password = db.getUserPassword(userEmail);*/
 
             Mail mail = new Mail();
 
             mail.sendEmail(userEmail, username, password);
 
-            System.out.println("hejsan");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -387,4 +382,11 @@ public class ServerProtocol {
         }
     }
 
+    public String getRoomID() {
+        return String.valueOf(roomID);
+    }
+
+    public void setRoomID(int i) {
+        this.roomID += 1;
+    }
 }

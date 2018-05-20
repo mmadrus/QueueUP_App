@@ -85,7 +85,35 @@ public class Server {
             for (String u: serverProtocol.onlineUsers){
 
                 c.sendDataStream(c, "/a" + u);
-                System.out.println();
+            }
+        }
+    }
+
+    private void sendNewRoomToClient (String room) {
+
+        for (ClientHandler c: clientHandlers) {
+
+            for (String r: serverProtocol.tabs) {
+
+                if (r.substring(0,20).equals(room)) {
+
+                    c.sendDataStream(c, "/t" + r);
+
+                    break;
+
+                }
+
+            }
+        }
+    }
+
+    private void sendRoomToClient (String data) {
+
+        for (ClientHandler c: clientHandlers) {
+
+            for (String r: serverProtocol.tabs) {
+                c.sendDataStream(c, "/t" + data + r);
+
             }
         }
     }
@@ -149,7 +177,7 @@ public class Server {
                     String command = recieved.substring(0, 2);
 
                     // Saves the rest into another string
-                    String data = recieved.substring(2, recieved.length());
+                    String data = recieved.substring(2);
 
                     // Checks for the commands that have something to do with the database
                     if (command.equals("/1") || command.equals("/2") || command.equals("/3") || command.equals("/j")
@@ -184,6 +212,7 @@ public class Server {
                             sendOnlineListToClient();
                             counter += 1;
                         }
+
 
                     } else if (command.equals("/w")) {
 
@@ -244,10 +273,26 @@ public class Server {
 
                     }  else if (command.equals("/b")) {
 
-                        System.out.println(recieved);
                         serverProtocol.banUser(data);
                         sendToClient(recieved);
 
+                    }  else if (command.equals("/r")) {
+
+                        if (data.substring(0,1).equals("1")){
+
+                            sendRoomToClient(data);
+
+                        } else {
+
+                            if (data.length() != 1) {
+                                System.out.println(data);
+                                serverProtocol.tabs.add(data.substring(16) + serverProtocol.getRoomID());
+                            }
+
+                            sendNewRoomToClient(data.substring(16));
+                            serverProtocol.setRoomID(1);
+
+                        }
                     }
                 }
             } catch (EOFException eofE) {

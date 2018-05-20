@@ -36,7 +36,6 @@ public class SettingsController implements Initializable {
 
         boolean isAdmin = false;
 
-        System.out.println("settings: " + user);
         for (int i = 0; i < admin.getAdminList().size(); i++){
 
             if (Data.getInstance().getUser().equals(admin.getAdminList().get(i))) {

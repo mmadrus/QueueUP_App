@@ -1,5 +1,7 @@
 package Client;
 
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
@@ -11,7 +13,8 @@ import java.util.Random;
 
 public class GUI {
 
-    private ArrayList<Tab> tabHandler = new ArrayList<>();
+    private ArrayList<Tab> currentTabs = new ArrayList<>();
+    private ArrayList<Tab> hiddenTabs = new ArrayList<>();
 
     public String setButtonStyle() {
 
@@ -51,10 +54,9 @@ public class GUI {
 
     public Tab createNewTab (String name, String id) {
 
-        System.out.println(id);
 
         Tab newTab = new Tab();
-        newTab.setText(name);
+        newTab.setText("#" + name);
         newTab.setClosable(true);
         newTab.setDisable(false);
         newTab.setUserData(id);
@@ -84,22 +86,27 @@ public class GUI {
 
         newPane.getChildren().addAll(imageView, newTextArea);
 
-        tabHandler.add(newTab);
+        currentTabs.add(newTab);
 
         newTab.setContent(newPane);
 
-        System.out.println(newTab.getUserData());
 
         return newTab;
 
     }
 
     public ArrayList<Tab> getTabHandler() {
-        return tabHandler;
+        return currentTabs;
     }
 
-    public void setTabHandler(ArrayList<Tab> tabHandler) {
-        this.tabHandler = tabHandler;
+    public Tab getTab (int i) {
+
+        return currentTabs.get(i);
+    }
+
+    public int getCurrentTabSize () {
+
+        return currentTabs.size();
     }
 
     public Tab addGeneralTab () {
@@ -134,20 +141,117 @@ public class GUI {
 
         newPane.getChildren().addAll(imageView, newTextArea);
 
-        tabHandler.add(newTab);
+        currentTabs.add(newTab);
+        hiddenTabs.add(newTab);
 
         newTab.setContent(newPane);
 
-        System.out.println(newTab.getUserData());
 
         return newTab;
 
 
     }
 
+    public Tab addHiddenTab (String name, String id) {
+
+
+        Tab newTab = new Tab();
+        newTab.setText("#" + name);
+        newTab.setClosable(true);
+        newTab.setDisable(false);
+        newTab.setUserData(id);
+
+        AnchorPane newPane = new AnchorPane();
+        newPane.setMinWidth(0.0);
+        newPane.setMinHeight(0.0);
+        newPane.setPrefHeight(180);
+        newPane.setPrefWidth(200);
+
+        ImageView imageView = new ImageView();
+        imageView.setFitHeight(563);
+        imageView.setFitWidth(800);
+        imageView.setPreserveRatio(true);
+        imageView.setImage(setBackgroundImage());
+
+        TextArea newTextArea = new TextArea();
+        newTextArea.setOpacity(0.75);
+        newTextArea.setEditable(false);
+        newTextArea.setWrapText(true);
+        newTextArea.setPrefWidth(800);
+        newTextArea.setPrefHeight(563);
+        newTextArea.setUserData(id);
+
+        AnchorPane.setTopAnchor(imageView,0.0);
+        AnchorPane.setTopAnchor(newTextArea, 0.0);
+
+        newPane.getChildren().addAll(imageView, newTextArea);
+
+        hiddenTabs.add(newTab);
+
+        newTab.setContent(newPane);
+
+
+        return newTab;
+
+    }
+
+    public String getHidden (int i) {
+
+        return hiddenTabs.get(i).getText();
+    }
+
+    public int getHiddenTabSize () {
+
+        return hiddenTabs.size();
+    }
+
     public void emptyTabHandler () {
 
-        tabHandler.clear();
+        currentTabs.clear();
     }
+
+    public Tab addHelpTab (String name, String id) {
+
+        Tab newTab = new Tab();
+        newTab.setText(name);
+        newTab.setClosable(false);
+        newTab.setDisable(false);
+        newTab.setUserData(id);
+
+        AnchorPane newPane = new AnchorPane();
+        newPane.setMinWidth(0.0);
+        newPane.setMinHeight(0.0);
+        newPane.setPrefHeight(180);
+        newPane.setPrefWidth(200);
+
+        ImageView imageView = new ImageView();
+        imageView.setFitHeight(563);
+        imageView.setFitWidth(800);
+        imageView.setPreserveRatio(true);
+        imageView.setImage(setBackgroundImage());
+
+        TextArea newTextArea = new TextArea();
+        newTextArea.setOpacity(0.75);
+        newTextArea.setEditable(false);
+        newTextArea.setWrapText(true);
+        newTextArea.setPrefWidth(800);
+        newTextArea.setPrefHeight(563);
+        newTextArea.setUserData(id);
+
+        AnchorPane.setTopAnchor(imageView,0.0);
+        AnchorPane.setTopAnchor(newTextArea, 0.0);
+
+        newPane.getChildren().addAll(imageView, newTextArea);
+
+        currentTabs.add(newTab);
+
+        newTab.setContent(newPane);
+
+
+        return newTab;
+
+
+    }
+
 
 }

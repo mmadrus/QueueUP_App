@@ -117,7 +117,6 @@ public class Database {
 
             if (mail.equals(email)) {
 
-                System.out.println(mail);
                 exist = true;
 
             } else {
@@ -223,7 +222,6 @@ public class Database {
 
             if (room.equals(roomName)) {
 
-                System.out.println(room);
                 exist = true;
 
             } else {
@@ -310,7 +308,6 @@ public class Database {
 
             if (user.equals(username)) {
 
-                System.out.println(user);
                 exist = true;
 
             } else {
@@ -439,7 +436,7 @@ public class Database {
                 /*ResultSet rs = statement.executeQuery();
                 String reslust = rs.getString(1);
                 id = Integer.parseInt(reslust);
-                System.out.println("Nej");*/
+                */
 
                 k = true;
             }
@@ -546,7 +543,6 @@ public class Database {
 
             boolean checkIsBanned = resultSet.getBoolean(1);
 
-            System.out.println(checkIsBanned);
 
             if (checkIsBanned == false) {
 
@@ -576,7 +572,6 @@ public class Database {
 
             boolean checkIsBanned = statement.execute();
 
-            System.out.println(checkIsBanned);
 
             if (checkIsBanned == true) {
 
