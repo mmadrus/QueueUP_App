@@ -3,12 +3,8 @@ package Client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -21,12 +17,11 @@ public class SettingsController implements Initializable {
     @FXML private PasswordField newPasswordField;
     @FXML private TextField unbanUserField;
     @FXML private ImageView imageView;
+    @FXML private CheckBox soundCheckBox;
 
     private GUI GUI = new GUI();
     private DataStream dataStream = new DataStream();
     private Admin admin = new Admin();
-    private String user = Data.getInstance().getUser();
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -168,6 +163,21 @@ public class SettingsController implements Initializable {
 
 
     }
+
+    @FXML
+    public void setSoundCheckBox () {
+
+        if (soundCheckBox.isSelected()) {
+
+            Data.getInstance().setSound(true);
+        } else {
+
+            Data.getInstance().setSound(false);
+        }
+
+    }
+
+
 
     private void setGuiDesign () {
 

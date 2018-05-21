@@ -1,5 +1,7 @@
 package Client;
 
+import javafx.scene.control.CheckBox;
+
 import java.io.IOException;
 import java.net.Socket;
 
@@ -7,7 +9,8 @@ public class Data {
 
     private User user;
     private DataStream dataStream = new DataStream();
-
+    private Sound sound = new Sound();
+    
     private static Data ourInstance = new Data();
 
     public static Data getInstance() {
@@ -51,6 +54,18 @@ public class Data {
 
         return String.valueOf(dataStream.getSocketPort());
     }
+
+    protected void setSound (boolean soundBoolean) {
+
+        sound.setSoundOn(soundBoolean);
+    }
+
+    protected boolean getSound () {
+
+        return sound.isSoundOn();
+    }
+
+
 
 
 }

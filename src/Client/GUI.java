@@ -106,11 +106,6 @@ public class GUI {
         return currentTabs.get(i);
     }
 
-    public int getCurrentTabSize () {
-
-        return currentTabs.size();
-    }
-
     public Tab addGeneralTab () {
 
         Tab newTab = new Tab();

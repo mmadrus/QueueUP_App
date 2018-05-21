@@ -3,9 +3,7 @@
 <?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -19,10 +17,8 @@
       </ImageView>
       <Button fx:id="backButton" layoutX="39.0" layoutY="342.0" mnemonicParsing="false" onAction="#backToChat" prefHeight="31.0" prefWidth="100.0" text="Back" />
       <Button fx:id="changePasswordButton" layoutX="39.0" layoutY="200.0" mnemonicParsing="false" onAction="#changePassword" prefHeight="31.0" prefWidth="140.0" text="Change password" />
-      <CheckBox fx:id="soundCheckBox" layoutX="444.0" layoutY="262.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="122.0" text="Sound On/Off" />
-      <Slider fx:id="volumeSLider" layoutX="497.0" layoutY="96.0" orientation="VERTICAL" />
+      <CheckBox fx:id="soundCheckBox" layoutX="452.0" layoutY="166.0" mnemonicParsing="false" onAction="#setSoundCheckBox" prefHeight="31.0" prefWidth="100.0" selected="true" text="Sound On" />
       <PasswordField fx:id="newPasswordField" alignment="CENTER" layoutX="39.0" layoutY="166.0" prefHeight="31.0" prefWidth="140.0" promptText="Enter new password" />
-      <Label layoutX="465.0" layoutY="158.0" rotate="270.0" text="Volume" />
       <Button fx:id="unbanUserButton" layoutX="230.0" layoutY="200.0" mnemonicParsing="false" onAction="#unbanUser" prefHeight="31.0" prefWidth="140.0" text="Unban user" />
       <TextField fx:id="unbanUserField" alignment="CENTER" layoutX="230.0" layoutY="166.0" prefHeight="31.0" prefWidth="140.0" promptText="Enter username" />
    </children>

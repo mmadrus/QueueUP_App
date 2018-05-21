@@ -279,6 +279,7 @@ public class ServerProtocol {
         return id;
 
     }
+
     public int getProomID(int idOne, int idTwo){
 
         int id = 0;
@@ -382,7 +383,7 @@ public class ServerProtocol {
     }
 
     public void setRoomID(int i) {
-        this.roomID += 1;
+        this.roomID += i;
     }
 
     public String getPrivateRoomID() {
@@ -390,7 +391,7 @@ public class ServerProtocol {
     }
 
     public void setPrivateRoomIDRoomID(int i) {
-        this.privateRoomID += 1;
+        this.privateRoomID += i;
     }
 
     public void createDM (int idOne, int idTwo, int roomID) {
@@ -399,7 +400,7 @@ public class ServerProtocol {
 
             Database db = new Database();
 
-            db.userHasUser(String.valueOf(idOne),String.valueOf(idOne),roomID);
+            db.userHasUser(String.valueOf(idOne),String.valueOf(idTwo),roomID);
 
         } catch (Exception e) {
 

@@ -451,7 +451,7 @@ public class ChatController implements Initializable {
                                     // Appends the text the finaluser and message into the message area for the chat
                                     thisArea.appendText("[" + finalUser + "] " + msg.substring(28) + "\n");
 
-                                    if (!msg.substring(12, 28).equals(Data.getInstance().getUser())) {
+                                    if (!msg.substring(12, 28).equals(Data.getInstance().getUser()) && Data.getInstance().getSound() == true) {
                                         sound.playSound();
                                     }
 

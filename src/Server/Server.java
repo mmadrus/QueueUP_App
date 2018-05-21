@@ -122,7 +122,6 @@ public class Server {
         private DataInputStream dis;
         private DataOutputStream dos;
         private Socket s;
-        //private String currentUser;
 
         private volatile boolean running = true;
 

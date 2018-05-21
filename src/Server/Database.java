@@ -16,57 +16,6 @@ public class Database {
     // Connection url for database
     private String url = "jdbc:mysql://den1.mysql5.gear.host/qup?user=qup&password=Sv3t8?CUfd!S";
 
-    // Prepared statement to add room to the db
-    private String addRoomUrl = "insert into qup.room(room_id, room_name, room_password, isPrivate)" +
-            " VAlUES(?,?,?,?)";
-    // Prepared statement to check if room exist
-    private String searchForRoomUrl = "select room_name from qup.room where room_name = ?";
-
-    // Prepared statement to add user into the db
-    private String addUserUrl = "insert into qup.user(user_id, user_name, user_password, user_mail, isAdmin, isBlocked, isOnline)" +
-            " VALUES ( ?,?,?,?,?,?,?)";
-
-    // Prepared statement to check for emails in the db
-    private String searchForUserEmailUrl = "select user_mail from qup.user where user_mail = ?";
-
-    // Prepared statement to check for users in the db
-    private String userLoginUrl = "select user_name, user_password from qup.user where user_name = ? AND user_password = ?";
-
-    // Prepared statement to check for username and usermail in db
-    private String forgotPasswordUrl = "select user_password, user_mail from qup.user where user_name = ?";
-
-    // Prepared statement to check for username in db
-    private String channelUserList = "select user_name from user";
-
-    private String userSearch = "Select user_name from user where user_name = ?";
-
-    // Update status to online
-    private String updateStatusToOnline = "update qup.user set isOnline = true where user_name = ?";
-
-    // Update status to offline
-    private String updateStatusToOffline = "update qup.user set isOnline = false where user_name = ?";
-
-    private String createPrivateChat = "insert into qup.user_has_user(user_user_ID1, user_user_ID2, pmessage_time, pmessage_id)" +
-            " VAlUES(?,?,?,?)";
-
-    private String findUserId = "select user_ID from qup.user where user_name = ?";
-
-    private String findPrivateRoom = "select pmessage_id from qup.user_has_user where user_user_ID1 = ? AND user_user_ID2 = ? AND pmessage_id like '01%'";
-
-    private String getUsernameURL = "select user_name from qup.user where user_mail = ?";
-
-    private String getPasswordURL = "select user_password from qup.user where user_mail = ?";
-
-    // Update status to online
-    private String changePasswordURL = "update qup.user set user_password = ? where user_name = ?";
-
-    private String banUser = "update qup.user set isBlocked = true where user_name = ?";
-
-    private String isUserBanned = "select isBlocked from qup.user where user_name = ?";
-
-    private String unbanUserURL = "update qup.user set isBlocked = false where user_name = ?";
-
-
     // database constructor
     public Database() throws SQLException {
 
@@ -82,6 +31,9 @@ public class Database {
     // Method to add user to the db
     public void addUser(int id, String username, String password, String email) {
 
+        // Prepared statement to add user into the db
+        String addUserUrl = "insert into qup.user(user_id, user_name, user_password, user_mail, isAdmin, isBlocked, isOnline)" +
+                " VALUES ( ?,?,?,?,?,?,?)";
         try (PreparedStatement statement = c.prepareStatement(addUserUrl)) {
 
             statement.setInt(1, id);
@@ -103,6 +55,9 @@ public class Database {
     public boolean searchForUserEmail(String email) {
 
         boolean exist = false;
+
+        // Prepared statement to check for emails in the db
+        String searchForUserEmailUrl = "select user_mail from qup.user where user_mail = ?";
 
         try (PreparedStatement statement = c.prepareStatement(searchForUserEmailUrl)) {
 
@@ -138,6 +93,9 @@ public class Database {
 
         boolean exist = false;
 
+        // Prepared statement to check for users in the db
+        String userLoginUrl = "select user_name, user_password from qup.user where user_name = ? AND user_password = ?";
+
         try (PreparedStatement statement = c.prepareStatement(userLoginUrl)) {
 
             statement.setString(1, name);
@@ -167,78 +125,9 @@ public class Database {
         return exist;
     }
 
-    // Method to update user textArea
-    public ArrayList<String> userList() {
-        ArrayList<String> userList = new ArrayList<>();
-        try (PreparedStatement statement = c.prepareStatement(channelUserList)) {
-            ResultSet rs = statement.executeQuery();
-
-            while (rs.next()) {
-                userList.add(rs.getString(1));
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return userList;
-    }
-
-    // A method to add rooms to a database
-    public void addRoom(int id, String roomName, String roomPassword, Boolean isPrivate) {
-        try (PreparedStatement statement = c.prepareStatement(addRoomUrl)) {
-
-            statement.setInt(1, id);
-            statement.setString(2, roomName);
-            statement.setString(3, roomPassword);
-            statement.setBoolean(4, false);
-
-            statement.execute();
-
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-        }
-
-    }
-
-    // A method to search for room name in db
-    public boolean searchForRoom(String roomName) {
-
-        boolean exist = false;
-
-        try (PreparedStatement statement = c.prepareStatement(searchForRoomUrl)) {
-
-            statement.setString(1, roomName);
-            ResultSet resultSet = statement.executeQuery();
-
-            resultSet.next();
-
-
-            String room = resultSet.getString("room_name");
-
-            if (room.equals(roomName)) {
-
-                exist = true;
-
-            } else {
-
-                exist = false;
-            }
-
-
-        } catch (Exception e) {
-
-            e.getSuppressed();
-        }
-
-
-        return exist;
-
-    }
-
     public void createPrivateRoom(String user1, String user2) {
+
+        String findUserId = "select user_ID from qup.user where user_name = ?";
 
         try (PreparedStatement statement = c.prepareStatement(findUserId)) {
 
@@ -252,12 +141,6 @@ public class Database {
             resultSet2.next();
             String userId2 = resultSet2.getString("user_ID");
 
-//                PreparedStatement statement1 = c.prepareStatement(createPrivateChat);
-//
-//                statement1.setString(1, userId1);
-//                statement1.setString(2, userId2);
-//                ResultSet resultSet3 = statement1.executeQuery();
-//                resultSet3.next();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -266,6 +149,10 @@ public class Database {
     }
 
     public void userHasUser(String user1, String user2, int room) {
+
+        String createPrivateChat = "insert into qup.user_has_user(user_user_ID1, user_user_ID2, pmessage_time, pmessage_id)" +
+                " VAlUES(?,?,?,?)";
+
         try (PreparedStatement statement = c.prepareStatement(createPrivateChat)) {
 
 
@@ -290,6 +177,8 @@ public class Database {
 
     public boolean searchForUser(String username) {
         boolean exist = false;
+
+        String userSearch = "Select user_name from user where user_name = ?";
 
         try (PreparedStatement statement = c.prepareStatement(userSearch)) {
 
@@ -319,6 +208,9 @@ public class Database {
 
         String userDetails = null;
 
+        // Prepared statement to check for username and usermail in db
+        String forgotPasswordUrl = "select user_password, user_mail from qup.user where user_name = ?";
+
         try (PreparedStatement statement = c.prepareStatement(forgotPasswordUrl)) {
 
             statement.setString(1, name);
@@ -341,10 +233,10 @@ public class Database {
         return userDetails;
     }
 
-    public void channelList() {
-    }
-
     public void setUpdateStatusToOnline(String username) {
+
+        // Update status to online
+        String updateStatusToOnline = "update qup.user set isOnline = true where user_name = ?";
 
         try (PreparedStatement statement = c.prepareStatement(updateStatusToOnline)) {
 
@@ -359,6 +251,10 @@ public class Database {
     }
 
     public void setUpdateStatusToOffline(String username) {
+
+
+        // Update status to offline
+        String updateStatusToOffline = "update qup.user set isOnline = false where user_name = ?";
 
         try (PreparedStatement statement = c.prepareStatement(updateStatusToOffline)) {
 
@@ -376,9 +272,10 @@ public class Database {
 
         int userID;
 
+        String findUserId = "select user_ID from qup.user where user_name = ?";
+
         try (PreparedStatement statement = c.prepareStatement(findUserId)) {
 
-           // statement.setBoolean(1, true);
             statement.setString(1, username);
             statement.execute();
 
@@ -387,8 +284,6 @@ public class Database {
             resultSet.next();
 
             userID = resultSet.getInt("user_ID");
-
-           // userID = Integer.parseInt(user);
 
 
         } catch (Exception e) {
@@ -404,6 +299,8 @@ public class Database {
 
 
         boolean k = true;
+
+        String findPrivateRoom = "select pmessage_id from qup.user_has_user where user_user_ID1 = ? AND user_user_ID2 = ? AND pmessage_id like '01%'";
 
         try (PreparedStatement statement = c.prepareStatement(findPrivateRoom)) {
 
@@ -432,6 +329,7 @@ public class Database {
         return k;
 
     }
+
     public int privateRoomID(int user1, int user2) {
 
         String privateRoomID = "select pmessage_id from user_has_user where user_user_ID1 = ? AND user_user_ID2 = ?";
@@ -454,48 +352,12 @@ public class Database {
         return pmessage_id;
     }
 
-
-    public String getUsername (String email) {
-
-        String user = null;
-
-        try (PreparedStatement statement = c.prepareStatement(getUsernameURL)){
-
-            statement.setString(1, email);
-            ResultSet resultSet = statement.executeQuery();
-
-            resultSet.next();
-
-            user = resultSet.getString("user_name");
-
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-        return user;
-    }
-
-    public String getUserPassword (String email) {
-
-        String password = null;
-
-        try (PreparedStatement statement = c.prepareStatement(getPasswordURL)){
-
-            statement.setString(1, email);
-            ResultSet resultSet = statement.executeQuery();
-
-            resultSet.next();
-
-            password = resultSet.getString("user_password");
-
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-        return password;
-    }
-
     public boolean changePassword (String password, String username) {
 
         boolean changed = true;
+
+        // Update status to online
+        String changePasswordURL = "update qup.user set user_password = ? where user_name = ?";
 
         try (PreparedStatement statement = c.prepareStatement(changePasswordURL)) {
 
@@ -523,6 +385,8 @@ public class Database {
 
     public void setBanUser (String user) {
 
+        String banUser = "update qup.user set isBlocked = true where user_name = ?";
+
         try (PreparedStatement statement = c.prepareStatement(banUser)){
 
             statement.setString(1, user);
@@ -538,6 +402,8 @@ public class Database {
     public boolean isBLocked (String username) {
 
         boolean banned = true;
+
+        String isUserBanned = "select isBlocked from qup.user where user_name = ?";
 
         try (PreparedStatement statement = c.prepareStatement(isUserBanned)) {
 
@@ -569,6 +435,8 @@ public class Database {
     public boolean unbanUser (String username) {
 
         boolean banned = true;
+
+        String unbanUserURL = "update qup.user set isBlocked = false where user_name = ?";
 
         try (PreparedStatement statement = c.prepareStatement(unbanUserURL)) {
 
