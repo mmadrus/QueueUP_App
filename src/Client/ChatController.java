@@ -137,7 +137,6 @@ public class ChatController implements Initializable {
             AnchorPane pane = ((AnchorPane) tabPane.getSelectionModel().getSelectedItem().getContent());
             thisArea = (TextArea) pane.getChildren().get(1);
 
-            System.out.println("userdata: " + thisArea.getUserData());
             // Creates a string with the message command, current user and the message, then sends it to the server
             Data.getInstance().send("/m" + thisArea.getUserData() + Data.getInstance().getUser() + messageField.getText());
 
@@ -155,7 +154,6 @@ public class ChatController implements Initializable {
 
         for (int c = 0; c < GUI.getTabHandler().size(); c++) {
 
-            System.out.println("Tab: " + GUI.getTab(c).getText());
             for (int i = 0; i < tabPane.getTabs().size(); i++) {
 
                 if (tabPane.getTabs().get(i).getText().equals(room)) {
@@ -332,7 +330,6 @@ public class ChatController implements Initializable {
 
                 String roomName = channelList.getSelectionModel().getSelectedItem();
                 String finalRoom = roomName;
-                System.out.println("FR: " + finalRoom);
 
                 GUI.makeTabVisable(finalRoom);
                 addTab(finalRoom);
@@ -558,10 +555,7 @@ public class ChatController implements Initializable {
 
                         } else if (msg.substring(0, 2).equals("/w")) {
 
-                            String n = null;
-
                             //Saves the user name from the string into a variable
-                            if (!msg.substring(2, 18).equals("null") || !msg.substring(18, 34).equals("null")) {
                                 String user = msg.substring(2, 18);
 
                                 // Create a new string builder to later save the user name in
@@ -599,7 +593,8 @@ public class ChatController implements Initializable {
 
                                 }
 
-                                if (msg.substring(2, 18).equals(Data.getInstance().getUser()) || msg.substring(18, 34).equals(Data.getInstance().getUser())) {
+                                if (msg.substring(2, 18).equals(Data.getInstance().getUser()) ||
+                                        msg.substring(18,34).equals(Data.getInstance().getUser())) {
 
                                     String tabId = msg.substring(34);
 
@@ -609,17 +604,20 @@ public class ChatController implements Initializable {
                                             @Override
                                             public void run() {
 
-                                                GUI.createNewTab(String.valueOf(finalUser2), tabId);
+                                                Tab t = GUI.createNewTab(String.valueOf(finalUser2), tabId);
+                                                tabPane.getTabs().add(tabPane.getTabs().size()-tabPane.getTabs().size()+1, t);
+
                                             }
                                         });
 
-                                    } else {
+                                    } else if (userTwo.equals(Data.getInstance().getUser())){
 
                                         Platform.runLater(new Runnable() {
                                             @Override
                                             public void run() {
 
-                                                GUI.createNewTab(String.valueOf(finalUser1), tabId);
+                                                Tab t = GUI.createNewTab(String.valueOf(finalUser1), tabId);
+                                                tabPane.getTabs().add(tabPane.getTabs().size()-tabPane.getTabs().size()+1, t);
                                             }
                                         });
 
@@ -628,7 +626,7 @@ public class ChatController implements Initializable {
 
                                 }
 
-                            }
+
 
                         } else if (msg.substring(0, 2).equals("/8")) {
 
@@ -688,7 +686,6 @@ public class ChatController implements Initializable {
                             }
                         } else if (msg.substring(0, 2).equals("/t")) {
 
-                            System.out.println(msg);
                             if (msg.substring(2, 3).equals("1")) {
 
                                 if (msg.substring(3, 19).equals(Data.getInstance().getUser())) {
@@ -762,8 +759,6 @@ public class ChatController implements Initializable {
 
                                             }
 
-
-                                            System.out.println("test" + msg.substring(59));
                                             GUI.addHiddenPrivateTab(String.valueOf(finalRoom), msg.substring(59), String.valueOf(finalPassword));
                                         }
 
@@ -806,7 +801,6 @@ public class ChatController implements Initializable {
 
                             } else {
 
-                                System.out.println("WTF: " + msg.substring(2, 22));
                                 // Create a new string builder to later save the user name in
                                 StringBuilder finalRoom = new StringBuilder();
 
@@ -818,13 +812,11 @@ public class ChatController implements Initializable {
                                     if (!String.valueOf(msg.substring(2, 22).charAt(p)).equals("*")) {
 
                                         finalRoom.append(String.valueOf(msg.substring(2, 22).charAt(p)));
-                                        System.out.println("char at " + p + ": " + msg.substring(2, 22).charAt(p));
                                     }
 
 
                                 }
 
-                                System.out.println("Finalroom:" + String.valueOf(finalRoom));
 
                                 Platform.runLater(new Runnable() {
                                     @Override
@@ -857,16 +849,13 @@ public class ChatController implements Initializable {
 
                                 if (exist == false) {
 
-                                    System.out.println("msg2,22: " + msg.substring(22));
-                                    if (!msg.substring(22, 24).equals("12")) {
+                                    if (msg.substring(22, 24).equals("10")) {
 
                                         GUI.addHiddenTab(String.valueOf(finalRoom), msg.substring(22));
 
-                                    } else /*if (msg.substring(42, 44).equals("12"))*/ {
+                                    } else if (msg.substring(42, 44).equals("12")) {
 
                                         boolean exists = false;
-
-                                        System.out.println("hihi: " + msg.substring(22));
 
                                         if (GUI.getHiddenPrivateSize() > 0) {
                                             for (int i = 0; i < GUI.getHiddenTabSize(); i++) {
@@ -887,7 +876,6 @@ public class ChatController implements Initializable {
                                         }
 
                                         if (exists == false) {
-                                            System.out.println("msg: " + msg);
                                             // Create a new string builder to later save the user name in
                                             StringBuilder finalPassword = new StringBuilder();
 
@@ -904,8 +892,6 @@ public class ChatController implements Initializable {
 
                                             }
 
-                                            System.out.println("test" + msg.substring(42));
-                                            System.out.println(String.valueOf(finalRoom));
                                             GUI.addHiddenPrivateTab(String.valueOf(finalRoom), msg.substring(42), String.valueOf(finalPassword));
                                         }
                                     }
@@ -1107,7 +1093,6 @@ public class ChatController implements Initializable {
         if (result.isPresent() && result.get().equals(t.getId())) {
 
 
-            System.out.println("res: " + result.get());
             Platform.runLater(new Runnable() {
                 public void run() {
                     tabPane.getTabs().add(tabPane.getTabs().size()-tabPane.getTabs().size()+1, t);
@@ -1119,11 +1104,6 @@ public class ChatController implements Initializable {
 
     private void addNewPublicRoomTab (Tab t) {
 
-        String id = String.valueOf(t.getUserData());
-
-        System.out.println(id);
-
-        System.out.println("gets here: " + t.getText());
         Platform.runLater(new Runnable() {
             public void run() {
                 try {

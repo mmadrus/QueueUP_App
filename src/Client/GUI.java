@@ -59,7 +59,7 @@ public class GUI {
 
         Tab newTab = new Tab();
         newTab.setText("#" + name);
-        newTab.setClosable(true);
+        newTab.setClosable(false);
         newTab.setDisable(false);
         newTab.setUserData(id);
 
@@ -205,8 +205,6 @@ public class GUI {
     }
 
     public Tab addHiddenPrivateTab (String name, String id, String pword) {
-
-        System.out.println(name);
 
         Tab newTab = new Tab();
         newTab.setText("#" + name);

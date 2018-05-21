@@ -3,6 +3,7 @@ package Server;
 import Client.DataStream;
 
 import javax.xml.crypto.Data;
+import java.awt.image.DataBuffer;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Random;
@@ -145,8 +146,6 @@ public class ServerProtocol {
 
                 }
 
-                System.out.println(succesfull);
-
             } catch (Exception e){
                 e.printStackTrace();
             }
@@ -231,24 +230,6 @@ public class ServerProtocol {
         return i;
     }
 
-    /*public int getRoomID (int idOne, int idTwo) {
-
-        int i = 0;
-
-        try {
-
-            Database db = new Database();
-
-            i = db.searchForPrivateRoom(idOne, idTwo);
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-        }
-
-        return i;
-    }*/
-
     //Method to create user id
     public int createUserId() {
 
@@ -267,7 +248,7 @@ public class ServerProtocol {
         return nana;
     }
 
-    public int privateMessage (int idOne, int idTwo) throws SQLException {
+    public int privateMessage (int idOne, int idTwo, int pmessageRoomID) throws SQLException {
 
         int id = 0;
 
@@ -277,16 +258,14 @@ public class ServerProtocol {
 
             boolean found = db.searchForPrivateRoom(idOne, idTwo);
 
-            if (found == true) {
-
-                int pmessageRoomID = createRoomId();
+            if (found == false) {
 
                 db.userHasUser(String.valueOf(idOne),String.valueOf(idTwo),pmessageRoomID);
 
                 id = 1;
 
 
-            } else if (found == false){
+            } else if (found == true){
 
 
                 id = 0;
@@ -412,5 +391,19 @@ public class ServerProtocol {
 
     public void setPrivateRoomIDRoomID(int i) {
         this.privateRoomID += 1;
+    }
+
+    public void createDM (int idOne, int idTwo, int roomID) {
+
+        try {
+
+            Database db = new Database();
+
+            db.userHasUser(String.valueOf(idOne),String.valueOf(idOne),roomID);
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
     }
 }

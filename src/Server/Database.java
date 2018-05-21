@@ -94,10 +94,8 @@ public class Database {
 
             statement.execute();
 
-            System.out.println("User added");
-
         } catch (Exception e) {
-            System.out.println("FAIL");
+            e.printStackTrace();
         }
     }
 
@@ -197,10 +195,10 @@ public class Database {
 
             statement.execute();
 
-            System.out.println("Room added");
 
         } catch (Exception e) {
-            System.out.println("FAIL");
+
+            e.printStackTrace();
         }
 
     }
@@ -277,14 +275,10 @@ public class Database {
             //FileInputStream fi = new FileInputStream(file);
 
             statement.setString(1, user1);
-            System.out.println("Databas metod för att skapa privat rum anv1 = " + user1);
             statement.setString(2, user2);
-            System.out.println("Databas metod för att skapa privat rum anv2 = " + user2);
             statement.setTimestamp(3, time);
-            System.out.println("Databas metod för att skapa privat rum tid =" + time);
-            //statement.setAsciiStream(4, fi, (int) file.length());
             statement.setInt(4, room);
-            System.out.println("Databas metod för att skapa privat rum rumID =" + room);
+
             statement.execute();
             //Files.write(file,StandardOpenOption.CREATE,StandardOpenOption.APPEND);
 
@@ -357,11 +351,9 @@ public class Database {
             statement.setString(1, username);
             statement.execute();
 
-            System.out.println("Status set to online");
-
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Not set as online");
+
         }
 
     }
@@ -373,11 +365,9 @@ public class Database {
             statement.setString(1, username);
             statement.execute();
 
-            System.out.println("Status set to online");
 
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Not set as online");
         }
 
     }
@@ -400,12 +390,10 @@ public class Database {
 
            // userID = Integer.parseInt(user);
 
-            System.out.println("ID: " + userID);
 
         } catch (Exception e) {
 
             userID = 0;
-            System.out.println("ID: " + userID);
         }
 
         return userID;
@@ -429,22 +417,16 @@ public class Database {
             if (!roomFound) {
 
                 k = false;
-                System.out.println("denna returnerar falsk");
 
             } else {
 
-                /*ResultSet rs = statement.executeQuery();
-                String reslust = rs.getString(1);
-                id = Integer.parseInt(reslust);
-                System.out.println("Nej");*/
                 k = true;
-                System.out.println(2);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
 
         return k;
@@ -463,10 +445,7 @@ public class Database {
             resultSet.next();
 
             pmessage_id = resultSet.getInt(1);
-            System.out.println(pmessage_id);
 
-
-            System.out.println(pmessage_id);
 
         }catch (Exception e){
             e.printStackTrace();

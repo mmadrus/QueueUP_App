@@ -51,9 +51,6 @@ public class Server {
                 System.out.println("Connected to: " + s);
                 System.out.println("Assigning new thread");
 
-                System.out.println(str);
-                System.out.println(s.toString());
-
                 // Saves the connected thread into an arraylist
                 clientHandlers.add(new ClientHandler(s));
 
@@ -97,8 +94,6 @@ public class Server {
 
                 if (r.substring(0,20).equals(room)) {
 
-                    System.out.println("room: " + room);
-                    System.out.println("r: " + r.substring(0,20));
 
                     c.sendDataStream(c, "/t" + r);
 
@@ -221,27 +216,32 @@ public class Server {
 
                         try {
 
-                            System.out.print("D: " + data);
                             int idOne = serverProtocol.getUserId(data.substring(0, 16));
                             int idTwo = serverProtocol.getUserId(data.substring(16, 32));
 
-                            int roomID = serverProtocol.privateMessage(idOne, idTwo);
+                            //int roomID = serverProtocol.privateMessage(idOne, idTwo);
 
-                            if (roomID != 0) {
+                            /*if (roomID != 0) {
 
                                 String newRoomId = String.valueOf(serverProtocol.createRoomId());
 
                                 sendToClient(recieved + newRoomId);
 
-                            } else {
+                            } else {*/
 
-                                String room = String.valueOf(serverProtocol.getProomID(idOne,idTwo));
+                                int room = (serverProtocol.getProomID(idOne,idTwo));
+
+                                if (room == 0) {
+
+                                    room = serverProtocol.createRoomId();
+
+                                    serverProtocol.createDM(idOne, idTwo, room);
+                                }
 
                                 sendToClient(recieved+room);
 
 
-                                System.out.println(roomID);
-                            }
+                            //}
 
                         } catch (Exception e) {
 
@@ -305,11 +305,9 @@ public class Server {
 
                         if (data.length() != 1) {
                             serverProtocol.tabs.add(data + serverProtocol.getPrivateRoomID());
-                            System.out.println("gets here: " + data);
                         }
 
                         sendNewRoomToClient(data.substring(0,20));
-                        System.out.println("gets here too");
                         serverProtocol.setPrivateRoomIDRoomID(1);
                     }
                 }
