@@ -12,6 +12,7 @@ public class ServerProtocol {
     public ArrayList<String> onlineUsers = new ArrayList<>();
     public ArrayList<String> tabs = new ArrayList<>();
     private int roomID = 1000000003;
+    private int privateRoomID = 1200000001;
 
     // Method for the commands that have something to do with the db, takes the command as a parameter and the rest as another
     // returns a boolean which is later sent to the client as a string
@@ -388,5 +389,13 @@ public class ServerProtocol {
 
     public void setRoomID(int i) {
         this.roomID += 1;
+    }
+
+    public String getPrivateRoomID() {
+        return String.valueOf(privateRoomID);
+    }
+
+    public void setPrivateRoomIDRoomID(int i) {
+        this.privateRoomID += 1;
     }
 }

@@ -15,6 +15,8 @@ public class GUI {
 
     private ArrayList<Tab> currentTabs = new ArrayList<>();
     private ArrayList<Tab> hiddenTabs = new ArrayList<>();
+    private ArrayList<Tab> hiddenPrivateRoomTabs = new ArrayList<>();
+
 
     public String setButtonStyle() {
 
@@ -160,6 +162,13 @@ public class GUI {
         newTab.setClosable(true);
         newTab.setDisable(false);
         newTab.setUserData(id);
+        newTab.setOnClosed(new EventHandler<Event>() {
+            @Override
+            public void handle(Event event) {
+
+                currentTabs.remove(newTab);
+            }
+        });
 
         AnchorPane newPane = new AnchorPane();
         newPane.setMinWidth(0.0);
@@ -195,6 +204,58 @@ public class GUI {
 
     }
 
+    public Tab addHiddenPrivateTab (String name, String id, String pword) {
+
+        System.out.println(name);
+
+        Tab newTab = new Tab();
+        newTab.setText("#" + name);
+        newTab.setClosable(true);
+        newTab.setDisable(false);
+        newTab.setUserData(id);
+        newTab.setId(pword);
+        newTab.setOnClosed(new EventHandler<Event>() {
+            @Override
+            public void handle(Event event) {
+
+                currentTabs.remove(newTab);
+            }
+        });
+
+        AnchorPane newPane = new AnchorPane();
+        newPane.setMinWidth(0.0);
+        newPane.setMinHeight(0.0);
+        newPane.setPrefHeight(180);
+        newPane.setPrefWidth(200);
+
+        ImageView imageView = new ImageView();
+        imageView.setFitHeight(563);
+        imageView.setFitWidth(800);
+        imageView.setPreserveRatio(true);
+        imageView.setImage(setBackgroundImage());
+
+        TextArea newTextArea = new TextArea();
+        newTextArea.setOpacity(0.75);
+        newTextArea.setEditable(false);
+        newTextArea.setWrapText(true);
+        newTextArea.setPrefWidth(800);
+        newTextArea.setPrefHeight(563);
+        newTextArea.setUserData(id);
+
+        AnchorPane.setTopAnchor(imageView,0.0);
+        AnchorPane.setTopAnchor(newTextArea, 0.0);
+
+        newPane.getChildren().addAll(imageView, newTextArea);
+
+        hiddenPrivateRoomTabs.add(newTab);
+
+        newTab.setContent(newPane);
+
+
+        return newTab;
+
+    }
+
     public String getHidden (int i) {
 
         return hiddenTabs.get(i).getText();
@@ -205,9 +266,42 @@ public class GUI {
         return hiddenTabs.size();
     }
 
+    public int getHiddenPrivateSize () {
+
+        return hiddenPrivateRoomTabs.size();
+    }
+
+    public String getHiddenPrivate (int i) {
+
+        return hiddenPrivateRoomTabs.get(i).getText();
+    }
+
     public void emptyTabHandler () {
 
         currentTabs.clear();
+    }
+
+    public void makeTabVisable (String room) {
+
+        for (Tab t: hiddenTabs) {
+
+            if (t.getText().equals(room)) {
+
+                currentTabs.add(t);
+                break;
+
+            }
+        }
+
+        for (Tab t: hiddenPrivateRoomTabs) {
+
+            if (t.getText().equals(room)) {
+
+                currentTabs.add(t);
+                break;
+            }
+        }
+
     }
 
     public Tab addHelpTab (String name, String id) {

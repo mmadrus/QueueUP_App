@@ -97,6 +97,9 @@ public class Server {
 
                 if (r.substring(0,20).equals(room)) {
 
+                    System.out.println("room: " + room);
+                    System.out.println("r: " + r.substring(0,20));
+
                     c.sendDataStream(c, "/t" + r);
 
                     break;
@@ -285,7 +288,6 @@ public class Server {
                         } else {
 
                             if (data.length() != 1) {
-                                System.out.println(data);
                                 serverProtocol.tabs.add(data.substring(16) + serverProtocol.getRoomID());
                             }
 
@@ -293,6 +295,16 @@ public class Server {
                             serverProtocol.setRoomID(1);
 
                         }
+                    } else if (command.equals("/p")) {
+
+                        if (data.length() != 1) {
+                            serverProtocol.tabs.add(data + serverProtocol.getPrivateRoomID());
+                            System.out.println("gets here: " + data);
+                        }
+
+                        sendNewRoomToClient(data.substring(0,20));
+                        System.out.println("gets here too");
+                        serverProtocol.setPrivateRoomIDRoomID(1);
                     }
                 }
             } catch (EOFException eofE) {

@@ -6,7 +6,6 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,8 +22,8 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
-import java.security.Guard;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class ChatController implements Initializable {
@@ -32,11 +31,9 @@ public class ChatController implements Initializable {
     @FXML
     private AnchorPane pane;
     @FXML
-    private TextField searchField;
-    @FXML
     private TabPane tabPane;
     @FXML
-    private TextField messageField;
+    private TextField messageField, searchField;
     @FXML
     private Button sendButton, logoutButton;
     @FXML
@@ -53,6 +50,7 @@ public class ChatController implements Initializable {
     private Admin admin = new Admin();
     private ObservableList<String> tabs = FXCollections.observableArrayList();
     private Button tabBtn = new Button();
+    private Tab newTab = null;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -139,6 +137,7 @@ public class ChatController implements Initializable {
             AnchorPane pane = ((AnchorPane) tabPane.getSelectionModel().getSelectedItem().getContent());
             thisArea = (TextArea) pane.getChildren().get(1);
 
+            System.out.println("userdata: " + thisArea.getUserData());
             // Creates a string with the message command, current user and the message, then sends it to the server
             Data.getInstance().send("/m" + thisArea.getUserData() + Data.getInstance().getUser() + messageField.getText());
 
@@ -154,9 +153,9 @@ public class ChatController implements Initializable {
 
         boolean exists = true;
 
-
         for (int c = 0; c < GUI.getTabHandler().size(); c++) {
 
+            System.out.println("Tab: " + GUI.getTab(c).getText());
             for (int i = 0; i < tabPane.getTabs().size(); i++) {
 
                 if (tabPane.getTabs().get(i).getText().equals(room)) {
@@ -174,29 +173,30 @@ public class ChatController implements Initializable {
 
             if (exists == false) {
 
-                        //tabPane.getTabs().add(GUI.getTab(c));
+                //tabPane.getTabs().add(GUI.getTab(c));
+
                 if (!GUI.getTab(c).getText().equals("#Help")) {
 
-                    Tab newTab = GUI.getTab(c);
-                    int index = c-1;
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            tabPane.getTabs().add(index, newTab);
-                        }
-                    });
+                    newTab = GUI.getTab(c);
 
+                    if (newTab.getUserData().toString().substring(0, 2).equals("12")) {
+
+                        addNewPrivateRoomTab(newTab);
+
+
+                    } else {
+
+                        addNewPublicRoomTab(newTab);
+
+
+                    }
 
 
                 }
-
-
-
-
             }
 
-        }
 
+        }
     }
 
 
@@ -332,7 +332,9 @@ public class ChatController implements Initializable {
 
                 String roomName = channelList.getSelectionModel().getSelectedItem();
                 String finalRoom = roomName;
+                System.out.println("FR: " + finalRoom);
 
+                GUI.makeTabVisable(finalRoom);
                 addTab(finalRoom);
                 tabBtn.fire();
 
@@ -428,7 +430,7 @@ public class ChatController implements Initializable {
 
                                     }
 
-                                    if (roomOpen == false) {
+                                    /*if (roomOpen == false) {
 
                                         room.setOnClosed(new EventHandler<Event>() {
                                             @Override
@@ -438,7 +440,7 @@ public class ChatController implements Initializable {
 
                                             }
                                         });
-                                    }
+                                    }*/
 
 
                                     // Sends message to selected tab, needs to change to send to tab with that ID
@@ -686,6 +688,7 @@ public class ChatController implements Initializable {
                             }
                         } else if (msg.substring(0, 2).equals("/t")) {
 
+                            System.out.println(msg);
                             if (msg.substring(2, 3).equals("1")) {
 
                                 if (msg.substring(3, 19).equals(Data.getInstance().getUser())) {
@@ -694,13 +697,13 @@ public class ChatController implements Initializable {
                                     StringBuilder finalRoom = new StringBuilder();
 
                                     // For loop to convert the padded username returned from the server into a username without pads
-                                    for (int p = 0; p < msg.substring(19,39).length(); p++) {
+                                    for (int p = 0; p < msg.substring(19, 39).length(); p++) {
 
                                         // Removes the * form the returned username, keeps the letters and numbers and then
                                         // saves them into the StringBuilder finalUser
-                                        if (!String.valueOf(msg.substring(19,39).charAt(p)).equals("*")) {
+                                        if (!String.valueOf(msg.substring(19, 39).charAt(p)).equals("*")) {
 
-                                            finalRoom.append(String.valueOf(msg.substring(19,39).charAt(p)));
+                                            finalRoom.append(String.valueOf(msg.substring(19, 39).charAt(p)));
                                         }
 
 
@@ -737,7 +740,32 @@ public class ChatController implements Initializable {
 
                                     if (exist == false) {
 
-                                        GUI.addHiddenTab(String.valueOf(finalRoom), msg.substring(39));
+                                        if (!msg.substring(39, 41).equals("12")) {
+
+                                            GUI.addHiddenTab(String.valueOf(finalRoom), msg.substring(39));
+
+                                        } else if (msg.substring(59,61).equals("12")){
+
+                                            // Create a new string builder to later save the user name in
+                                            StringBuilder finalPassword = new StringBuilder();
+
+                                            // For loop to convert the padded username returned from the server into a username without pads
+                                            for (int p = 0; p < msg.substring(39, 59).length(); p++) {
+
+                                                // Removes the * form the returned username, keeps the letters and numbers and then
+                                                // saves them into the StringBuilder finalUser
+                                                if (!String.valueOf(msg.substring(39, 59).charAt(p)).equals("*")) {
+
+                                                    finalPassword.append(String.valueOf(msg.substring(39, 59).charAt(p)));
+                                                }
+
+
+                                            }
+
+
+                                            System.out.println("test" + msg.substring(59));
+                                            GUI.addHiddenPrivateTab(String.valueOf(finalRoom), msg.substring(59), String.valueOf(finalPassword));
+                                        }
 
                                     }
 
@@ -752,8 +780,25 @@ public class ChatController implements Initializable {
 
                                             for (int q = 0; q < GUI.getHiddenTabSize(); q++) {
 
-                                                tabs.add(q, GUI.getHidden(q));
+                                                try {
 
+                                                    tabs.add(q, GUI.getHidden(q));
+
+                                                } catch (IndexOutOfBoundsException e) {
+
+                                                    e.printStackTrace();
+                                                }
+
+                                            }
+
+                                            for (int q = 0; q < GUI.getHiddenPrivateSize(); q++) {
+
+                                                try {
+                                                    tabs.add(tabs.size(), GUI.getHiddenPrivate(q));
+                                                } catch (IndexOutOfBoundsException e) {
+
+                                                    e.printStackTrace();
+                                                }
                                             }
                                         }
                                     });
@@ -761,21 +806,25 @@ public class ChatController implements Initializable {
 
                             } else {
 
+                                System.out.println("WTF: " + msg.substring(2, 22));
                                 // Create a new string builder to later save the user name in
                                 StringBuilder finalRoom = new StringBuilder();
 
                                 // For loop to convert the padded username returned from the server into a username without pads
-                                for (int p = 0; p < msg.substring(2,22).length(); p++) {
+                                for (int p = 0; p < msg.substring(2, 22).length(); p++) {
 
                                     // Removes the * form the returned username, keeps the letters and numbers and then
                                     // saves them into the StringBuilder finalUser
-                                    if (!String.valueOf(msg.substring(2,22).charAt(p)).equals("*")) {
+                                    if (!String.valueOf(msg.substring(2, 22).charAt(p)).equals("*")) {
 
-                                        finalRoom.append(String.valueOf(msg.substring(2,22).charAt(p)));
+                                        finalRoom.append(String.valueOf(msg.substring(2, 22).charAt(p)));
+                                        System.out.println("char at " + p + ": " + msg.substring(2, 22).charAt(p));
                                     }
 
 
                                 }
+
+                                System.out.println("Finalroom:" + String.valueOf(finalRoom));
 
                                 Platform.runLater(new Runnable() {
                                     @Override
@@ -808,7 +857,56 @@ public class ChatController implements Initializable {
 
                                 if (exist == false) {
 
-                                    GUI.addHiddenTab(String.valueOf(finalRoom), msg.substring(22));
+                                    System.out.println("msg2,22: " + msg.substring(22));
+                                    if (!msg.substring(22, 24).equals("12")) {
+
+                                        GUI.addHiddenTab(String.valueOf(finalRoom), msg.substring(22));
+
+                                    } else if (msg.substring(42, 44).equals("12")) {
+
+                                        boolean exists = false;
+
+                                        if (GUI.getHiddenPrivateSize() > 0) {
+                                            for (int i = 0; i < GUI.getHiddenTabSize(); i++) {
+
+                                                if (String.valueOf(finalRoom).equals(GUI.getHiddenPrivate(i))) {
+
+
+                                                    exists = true;
+                                                    break;
+
+                                                } else {
+
+                                                    exists = false;
+
+
+                                                }
+                                            }
+                                        }
+
+                                        if (exists == false) {
+                                            System.out.println("msg: " + msg);
+                                            // Create a new string builder to later save the user name in
+                                            StringBuilder finalPassword = new StringBuilder();
+
+                                            // For loop to convert the padded username returned from the server into a username without pads
+                                            for (int p = 0; p < msg.substring(22, 42).length(); p++) {
+
+                                                // Removes the * form the returned username, keeps the letters and numbers and then
+                                                // saves them into the StringBuilder finalUser
+                                                if (!String.valueOf(msg.substring(22, 42).charAt(p)).equals("*")) {
+
+                                                    finalPassword.append(String.valueOf(msg.substring(22, 42).charAt(p)));
+                                                }
+
+
+                                            }
+
+                                            System.out.println("test" + msg.substring(42));
+                                            System.out.println(String.valueOf(finalRoom));
+                                            GUI.addHiddenPrivateTab(String.valueOf(finalRoom), msg.substring(42), String.valueOf(finalPassword));
+                                        }
+                                    }
 
                                 }
 
@@ -826,16 +924,15 @@ public class ChatController implements Initializable {
                                             tabs.add(q, GUI.getHidden(q));
 
                                         }
+
+                                        for (int q = 0; q < GUI.getHiddenPrivateSize(); q++) {
+
+                                            tabs.add(tabs.size(), GUI.getHiddenPrivate(q));
+                                        }
                                     }
                                 });
                             }
 
-
-                        } else if (msg.substring(0, 2).equals("/r")) {
-
-                            if (msg.substring(18, 19).equals("1")) {
-                                GUI.addHiddenTab(msg.substring(19), String.valueOf(GUI.getHiddenTabSize() + 1));
-                            }
 
                         }
 
@@ -923,40 +1020,6 @@ public class ChatController implements Initializable {
         tabPane.getTabs().add(GUI.addGeneralTab());
     }
 
-    //Search method for Online users
-    @FXML
-    public void searchView() {
-
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-
-                ObservableList<String> observableList = FXCollections.observableArrayList(userList);
-
-                searchField.textProperty().addListener(((observable, oldValue, newValue) -> {
-                    onlineUsersArea.getItems().clear();
-
-                    for (int j = 0; j < observableList.size(); j++) {
-
-                        if (observableList.get(j).contains(searchField.getCharacters())) {
-                            onlineUsersArea.getItems().add(observableList.get(j));
-
-                        }
-                    }
-
-
-                    if (searchField.getText().length() <= 0) {
-
-                        Data.getInstance().send("/a1");
-                    }
-                }));
-
-            }
-        });
-
-
-    }
-
     private void forceLogout() {
 
         Platform.runLater(new Runnable() {
@@ -1031,6 +1094,81 @@ public class ChatController implements Initializable {
         return btn;
     }
 
+    private void addNewPrivateRoomTab (Tab t) {
+
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Enter Password");
+        dialog.setHeaderText("Enter the password for the room:");
+
+        Optional<String> result = dialog.showAndWait();
+
+        if (result.isPresent() && result.get().equals(t.getId())) {
+
+
+            System.out.println("res: " + result.get());
+            Platform.runLater(new Runnable() {
+                public void run() {
+                    tabPane.getTabs().add(tabPane.getTabs().size()-tabPane.getTabs().size()+1, t);
+                }
+            });
+
+        }
+    }
+
+    private void addNewPublicRoomTab (Tab t) {
+
+        String id = String.valueOf(t.getUserData());
+
+        System.out.println(id);
+
+        System.out.println("gets here: " + t.getText());
+        Platform.runLater(new Runnable() {
+            public void run() {
+                try {
+
+                    tabPane.getTabs().add(tabPane.getTabs().size()-tabPane.getTabs().size() +1, t);
+                } catch (Exception e) {
+
+                    e.printStackTrace();
+                }
+            }
+        });
+
+    }
+
+    //Search method for Online users
+    @FXML
+    public void searchView() {
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+
+                ObservableList<String> observableList = FXCollections.observableArrayList(userList);
+
+                searchField.textProperty().addListener(((observable, oldValue, newValue) -> {
+                    onlineUsersArea.getItems().clear();
+
+                    for (int j = 0; j < observableList.size(); j++) {
+
+                        if (observableList.get(j).contains(searchField.getCharacters())) {
+                            onlineUsersArea.getItems().add(observableList.get(j));
+
+                        }
+                    }
+
+
+                    if (searchField.getText().length() <= 0) {
+
+                        Data.getInstance().send("/a1");
+                    }
+                }));
+
+            }
+        });
+
+
+    }
 
 
 }

@@ -2,19 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Client/ChatController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Client/ChatController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Client/ChatProtocol.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Client/Data.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Client/Data.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Client/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Client/GUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Client/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Client/LoginController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Client/SettingsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Client/SettingsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Client/chatSample.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/Client/chatSample.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Server/Database.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Server/Database.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Server/Mail.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Server/Mail.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Client/RoomController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Client/RoomController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Server/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Server/Server.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Server/ServerProtocol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Server/ServerProtocol.java" afterDir="false" />
     </list>
@@ -77,16 +68,94 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/itext7core/pom.xml">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file leaf-file-name="Mail.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Mail.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Server/Mail.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="510">
-              <caret line="39" selection-start-line="39" selection-end-line="39" />
+            <state relative-caret-position="555">
+              <caret line="42" column="32" lean-forward="true" selection-start-line="42" selection-start-column="32" selection-end-line="42" selection-end-column="32" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ChatController.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Client/ChatController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="672">
+              <caret line="189" lean-forward="true" selection-start-line="189" selection-end-line="189" />
+              <folding>
+                <element signature="method#initialize#0;class#ChatController#0" />
+                <element signature="method#handleLogoutButton#0;class#ChatController#0" />
+                <element signature="method#handleSettingsButton#0;class#ChatController#0" />
+                <element signature="method#send#0;class#ChatController#0" />
+                <element signature="method#popupMenuUser#0;class#ChatController#0" />
+                <element signature="method#popupMenuChannel#0;class#ChatController#0" />
+                <element signature="method#updateChat#0;class#ChatController#0" />
+                <element signature="method#setGuiDesign#0;class#ChatController#0" />
+                <element signature="method#rotateSettingForward#0;class#ChatController#0" />
+                <element signature="method#rotateSettingBackward#0;class#ChatController#0" />
+                <element signature="method#addGeneralTab#0;class#ChatController#0" />
+                <element signature="method#forceLogout#0;class#ChatController#0" />
+                <element signature="method#updateChannelListButton#0;class#ChatController#0" />
+                <element signature="method#addNewPrivateRoomTab#0;class#ChatController#0" />
+                <element signature="e#40258#40259#0" expanded="true" />
+                <element signature="e#40375#40376#0" expanded="true" />
+                <element signature="method#addNewPublicRoomTab#0;class#ChatController#0" />
+                <element signature="method#searchView#0;class#ChatController#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="RoomController.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Client/RoomController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="363">
+              <caret line="75" column="49" selection-start-line="75" selection-start-column="49" selection-end-line="75" selection-end-column="49" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Server.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Server/Server.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="204">
+              <caret line="117" column="39" selection-start-line="117" selection-start-column="39" selection-end-line="117" selection-end-column="39" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GUI.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/Client/GUI.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="90">
+              <caret line="15" column="38" lean-forward="true" selection-start-line="15" selection-start-column="27" selection-end-line="15" selection-end-column="38" />
+              <folding>
+                <element signature="method#createNewTab#0;class#GUI#0" />
+                <element signature="method#makeTabVisable#0;class#GUI#0" />
+                <element signature="method#addHelpTab#0;class#GUI#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ServerProtocol.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Server/ServerProtocol.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="240">
+              <caret line="389" column="34" lean-forward="true" selection-start-line="389" selection-start-column="34" selection-end-line="389" selection-end-column="34" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#10447#10448#0" expanded="true" />
+                <element signature="e#10492#10493#0" expanded="true" />
+                <element signature="e#10560#10561#0" expanded="true" />
+                <element signature="e#10645#10646#0" expanded="true" />
+                <element signature="e#10690#10691#0" expanded="true" />
+                <element signature="e#10726#10727#0" expanded="true" />
+                <element signature="e#10758#10759#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -121,6 +190,7 @@
       <find>counter</find>
       <find>/r1</find>
       <find>system.</find>
+      <find>tabBtn</find>
     </findStrings>
   </component>
   <component name="FindManager">
@@ -152,13 +222,14 @@
         <option value="$PROJECT_DIR$/src/Client/Data.java" />
         <option value="$PROJECT_DIR$/src/Server/Database.java" />
         <option value="$PROJECT_DIR$/src/Server/Mail.java" />
-        <option value="$PROJECT_DIR$/src/Client/RoomController.java" />
         <option value="$PROJECT_DIR$/src/Client/SettingsController.java" />
-        <option value="$PROJECT_DIR$/src/Server/Server.java" />
-        <option value="$PROJECT_DIR$/src/Server/ServerProtocol.java" />
-        <option value="$PROJECT_DIR$/src/Client/GUI.java" />
-        <option value="$PROJECT_DIR$/src/Client/ChatController.java" />
         <option value="$PROJECT_DIR$/src/Client/LoginController.java" />
+        <option value="$PROJECT_DIR$/src/Server/ServerProtocol.java" />
+        <option value="$PROJECT_DIR$/src/Client/RoomController.java" />
+        <option value="$PROJECT_DIR$/src/Client/GUI.java" />
+        <option value="$PROJECT_DIR$/src/Server/Server.java" />
+        <option value="$PROJECT_DIR$/src/Client/chatSample.fxml" />
+        <option value="$PROJECT_DIR$/src/Client/ChatController.java" />
       </list>
     </option>
   </component>
@@ -170,10 +241,9 @@
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
   <component name="ProjectFrameBounds" fullScreen="true">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
-    <option name="width" value="1612" />
-    <option name="height" value="876" />
+    <option name="y" value="23" />
+    <option name="width" value="1440" />
+    <option name="height" value="877" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -189,11 +259,6 @@
             <path>
               <item name="QueueUP_App" type="b2602c69:ProjectViewProjectNode" />
               <item name="QueueUP_App" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="QueueUP_App" type="b2602c69:ProjectViewProjectNode" />
-              <item name="QueueUP_App" type="462c0819:PsiDirectoryNode" />
-              <item name="itext7core" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="QueueUP_App" type="b2602c69:ProjectViewProjectNode" />
@@ -504,7 +569,14 @@
       <option name="project" value="LOCAL" />
       <updated>1526639088517</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="QUP 1.2.5 Public Rooms">
+      <created>1526828041303</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1526828041303</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -522,12 +594,12 @@
       <window_info anchor="right" id="Capture Analysis" order="4" />
       <window_info anchor="bottom" id="Event Log" order="16" sideWeight="0.50075644" side_tool="true" weight="0.32933104" />
       <window_info anchor="right" id="Maven Projects" order="7" weight="0.32980332" />
-      <window_info anchor="bottom" id="Run" order="4" sideWeight="0.49924356" weight="0.3272727" />
+      <window_info active="true" anchor="bottom" id="Run" order="4" sideWeight="0.49924356" visible="true" weight="0.3272727" />
       <window_info anchor="bottom" id="Version Control" order="15" weight="0.32848486" />
       <window_info anchor="bottom" id="Terminal" order="14" weight="0.32933104" />
       <window_info id="Capture Tool" order="11" />
       <window_info id="Designer" order="8" />
-      <window_info active="true" content_ui="combo" id="Project" order="2" sideWeight="0.49939394" visible="true" weight="0.20958512" />
+      <window_info content_ui="combo" id="Project" order="2" sideWeight="0.49939394" visible="true" weight="0.20958512" />
       <window_info anchor="bottom" id="Multi-OS Engine" order="19" />
       <window_info id="Structure" order="5" sideWeight="0.50060606" side_tool="true" weight="0.20958512" />
       <window_info anchor="right" id="Ant Build" order="5" weight="0.24962178" />
@@ -653,11 +725,12 @@
     <MESSAGE value="QUP 1.2.1 Search method for Online Users" />
     <MESSAGE value="QUP 1.2.3 Bug fixes" />
     <MESSAGE value="QUP 1.2.4 Settings Matteo + Filip" />
-    <option name="LAST_COMMIT_MESSAGE" value="QUP 1.2.4 Settings Matteo + Filip" />
+    <MESSAGE value="QUP 1.2.5 Public Rooms" />
+    <option name="LAST_COMMIT_MESSAGE" value="QUP 1.2.5 Public Rooms" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="15" />
+      <option name="time" value="16" />
     </breakpoint-manager>
   </component>
   <component name="antWorkspaceConfiguration">
@@ -712,12 +785,6 @@
       </provider>
       <provider editor-type-id="JavaFX-Scene-Builder" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Client/chatSample.fxml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-43" />
-      </provider>
-      <provider editor-type-id="JavaFX-Scene-Builder" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Client/Admin.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
@@ -759,32 +826,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Server/Server.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="251">
-          <caret line="233" column="39" selection-start-line="233" selection-start-column="32" selection-end-line="233" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Server/ServerProtocol.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="251">
-          <caret line="147" column="23" selection-start-line="147" selection-start-column="16" selection-end-line="147" selection-end-column="23" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#10809#10810#0" expanded="true" />
-            <element signature="e#10854#10855#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Client/ChatController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="334" column="16" selection-start-line="334" selection-start-column="16" selection-end-line="334" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Client/ChatProtocol.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
@@ -796,13 +837,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="465">
           <caret line="60" selection-start-line="60" selection-end-line="60" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Client/GUI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="356">
-          <caret line="155" column="8" selection-start-line="155" selection-start-column="8" selection-end-line="155" selection-end-column="8" />
         </state>
       </provider>
     </entry>
@@ -823,16 +857,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="719">
           <caret line="109" column="80" selection-start-line="109" selection-start-column="80" selection-end-line="109" selection-end-column="80" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Client/RoomController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="62" selection-start-line="62" selection-end-line="62" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -863,8 +887,89 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Server/Mail.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="39" selection-start-line="39" selection-end-line="39" />
+        <state relative-caret-position="555">
+          <caret line="42" column="32" lean-forward="true" selection-start-line="42" selection-start-column="32" selection-end-line="42" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Server/ServerProtocol.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="389" column="34" lean-forward="true" selection-start-line="389" selection-start-column="34" selection-end-line="389" selection-end-column="34" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#10447#10448#0" expanded="true" />
+            <element signature="e#10492#10493#0" expanded="true" />
+            <element signature="e#10560#10561#0" expanded="true" />
+            <element signature="e#10645#10646#0" expanded="true" />
+            <element signature="e#10690#10691#0" expanded="true" />
+            <element signature="e#10726#10727#0" expanded="true" />
+            <element signature="e#10758#10759#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Server/Server.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="117" column="39" selection-start-line="117" selection-start-column="39" selection-end-line="117" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Client/RoomController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="363">
+          <caret line="75" column="49" selection-start-line="75" selection-start-column="49" selection-end-line="75" selection-end-column="49" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Client/chatSample.fxml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="690">
+          <caret line="46" column="13" lean-forward="true" selection-start-line="46" selection-start-column="13" selection-end-line="46" selection-end-column="13" />
+        </state>
+      </provider>
+      <provider editor-type-id="JavaFX-Scene-Builder" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Client/ChatController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="672">
+          <caret line="189" lean-forward="true" selection-start-line="189" selection-end-line="189" />
+          <folding>
+            <element signature="method#initialize#0;class#ChatController#0" />
+            <element signature="method#handleLogoutButton#0;class#ChatController#0" />
+            <element signature="method#handleSettingsButton#0;class#ChatController#0" />
+            <element signature="method#send#0;class#ChatController#0" />
+            <element signature="method#popupMenuUser#0;class#ChatController#0" />
+            <element signature="method#popupMenuChannel#0;class#ChatController#0" />
+            <element signature="method#updateChat#0;class#ChatController#0" />
+            <element signature="method#setGuiDesign#0;class#ChatController#0" />
+            <element signature="method#rotateSettingForward#0;class#ChatController#0" />
+            <element signature="method#rotateSettingBackward#0;class#ChatController#0" />
+            <element signature="method#addGeneralTab#0;class#ChatController#0" />
+            <element signature="method#forceLogout#0;class#ChatController#0" />
+            <element signature="method#updateChannelListButton#0;class#ChatController#0" />
+            <element signature="method#addNewPrivateRoomTab#0;class#ChatController#0" />
+            <element signature="e#40258#40259#0" expanded="true" />
+            <element signature="e#40375#40376#0" expanded="true" />
+            <element signature="method#addNewPublicRoomTab#0;class#ChatController#0" />
+            <element signature="method#searchView#0;class#ChatController#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Client/GUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="15" column="38" lean-forward="true" selection-start-line="15" selection-start-column="27" selection-end-line="15" selection-end-column="38" />
+          <folding>
+            <element signature="method#createNewTab#0;class#GUI#0" />
+            <element signature="method#makeTabVisable#0;class#GUI#0" />
+            <element signature="method#addHelpTab#0;class#GUI#0" />
+          </folding>
         </state>
       </provider>
     </entry>

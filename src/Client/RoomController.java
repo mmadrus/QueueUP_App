@@ -71,7 +71,13 @@ public class RoomController implements Initializable {
 
                 } else if (!roomPasswordField.getText().isEmpty()) {
 
-                    String password = roomPasswordField.getText();
+                    String password = String.format("%-20s", roomPasswordField.getText()).replace(' ', '*');
+
+                    Data.getInstance().send("/p" + roomName + password);
+
+                    Stage stage = (Stage) backButton.getScene().getWindow();
+
+                    stage.close();
 
 
                 } else {
