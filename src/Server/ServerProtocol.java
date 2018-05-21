@@ -140,7 +140,6 @@ public class ServerProtocol {
                 } else {
 
                     db.createPrivateRoom(data.substring(0,16), data.substring(16));
-                    System.out.println("kollar om denna körs");
 
                     succesfull = true;
 
@@ -263,9 +262,9 @@ public class ServerProtocol {
     public int createRoomId () {
 
         Random random = new Random();
-        String id = String.format("%08d", random.nextInt(100000000));
-
-        return Integer.parseInt(id);
+        String id = "11"+String.format("%08d", random.nextInt(100000000));
+        int nana = Integer.parseInt(id);
+        return nana;
     }
 
     public int privateMessage (int idOne, int idTwo) throws SQLException {
@@ -280,25 +279,41 @@ public class ServerProtocol {
 
             if (found == true) {
 
-                db.userHasUser(String.valueOf(idOne),String.valueOf(idTwo),createRoomId());
+                int pmessageRoomID = createRoomId();
+
+                db.userHasUser(String.valueOf(idOne),String.valueOf(idTwo),pmessageRoomID);
 
                 id = 1;
 
 
             } else if (found == false){
 
+
                 id = 0;
             }
 
         } catch (SQLException e){
-            System.out.println(" Körs denna eller ? ");
-        } catch (Exception e) {
-
             e.printStackTrace();
+
         }
 
         return id;
 
+    }
+    public int getProomID(int idOne, int idTwo){
+
+        int id = 0;
+
+        try{
+            Database db = new Database();
+
+
+            id = db.privateRoomID(idOne,idTwo);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return id;
     }
 
     public void sendEmail (String userEmail, String username, String password) {

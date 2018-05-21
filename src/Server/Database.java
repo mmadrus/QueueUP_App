@@ -414,31 +414,31 @@ public class Database {
 
     public boolean searchForPrivateRoom(int idOne, int idTwo) throws SQLException {
 
-        int id = 0;
-        String test = "";
+
         boolean k = true;
 
         try (PreparedStatement statement = c.prepareStatement(findPrivateRoom)) {
 
             statement.setInt(1, idOne);
             statement.setInt(2, idTwo);
-            ResultSet resultSet = statement.executeQuery();
-            resultSet.next();
 
-            String roomFound = resultSet.getString(1);
+            boolean roomFound = statement.execute();
 
-            if (roomFound.isEmpty()) {
+            //String roomFound = resultSet.getString(1);
+
+            if (!roomFound) {
 
                 k = false;
+                System.out.println("denna returnerar falsk");
 
             } else {
 
                 /*ResultSet rs = statement.executeQuery();
                 String reslust = rs.getString(1);
                 id = Integer.parseInt(reslust);
-                */
-
+                System.out.println("Nej");*/
                 k = true;
+                System.out.println(2);
             }
 
         } catch (SQLException e) {
@@ -448,7 +448,33 @@ public class Database {
         }
 
         return k;
+
     }
+    public int privateRoomID(int user1, int user2) {
+
+        String privateRoomID = "select pmessage_id from user_has_user where user_user_ID1 = ? AND user_user_ID2 = ?";
+
+        int pmessage_id = 0;
+
+        try(PreparedStatement statement = c.prepareStatement(privateRoomID)){
+            statement.setInt(1,user1);
+            statement.setInt(2,user2);
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+
+            pmessage_id = resultSet.getInt(1);
+            System.out.println(pmessage_id);
+
+
+            System.out.println(pmessage_id);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return pmessage_id;
+    }
+
 
     public String getUsername (String email) {
 

@@ -862,9 +862,11 @@ public class ChatController implements Initializable {
 
                                         GUI.addHiddenTab(String.valueOf(finalRoom), msg.substring(22));
 
-                                    } else if (msg.substring(42, 44).equals("12")) {
+                                    } else /*if (msg.substring(42, 44).equals("12"))*/ {
 
                                         boolean exists = false;
+
+                                        System.out.println("hihi: " + msg.substring(22));
 
                                         if (GUI.getHiddenPrivateSize() > 0) {
                                             for (int i = 0; i < GUI.getHiddenTabSize(); i++) {

@@ -221,6 +221,7 @@ public class Server {
 
                         try {
 
+                            System.out.print("D: " + data);
                             int idOne = serverProtocol.getUserId(data.substring(0, 16));
                             int idTwo = serverProtocol.getUserId(data.substring(16, 32));
 
@@ -228,11 +229,16 @@ public class Server {
 
                             if (roomID != 0) {
 
-                                String newRoomId = "01" + String.valueOf(serverProtocol.createRoomId());
+                                String newRoomId = String.valueOf(serverProtocol.createRoomId());
 
                                 sendToClient(recieved + newRoomId);
 
                             } else {
+
+                                String room = String.valueOf(serverProtocol.getProomID(idOne,idTwo));
+
+                                sendToClient(recieved+room);
+
 
                                 System.out.println(roomID);
                             }
