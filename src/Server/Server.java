@@ -7,7 +7,13 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.function.Consumer;
 
 
 public class Server {
@@ -198,6 +204,38 @@ public class Server {
                         // Checks of the command is a regular message to send it directly
                         // back to the clients
 
+                        Path roomConvo = Paths.get(data.substring(0,10)+".txt");
+
+                        if (data.substring(0,10).equals(roomConvo.toString().substring(0,10))) {
+
+                            //Path roomConvo = Paths.get(data.substring(0,10));
+                            // Create a new string builder to later save the user name in
+                            StringBuilder finalUser = new StringBuilder();
+
+                            // For loop to convert the padded username returned from the server into a username without pads
+                            for (int p = 10; p < data.substring(10,26).length(); p++) {
+
+                                // Removes the * form the returned username, keeps the letters and numbers and then
+                                // saves them into the StringBuilder finalUser
+                                if (!String.valueOf(data.charAt(p)).equals("*")) {
+
+                                    finalUser.append(String.valueOf(data.charAt(p)));
+                                }
+
+                            }
+
+                            ArrayList<String> convo = new ArrayList<>();
+                            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+                            String addToTxtFile = timestamp +" ["+ String.valueOf(finalUser) + "] "+ data.substring(26);
+                            convo.add(addToTxtFile);
+
+                            Files.write(roomConvo, convo, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+
+
+                        }
+
+
+
                         //Calls for the send to client method
                         sendToClient(recieved);
 
@@ -237,6 +275,30 @@ public class Server {
                                     serverProtocol.createDM(idOne, idTwo, room);
                                 }
 
+                                /*Path roomConvo = Paths.get(String.valueOf(room)+".txt");
+
+                            // Create a new string builder to later save the user name in
+                            StringBuilder finalUser = new StringBuilder();
+
+                            // For loop to convert the padded username returned from the server into a username without pads
+                            for (int p = 0; p < data.substring(0,16).length(); p++) {
+
+                                // Removes the * form the returned username, keeps the letters and numbers and then
+                                // saves them into the StringBuilder finalUser
+                                if (!String.valueOf(data.charAt(p)).equals("*")) {
+
+                                    finalUser.append(String.valueOf(data.charAt(p)));
+                                }
+
+                            }
+
+                            ArrayList<String> convo = new ArrayList<>();
+                            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+                            String addToTxtFile = timestamp + String.valueOf(finalUser) + data.substring(32);
+                            convo.add(addToTxtFile);
+
+                                Files.write(roomConvo, convo, StandardOpenOption.CREATE, StandardOpenOption.APPEND);*/
+
                                 sendToClient(recieved+room);
 
 
@@ -254,8 +316,6 @@ public class Server {
 
 
                         for (int i = 0; i < clientHandlers.size(); i++) {
-
-                            //if (String.valueOf(c.s.getPort()).equals(data)){
 
                             if (String.valueOf(clientHandlers.get(i).s.getPort()).equals(data.substring(0,5))) {
 
